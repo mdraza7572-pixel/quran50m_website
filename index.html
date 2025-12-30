@@ -320,8 +320,9 @@
         </div>
     </footer>
 
+
 <style>
-    /* 1. Chat Button (Floating) */
+    /* 1. Chat Button (Gold Color) */
     .chat-btn {
         position: fixed; bottom: 20px; right: 20px;
         width: 60px; height: 60px;
@@ -336,7 +337,7 @@
     .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
     .chat-btn i { font-size: 28px; color: black; }
 
-    /* 2. Chat Window */
+    /* 2. Chat Window (Glass Effect) */
     .chat-window {
         position: fixed; bottom: 90px; right: 20px;
         width: 350px; height: 500px;
@@ -344,7 +345,7 @@
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 25px;
-        display: none;
+        display: none; /* Default Hidden */
         flex-direction: column;
         z-index: 1000;
         overflow: hidden;
@@ -409,11 +410,11 @@
 </div>
 
 <script>
-    // --- API KEY ---
     const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
     
-    // CHANGE: 'gemini-1.5-flash' ki jagah 'gemini-1.5-flash-latest' kar diya hai
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+    // FIX: 'gemini-1.5-flash-001' use kar rahe hain jo sabse stable version hai.
+    // '2.5' daalne se 404 Error aayega.
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent?key=${API_KEY}`;
 
     function toggleChat() {
         const chatWindow = document.getElementById('chatWindow');
@@ -430,41 +431,32 @@
 
         if (!userText) return;
 
-        // 1. User Message
         appendMessage(userText, 'user-msg');
         input.value = '';
 
-        // 2. Loading
         const loadingId = appendMessage("Soch raha hoon...", 'bot-msg');
 
         try {
-            // 3. API Request
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{
-                            text: "You are a helpful Islamic assistant. Answer briefly in Hinglish/Urdu. Question: " + userText
-                        }]
+                        parts: [{ text: "You are a helpful Islamic assistant for Quran 50M. Answer briefly in Hinglish/Urdu. Question: " + userText }]
                     }]
                 })
             });
 
             const data = await response.json();
             
-            // --- Debugging ---
             if (data.error) {
+                // Agar ab bhi error aaye, to wo yahan saaf dikhega
                 document.getElementById(loadingId).innerText = "❌ Error: " + data.error.message;
-            } 
-            else if (data.candidates && data.candidates[0].content) {
+            } else if (data.candidates && data.candidates[0].content) {
                 const botReply = data.candidates[0].content.parts[0].text;
                 document.getElementById(loadingId).innerText = botReply;
-            } 
-            else {
-                document.getElementById(loadingId).innerText = "⚠️ Jawab nahi aaya.";
+            } else {
+                document.getElementById(loadingId).innerText = "⚠️ Jawab khali aaya.";
             }
 
         } catch (error) {
@@ -483,6 +475,7 @@
         return div.id;
     }
 </script>
+    
     
 
 </body>
