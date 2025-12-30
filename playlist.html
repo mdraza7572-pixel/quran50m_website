@@ -1,102 +1,229 @@
-const myVideos = [
-    {
-        link: "https://youtu.be/8U98Mp-JVMY?si=ak4dwmRu2PvY9FuZ",
-        title: "Para 1 (Alif Laam Meem)",
-        desc: "Complete recitation of Juz 1."
-    },
-    {
-        link: "https://youtu.be/fy6gJJyjvMQ?si=t_mPgZ7gU1KnMocZ",
-        title: "Para 2 (Sayaqool)",
-        desc: "Complete recitation of Juz 2."
-    },
-    {
-        link: "https://youtu.be/y0jgDe3REKQ?si=FzQYCelQ0mqyo1sY",
-        title: "Para 3 (Tilkar Rusul)",
-        desc: "Complete recitation of Juz 3."
-    },
-    {
-        link: "https://youtu.be/Y-ye7uzebJU?si=QKT51RKbUkIed7sg",
-        title: "Para 4 (Lan Tanalu)",
-        desc: "Complete recitation of Juz 4."
-    },
-    {
-        link: "https://youtu.be/01WzRtycK04?si=YNYhxGOIYRDLX9h9",
-        title: "Para 5 (Wal Mohsanat)",
-        desc: "Complete recitation of Juz 5."
-    },
-    {
-        link: "https://youtu.be/XOuKaNll_V8?si=RyoZ7M9sBMgawSJM",
-        title: "Para 6 (La Yuhibbullah)",
-        desc: "Complete recitation of Juz 6."
-    },
-    {
-        link: "https://youtu.be/ZYaMy2_sEQM?si=1HaJJ1kfc9wk21Dc",
-        title: "Para 7 (Wa Iza Samiu)",
-        desc: "Complete recitation of Juz 7."
-    },
-    {
-        link: "https://youtu.be/ve4yun9JrC8?si=bE9nRdhDEqX91BWa",
-        title: "Para 8 (Wa Lau Annana)",
-        desc: "Complete recitation of Juz 8."
-    },
-    {
-        link: "https://youtu.be/shKRqUWfDeM?si=QXBqQo_6O9sPKKwU",
-        title: "Para 9 (Qalal Malao)",
-        desc: "Complete recitation of Juz 9."
-    },
-    {
-        link: "https://youtu.be/tbN0sPUeXnw?si=MSTVcT3sxdAxFRDl",
-        title: "Para 10 (Wa A'lamu)",
-        desc: "Complete recitation of Juz 10."
-    },
-    {
-        link: "https://youtu.be/oCyLR9uqxyI?si=hBjSNjXxivkJDnz1",
-        title: "Para 11 (Yatazeroona)",
-        desc: "Complete recitation of Juz 11."
-    },
-    {
-        link: "https://youtu.be/hB6BR7E6PaA?si=_-FwD6mYe_XTQKSL",
-        title: "Para 12 (Wa Mamin Da'abat)",
-        desc: "Complete recitation of Juz 12."
-    },
-    {
-        link: "https://youtu.be/eG3uu-WS7qg?si=94f6Kk-K1P8-8a2d",
-        title: "Para 13 (Wa Ma Ubrioo)",
-        desc: "Complete recitation of Juz 13."
-    },
-    {
-        link: "https://youtu.be/l-izSXX3Xr0?si=rYs9VxjlfqjnkUNW",
-        title: "Para 14 (Rubama)",
-        desc: "Complete recitation of Juz 14."
-    },
-    {
-        link: "https://youtu.be/_gA5EB1R5Uo?si=Kj4athaRVhg3Z8IC",
-        title: "Para 15 (Subhanallazi)",
-        desc: "Complete recitation of Juz 15."
-    },
-    {
-        link: "https://youtu.be/Z0stqnmm7qM?si=ES323WXRZ5w2IXp5",
-        title: "Para 16 (Qala Alam)",
-        desc: "Complete recitation of Juz 16."
-    },
-    {
-        link: "https://youtu.be/iEqhAed2wTk?si=GS8WAV06Mi-cod82",
-        title: "Para 17 (Iqtaraba)",
-        desc: "Complete recitation of Juz 17."
-    },
-    {
-        link: "https://youtu.be/8qMobOugcP4?si=V81QhBE8F6uJx_Iz",
-        title: "Para 18 (Qadd Aflaha)",
-        desc: "Complete recitation of Juz 18."
-    },
-    {
-        link: "https://youtu.be/peANvy-0PY0?si=q5JFcuPHhlkymqyU",
-        title: "Para 19 (Wa Qalallazina)",
-        desc: "Complete recitation of Juz 19."
-    },
-    {
-        link: "https://youtu.be/c29NOTqyW9M?si=-o2Rkbmgnk-o97jS",
-        title: "Para 20 (Aman Khalaq)",
-        desc: "Complete recitation of Juz 20."
-    }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Playlist - Quran 50M</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Background Video handle karega */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-gold: #FFD700;
+            --accent-gradient: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
+            --text-white: #ffffff;
+            --text-gray: #e2e8f0;
+            --btn-radius: 50px;
+            --card-radius: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+
+        body {
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- 1. VIDEO BACKGROUND CSS (Ye raha wo feature!) --- */
+        #bg-video {
+            position: fixed; right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            z-index: -2; object-fit: cover;
+        }
+        .video-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); z-index: -1;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
+        .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+
+        /* HEADER */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 20px; margin-top: 20px; 
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); 
+            border: 1px solid var(--glass-border); border-radius: 100px; 
+            position: sticky; top: 10px; z-index: 999;
+        }
+        .logo { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .logo img { height: 35px; width: 35px; border-radius: 50%; border: 2px solid var(--primary-gold); }
+        .header-buttons { display: flex; align-items: center; gap: 10px; }
+
+        .btn-red { 
+            padding: 8px 20px; border-radius: 50px; 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+            color: white; font-weight: 600; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 5px; border: none;
+        }
+        .btn-home { 
+            padding: 8px 20px; border-radius: 50px; 
+            background: rgba(255,255,255,0.1); color: white; 
+            font-weight: 600; border: 1px solid var(--glass-border); font-size: 0.9rem;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .btn-home:hover { background: var(--primary-gold); color: black; }
+
+        @media (max-width: 600px) {
+            header { padding: 8px 15px; }
+            .logo span { display: none; } 
+            .btn-home, .btn-red { padding: 8px 12px; font-size: 0.8rem; }
+            .btn-home span, .btn-red span { display: none; }
+            .header-buttons { gap: 8px; }
+        }
+
+        /* --- 2. SEARCH BAR CSS (Ye raha search ka style) --- */
+        .search-container {
+            max-width: 600px; margin: 0 auto 40px; position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 15px 20px 15px 50px;
+            border-radius: 50px; background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border); color: white;
+            font-size: 1.1rem; outline: none; backdrop-filter: blur(10px);
+            transition: 0.3s; font-family: 'Outfit', sans-serif;
+        }
+        .search-input::placeholder { color: #bbb; }
+        .search-input:focus {
+            border-color: var(--primary-gold); background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+        .search-icon {
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+            color: var(--primary-gold); font-size: 1.2rem; pointer-events: none;
+        }
+
+        /* Playlist Grid */
+        .page-title { text-align: center; margin: 60px 0 30px; }
+        .page-title h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
+        
+        .video-card { 
+            background: rgba(0, 0, 0, 0.6); border-radius: var(--card-radius); overflow: hidden; 
+            border: 1px solid var(--glass-border); transition: 0.4s; display: block; 
+            backdrop-filter: blur(5px);
+        }
+        .video-card:hover { transform: translateY(-10px); border-color: var(--primary-gold); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .thumbnail { position: relative; height: 200px; overflow: hidden; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: 0.5s; }
+        .video-card:hover .thumbnail img { transform: scale(1.05); opacity: 1; }
+        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: black; background: var(--primary-gold); width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .video-card:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); background: white; }
+        .video-info { padding: 25px; }
+        .video-title { color: white; font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
+        .video-desc { color: var(--text-gray); font-size: 0.9rem; }
+
+        /* Footer Socials */
+        .footer-socials { display: flex; justify-content: center; gap: 20px; margin: 30px 0; }
+        .social-btn {
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--primary-gold); color: black; transform: translateY(-3px); }
+
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.8); color: #888; margin-top: auto; backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="bg.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="logo.png" alt="Logo"> <span>Quran 50M</span>
+            </div>
+            <div class="header-buttons">
+                <a href="index.html" class="btn-home"><i class="fas fa-home"></i> <span>Home</span></a>
+                <a href="https://youtube.com/@quran50m" target="_blank" class="btn-red"><i class="fab fa-youtube"></i> <span>Subscribe</span></a>
+            </div>
+        </header>
+    </div>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>Complete <span class="gradient-text">Tilawat Playlist</span></h1>
+            <p style="color: var(--text-gray);">Listen to all our beautiful recitations here.</p>
+        </div>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search by Surah or Para name..." class="search-input">
+        </div>
+
+        <div class="video-grid" id="videoContainer">
+            </div>
+    </div>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/share/17gwnK9bmn/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/quran_50m_youtube?igsh=b2U3cHM0czJ2emx1" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@quran50m" target="_blank" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>&copy; 2025 Quran 50M. All rights reserved.</p>
+    </footer>
+
+    <script src="playlist.js"></script>
+    <script>
+        const container = document.getElementById('videoContainer');
+        const searchInput = document.getElementById('searchInput');
+        
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // 1. Load Videos
+        if (typeof myVideos !== 'undefined' && myVideos.length > 0) {
+            myVideos.forEach(video => {
+                const videoId = getYouTubeId(video.link);
+                if(videoId) {
+                    const card = document.createElement('a');
+                    card.href = video.link;
+                    card.target = "_blank";
+                    card.className = "video-card";
+                    card.innerHTML = `
+                        <div class="thumbnail">
+                            <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" alt="${video.title}">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-desc">${video.desc}</div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+        }
+
+        // 2. Search Functionality (Search Engine Logic)
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            const cards = container.getElementsByClassName('video-card');
+
+            Array.from(cards).forEach(card => {
+                const title = card.querySelector('.video-title').textContent.toLowerCase();
+                const desc = card.querySelector('.video-desc').textContent.toLowerCase();
+                
+                if (title.includes(filter) || desc.includes(filter)) {
+                    card.style.display = ""; // Show
+                } else {
+                    card.style.display = "none"; // Hide
+                }
+            });
+        });
+    </script>
+</body>
+</html>
