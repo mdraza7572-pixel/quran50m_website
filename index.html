@@ -321,7 +321,7 @@
     </footer>
 
 <style>
-    /* 1. Chat Button (Floating Logo - Now Transparent) */
+    /* 1. Chat Button (Transparent & Golden Border) */
     .chat-btn {
         position: fixed; 
         bottom: 20px; 
@@ -329,8 +329,11 @@
         width: 60px; 
         height: 60px;
         
-        /* --- CHANGED: background gradient remove kiya, transparent banaya --- */
-        background: transparent;
+        /* Transparent Background */
+        background: transparent; 
+        
+        /* Golden Border */
+        border: 2px solid #FFD700; 
         
         border-radius: 50%;
         display: flex; 
@@ -339,30 +342,23 @@
         cursor: pointer; 
         z-index: 9999;
         
-        /* --- ADDED: Border diya golden taaki dark background par visible ho --- */
-        border: 2px solid #FFD700;
-        
-        transition: 0.3s ease;
-        
-        /* Subtle shadow taaki robot alag float ho, na ki full golden circle shadow */
+        /* Shadow for visibility */
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        transition: 0.3s ease;
     }
     
-    /* Hover effect update kiya */
     .chat-btn:hover {
         transform: scale(1.1);
-        /* Hover karne par halka golden glow */
-        background: rgba(255, 215, 0, 0.05);
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        background: rgba(255, 215, 0, 0.1); /* Halka sa gold tint hover par */
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
     }
     
-    /* --- CHANGED: Robot icon ka color golden kar diya taaki dikhe --- */
     .chat-btn i { 
-        font-size: 26px; 
-        color: #FFD700; 
+        font-size: 28px; 
+        color: #FFD700; /* Icon bhi Golden */
     }
 
-    /* --- REST OF THE WINDOW CSS (SAME AS BEFORE) --- */
+    /* 2. Chat Window */
     .chat-window {
         position: fixed; bottom: 90px; right: 20px;
         width: 350px; max-width: 90%; height: 500px;
@@ -370,12 +366,13 @@
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 25px;
-        display: none; /* Hidden by default */
+        display: none; 
         flex-direction: column;
         overflow: hidden;
         z-index: 9999;
         box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
+
     /* Header */
     .chat-header {
         padding: 15px;
@@ -384,6 +381,7 @@
         display: flex; justify-content: space-between; align-items: center;
         color: #FFD700; font-weight: 700;
     }
+
     /* Body */
     .chat-body {
         flex: 1; padding: 15px;
@@ -391,20 +389,24 @@
         display: flex; flex-direction: column; gap: 10px;
         font-size: 14px;
     }
+
     .msg { max-width: 80%; padding: 10px 14px; border-radius: 15px; line-height: 1.4; word-wrap: break-word; }
     .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 4px; }
     .user-msg { background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%); color: black; align-self: flex-end; font-weight: 600; border-bottom-right-radius: 4px; }
+
     /* Input Area */
     .chat-input-area {
         padding: 12px; display: flex; gap: 10px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     .chat-input {
         flex: 1; background: rgba(255,255,255,0.05);
         border: 1px solid rgba(255,255,255,0.1);
         padding: 10px 14px; border-radius: 50px;
         color: #fff; outline: none;
     }
+
     .send-btn {
         width: 40px; height: 40px; border: none;
         border-radius: 50%; background: #FFD700;
@@ -412,9 +414,30 @@
     }
 </style>
 
+<div class="chat-btn" onclick="toggleChat()">
+    <i class="fas fa-robot"></i>
+</div>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span><i class="fas fa-mosque"></i> Islamic Assistant</span>
+        <span style="cursor:pointer" onclick="toggleChat()"><i class="fas fa-times"></i></span>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+        <div class="msg bot-msg">
+            Assalamu Alaikum 🤍<br>
+            Main Quran 50M ka AI Assistant hoon. Sawal poochiye.
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <input id="userInput" class="chat-input" placeholder="Sawal likhein..." onkeydown="if(event.key==='Enter')sendMessage()">
+        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
 
 <script>
-    // --- GEMINI 2.5 FLASH API ---
     const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI";
     const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
@@ -458,7 +481,6 @@
 
             const data = await res.json();
             
-            // Error Handling agar 2.5 fail hua future mein
             if(data.error) {
                 loading.innerText = "Error: " + data.error.message;
             } else {
