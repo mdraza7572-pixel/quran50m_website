@@ -1,116 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran 50M - Divine Recitations</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* --- CSS STYLES (Design) --- */
-        :root {
-            --bg-color: #0f172a; /* Dark Navy Background */
-            --card-bg: #1e293b;
-            --primary-gold: #fbbf24;
-            --text-white: #f8fafc;
-            --text-gray: #94a3b8;
-            --youtube-red: #ef4444;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quran 50M – Divine Recitations</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            line-height: 1.6;
-        }
+<style>
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--gold:#fbbf24;
+--gray:#94a3b8;
+--white:#f8fafc;
+--red:#ef4444;
+}
 
-        a { text-decoration: none; color: inherit; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:var(--bg);color:var(--white);line-height:1.6}
+a{text-decoration:none;color:inherit}
 
-        /* Utility Classes */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .text-center { text-align: center; }
-        .text-gold { color: var(--primary-gold); }
-        .btn {
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            display: inline-block;
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-red { background-color: var(--youtube-red); color: white; }
-        .btn-outline { border: 2px solid var(--text-gray); color: var(--text-white); margin-left: 10px; }
-        .btn-gold { background-color: var(--primary-gold); color: #000; }
-        
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        .logo { font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 50px; width: 50px; border-radius: 50%; object-fit: cover; }
-        
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .badge {
-            background: rgba(251, 191, 36, 0.2);
-            color: var(--primary-gold);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        .hero p { color: var(--text-gray); margin-bottom: 30px; }
+.container{max-width:1200px;margin:auto;padding:0 20px}
 
-        /* Stats Section */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 40px 0;
-        }
-        .stat-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #334155;
-        }
-        .stat-card i { font-size: 1.5rem; color: var(--primary-gold); margin-bottom: 10px; }
-        .stat-number { font-size: 1.2rem; font-weight: bold; }
-        .stat-label { font-size: 0.8rem; color: var(--text-gray); }
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.4rem}
+.logo img{width:45px;height:45px;border-radius:50%}
 
-        /* Featured Videos */
-        .section-title { margin-bottom: 30px; text-align: center; }
-        .section-title h2 { font-size: 2rem; margin-bottom: 10px; }
-        .video-grid {
+/* HERO */
+.hero{text-align:center;padding:60px 20px}
+.hero-logo{
+width:140px;height:140px;
+border-radius:50%;
+margin:0 auto 20px;
+box-shadow:0 0 30px rgba(251,191,36,.4);
+}
+.badge{display:inline-flex;gap:8px;align-items:center;
+background:rgba(251,191,36,.15);color:var(--gold);
+padding:6px 16px;border-radius:20px;margin-bottom:20px}
+
+.hero h1{font-size:2.5rem;margin-bottom:15px}
+.hero p{color:var(--gray);max-width:700px;margin:0 auto 30px}
+
+/* BUTTONS FIX */
+.hero-buttons{
+display:flex;
+gap:15px;
+justify-content:center;
+flex-wrap:wrap;
+}
+.btn{
+padding:12px 26px;
+border-radius:10px;
+font-weight:600;
+display:inline-flex;
+gap:8px;
+align-items:center;
+transition:.3s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:var(--red);color:#fff}
+.btn-outline{border:2px solid var(--gray);color:var(--white)}
+
+/* CONTACT */
+.contact{margin:70px 0}
+.contact-wrapper{display:grid;gap:40px}
+@media(min-width:768px){.contact-wrapper{grid-template-columns:1fr 1fr}}
+
+.form-group{margin-bottom:15px}
+.form-label{font-size:.9rem;margin-bottom:6px;display:block}
+.form-input{
+width:100%;padding:12px;border-radius:8px;
+background:#020617;border:1px solid #334155;color:#fff
+}
+.btn-gold{background:var(--gold);color:#000;width:100%}
+
+/* FOOTER */
+footer{background:#020617;padding:40px 20px;text-align:center;border-top:1px solid #334155}
+footer p{color:var(--gray);font-size:.85rem}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<header>
+<div class="logo">
+<img src="logo.png">
+Quran 50M
+</div>
+<a href="https://youtube.com/@quran50m" target="_blank" class="btn btn-red">
+<i class="fab fa-youtube"></i> Subscribe
+</a>
+</header>
+</div>
+
+<section class="hero container">
+<img src="logo.png" class="hero-logo">
+
+<div class="badge"><i class="fas fa-heart"></i> Divine Recitations</div>
+
+<h1>Experience the Beauty of<br>
+<span style="color:var(--gold)">Quranic Recitation</span></h1>
+
+<p>
+Join our community in exploring the divine words of the Holy Quran through
+beautiful recitations, spiritual guidance, and Islamic knowledge.
+</p>
+
+<div class="hero-buttons">
+<a href="https://youtube.com/@quran50m" target="_blank" class="btn btn-red">
+<i class="fab fa-youtube"></i> Subscribe to Our Channel
+</a>
+<a href="#contact" class="btn btn-outline">Watch Videos</a>
+</div>
+</section>
+
+<section id="contact" class="container contact">
+<h2>Get in <span style="color:var(--gold)">Touch</span></h2>
+
+<div class="contact-wrapper">
+
+<div>
+<p style="color:var(--gray);margin-bottom:15px">
+<i class="fas fa-envelope"></i> mdraza7572@gmail.com
+</p>
+</div>
+
+<form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST">
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="https://mdraza7572-pixel.github.io/quran-website/">
+
+<div class="form-group">
+<label class="form-label">Your Name</label>
+<input type="text" name="name" class="form-input" required>
+</div>
+
+<div class="form-group">
+<label class="form-label">Email</label>
+<input type="email" name="email" class="form-input" required>
+</div>
+
+<div class="form-group">
+<label class="form-label">Message</label>
+<textarea name="message" rows="4" class="form-input" required></textarea>
+</div>
+
+<button type="submit" class="btn btn-gold">Send Message</button>
+</form>
+
+</div>
+</section>
+
+<footer>
+<div class="logo" style="justify-content:center;margin-bottom:10px">
+<img src="logo.png"> Quran 50M
+</div>
+<p>© 2025 Quran 50M. All rights reserved.</p>
+</footer>
+
+</body>
+</html>        .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
