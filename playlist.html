@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- SAME THEME --- */
         :root {
-            --bg-color: #050505;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            /* Background handled by Video */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --primary-gold: #FFD700;
             --accent-gradient: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
             --text-white: #ffffff;
-            --text-gray: #a1a1aa;
+            --text-gray: #e2e8f0;
             --btn-radius: 50px;
             --card-radius: 24px;
         }
@@ -24,34 +23,95 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
 
         body {
-            background-color: var(--bg-color); color: var(--text-white); line-height: 1.6;
-            background-image: radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 25%),
-                              radial-gradient(circle at 85% 30%, rgba(20, 20, 40, 0.5) 0%, transparent 25%);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* VIDEO BACKGROUND */
+        #bg-video {
+            position: fixed; right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            z-index: -2; object-fit: cover;
+        }
+        .video-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); z-index: -1;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
         .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
 
-        /* Header */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px; background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 100px; }
-        .logo { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
-        .logo img { height: 45px; width: 45px; border-radius: 50%; border: 2px solid var(--primary-gold); }
-        
-        .btn-red { padding: 10px 25px; border-radius: 50px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; font-weight: 600; }
-        .btn-home { padding: 10px 25px; border-radius: 50px; background: rgba(255,255,255,0.1); color: white; margin-right: 10px; font-weight: 600; border: 1px solid var(--glass-border); }
+        /* HEADER (Mobile Fixed) */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 20px; margin-top: 20px; 
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); 
+            border: 1px solid var(--glass-border); border-radius: 100px; 
+            position: sticky; top: 10px; z-index: 999;
+        }
+        .logo { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .logo img { height: 35px; width: 35px; border-radius: 50%; border: 2px solid var(--primary-gold); }
+        .header-buttons { display: flex; align-items: center; gap: 10px; }
+
+        .btn-red { 
+            padding: 8px 20px; border-radius: 50px; 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+            color: white; font-weight: 600; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 5px; border: none;
+        }
+        .btn-home { 
+            padding: 8px 20px; border-radius: 50px; 
+            background: rgba(255,255,255,0.1); color: white; 
+            font-weight: 600; border: 1px solid var(--glass-border); font-size: 0.9rem;
+            display: flex; align-items: center; gap: 5px;
+        }
         .btn-home:hover { background: var(--primary-gold); color: black; }
 
+        @media (max-width: 600px) {
+            header { padding: 8px 15px; }
+            .logo span { display: none; } 
+            .btn-home, .btn-red { padding: 8px 12px; font-size: 0.8rem; }
+            .btn-home span, .btn-red span { display: none; }
+            .header-buttons { gap: 8px; }
+        }
+
+        /* SEARCH BAR STYLING */
+        .search-container {
+            max-width: 600px; margin: 0 auto 40px; position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 15px 20px 15px 50px;
+            border-radius: 50px; background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border); color: white;
+            font-size: 1.1rem; outline: none; backdrop-filter: blur(10px);
+            transition: 0.3s; font-family: 'Outfit', sans-serif;
+        }
+        .search-input::placeholder { color: #bbb; }
+        .search-input:focus {
+            border-color: var(--primary-gold); background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+        .search-icon {
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+            color: var(--primary-gold); font-size: 1.2rem; pointer-events: none;
+        }
+
         /* Playlist Grid */
-        .page-title { text-align: center; margin: 60px 0 40px; }
-        .page-title h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .page-title { text-align: center; margin: 60px 0 30px; }
+        .page-title h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
         
-        .video-card { background: #0a0a0a; border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--glass-border); transition: 0.4s; display: block; }
-        .video-card:hover { transform: translateY(-10px); border-color: #333; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .video-card { 
+            background: rgba(0, 0, 0, 0.6); border-radius: var(--card-radius); overflow: hidden; 
+            border: 1px solid var(--glass-border); transition: 0.4s; display: block; 
+            backdrop-filter: blur(5px);
+        }
+        .video-card:hover { transform: translateY(-10px); border-color: var(--primary-gold); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         .thumbnail { position: relative; height: 200px; overflow: hidden; }
-        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.5s; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: 0.5s; }
         .video-card:hover .thumbnail img { transform: scale(1.05); opacity: 1; }
         .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: black; background: var(--primary-gold); width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .video-card:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); background: white; }
@@ -59,17 +119,24 @@
         .video-title { color: white; font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
         .video-desc { color: var(--text-gray); font-size: 0.9rem; }
 
-        footer { border-top: 1px solid #1a1a1a; padding: 40px 20px; text-align: center; background: #000; color: #666; margin-top: auto; }
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.8); color: #888; margin-top: auto; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
 
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="bg.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
     <div class="container">
         <header>
-            <div class="logo"><img src="logo.png" alt="Logo"> <span>Quran 50M</span></div>
-            <div>
-                <a href="index.html" class="btn-home"><i class="fas fa-home"></i> Home</a>
-                <a href="https://youtube.com/@quran50m" target="_blank" class="btn-red"><i class="fab fa-youtube"></i> Subscribe</a>
+            <div class="logo">
+                <img src="logo.png" alt="Logo"> <span>Quran 50M</span>
+            </div>
+            <div class="header-buttons">
+                <a href="index.html" class="btn-home"><i class="fas fa-home"></i> <span>Home</span></a>
+                <a href="https://youtube.com/@quran50m" target="_blank" class="btn-red"><i class="fab fa-youtube"></i> <span>Subscribe</span></a>
             </div>
         </header>
     </div>
@@ -78,6 +145,11 @@
         <div class="page-title">
             <h1>Complete <span class="gradient-text">Tilawat Playlist</span></h1>
             <p style="color: var(--text-gray);">Listen to all our beautiful recitations here.</p>
+        </div>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search by Surah name..." class="search-input">
         </div>
 
         <div class="video-grid" id="videoContainer">
@@ -91,12 +163,15 @@
     <script src="playlist.js"></script>
     <script>
         const container = document.getElementById('videoContainer');
+        const searchInput = document.getElementById('searchInput');
+        
         function getYouTubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
+        // 1. Load Videos
         if (typeof myVideos !== 'undefined' && myVideos.length > 0) {
             myVideos.forEach(video => {
                 const videoId = getYouTubeId(video.link);
@@ -119,6 +194,23 @@
                 }
             });
         }
+
+        // 2. Search Functionality
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            const cards = container.getElementsByClassName('video-card');
+
+            Array.from(cards).forEach(card => {
+                const title = card.querySelector('.video-title').textContent.toLowerCase();
+                const desc = card.querySelector('.video-desc').textContent.toLowerCase();
+                
+                if (title.includes(filter) || desc.includes(filter)) {
+                    card.style.display = ""; // Show
+                } else {
+                    card.style.display = "none"; // Hide
+                }
+            });
+        });
     </script>
 </body>
 </html>
