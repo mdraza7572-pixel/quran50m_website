@@ -319,5 +319,168 @@
             <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing.</p>
         </div>
     </footer>
+
+    <style>
+    /* Chat Button (Floating) */
+    .chat-btn {
+        position: fixed; bottom: 20px; right: 20px;
+        width: 60px; height: 60px;
+        background: var(--accent-gradient);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; z-index: 1000;
+        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        border: 2px solid rgba(255,255,255,0.2);
+        transition: 0.3s;
+    }
+    .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
+    .chat-btn i { font-size: 28px; color: black; }
+
+    /* Chat Window (Hidden by default) */
+    .chat-window {
+        position: fixed; bottom: 90px; right: 20px;
+        width: 350px; height: 500px;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 25px;
+        display: none; /* Chupa hua */
+        flex-direction: column;
+        z-index: 1000;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    /* Chat Header */
+    .chat-header {
+        padding: 15px;
+        background: rgba(255, 215, 0, 0.1);
+        border-bottom: 1px solid var(--glass-border);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .chat-title { font-weight: 700; color: var(--primary-gold); display: flex; align-items: center; gap: 10px; }
+    .close-chat { cursor: pointer; color: #aaa; font-size: 1.2rem; }
+
+    /* Chat Body */
+    .chat-body {
+        flex: 1; padding: 15px;
+        overflow-y: auto;
+        display: flex; flex-direction: column; gap: 10px;
+        font-size: 0.9rem;
+    }
+    
+    /* Messages */
+    .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; }
+    .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .user-msg { background: var(--accent-gradient); color: black; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 600; }
+
+    /* Input Area */
+    .chat-input-area {
+        padding: 15px; border-top: 1px solid var(--glass-border);
+        display: flex; gap: 10px;
+    }
+    .chat-input {
+        flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+        padding: 10px 15px; border-radius: 50px; color: white; outline: none;
+    }
+    .send-btn {
+        background: var(--primary-gold); border: none; width: 40px; height: 40px;
+        border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+</style>
+
+<div class="chat-btn" onclick="toggleChat()">
+    <i class="fas fa-robot"></i>
+</div>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <div class="chat-title"><i class="fas fa-mosque"></i> Islamic Assistant</div>
+        <div class="close-chat" onclick="toggleChat()"><i class="fas fa-times"></i></div>
+    </div>
+    
+    <div class="chat-body" id="chatBody">
+        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon. Main aapki kya madad kar sakta hoon?</div>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="userInput" class="chat-input" placeholder="Ask a question..." onkeypress="handleEnter(event)">
+        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+</script>
+
+<script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    // --- YAHAN APNI API KEY DAALNA ---
+    const API_KEY = "gen-lang-client-0110543152"; 
+    // ----------------------------------
+
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+    window.toggleChat = function() {
+        const chatWindow = document.getElementById('chatWindow');
+        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    window.handleEnter = function(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    window.sendMessage = async function() {
+        const input = document.getElementById('userInput');
+        const chatBody = document.getElementById('chatBody');
+        const userText = input.value.trim();
+
+        if (!userText) return;
+
+        // 1. Add User Message
+        appendMessage(userText, 'user-msg');
+        input.value = '';
+
+        // 2. Show Loading
+        const loadingId = appendMessage("Typing...", 'bot-msg');
+
+        try {
+            // 3. Call Gemini API
+            const prompt = "You are a helpful and respectful Islamic assistant for a website called 'Quran 50M'. Answer this question briefly and politely in Hinglish or Urdu/Hindi mix: " + userText;
+            
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+
+            // 4. Update Bot Message
+            document.getElementById(loadingId).innerText = text;
+        } catch (error) {
+            document.getElementById(loadingId).innerText = "Maafi chahta hoon, kuch gadbad ho gayi. Dobara koshish karein.";
+            console.error(error);
+        }
+    }
+
+    function appendMessage(text, className) {
+        const chatBody = document.getElementById('chatBody');
+        const div = document.createElement('div');
+        div.className = `msg ${className}`;
+        div.innerText = text;
+        
+        // Generate unique ID for loading msg
+        const id = 'msg-' + Date.now();
+        div.id = id;
+
+        chatBody.appendChild(div);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        return id;
+    }
+            </script>
+    
 </body>
 </html>
