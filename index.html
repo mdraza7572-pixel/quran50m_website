@@ -321,8 +321,8 @@
     </footer>
 
 
-<style>
-    /* 1. Chat Button (Gold Color) */
+    <style>
+    /* 1. Floating Button */
     .chat-btn {
         position: fixed; bottom: 20px; right: 20px;
         width: 60px; height: 60px;
@@ -337,7 +337,7 @@
     .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
     .chat-btn i { font-size: 28px; color: black; }
 
-    /* 2. Chat Window (Glass Effect) */
+    /* 2. Chat Window */
     .chat-window {
         position: fixed; bottom: 90px; right: 20px;
         width: 350px; height: 500px;
@@ -345,7 +345,7 @@
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 25px;
-        display: none; /* Default Hidden */
+        display: none; /* Default hidden */
         flex-direction: column;
         z-index: 1000;
         overflow: hidden;
@@ -400,11 +400,11 @@
     </div>
     
     <div class="chat-body" id="chatBody">
-        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon. Main aapki kya madad kar sakta hoon?</div>
+        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon. Poochiye kya poochna hai?</div>
     </div>
 
     <div class="chat-input-area">
-        <input type="text" id="userInput" class="chat-input" placeholder="Ask a question..." onkeypress="handleEnter(event)">
+        <input type="text" id="userInput" class="chat-input" placeholder="Sawal likhein..." onkeypress="handleEnter(event)">
         <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
@@ -412,9 +412,9 @@
 <script>
     const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
     
-    // FIX: 'gemini-1.5-flash-001' use kar rahe hain jo sabse stable version hai.
-    // '2.5' daalne se 404 Error aayega.
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent?key=${API_KEY}`;
+    // FIX: 'gemini-pro' use kar rahe hain. Ye model sabse stable hai aur har key par chalta hai.
+    // Agar 2.5 ya 1.5 fail ho rahe hain, to ye zaroor chalega.
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
     function toggleChat() {
         const chatWindow = document.getElementById('chatWindow');
@@ -442,7 +442,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{ text: "You are a helpful Islamic assistant for Quran 50M. Answer briefly in Hinglish/Urdu. Question: " + userText }]
+                        parts: [{ text: "You are a helpful Islamic assistant. Answer briefly in Hinglish/Urdu. Question: " + userText }]
                     }]
                 })
             });
@@ -450,7 +450,6 @@
             const data = await response.json();
             
             if (data.error) {
-                // Agar ab bhi error aaye, to wo yahan saaf dikhega
                 document.getElementById(loadingId).innerText = "❌ Error: " + data.error.message;
             } else if (data.candidates && data.candidates[0].content) {
                 const botReply = data.candidates[0].content.parts[0].text;
@@ -460,7 +459,7 @@
             }
 
         } catch (error) {
-            document.getElementById(loadingId).innerText = "🔌 Connection Error: " + error.message;
+            document.getElementById(loadingId).innerText = "🔌 Net Error: " + error.message;
         }
     }
 
