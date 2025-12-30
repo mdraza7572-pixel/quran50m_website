@@ -319,7 +319,9 @@
             <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing.</p>
         </div>
     </footer>
-<style>
+
+
+    <style>
     /* Chat Button (Floating) */
     .chat-btn {
         position: fixed; bottom: 20px; right: 20px;
@@ -368,7 +370,7 @@
         font-size: 0.9rem;
     }
     
-    .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; }
+    .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; word-wrap: break-word; }
     .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 2px; }
     .user-msg { background: var(--accent-gradient); color: black; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 600; }
 
@@ -407,43 +409,28 @@
     </div>
 </div>
 
-<script type="importmap">
-  {
-    "imports": {
-      "@google/generative-ai": "https://esm.run/@google/generative-ai"
-    }
-  }
-</script>
-
-<script type="module">
-    import { GoogleGenerativeAI } from "@google/generative-ai";
-
-    // --- TERI API KEY (FIXED) ---
+<script>
+    // --- API KEY (Direct) ---
     const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
-    // ----------------------------
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    
-    // Model ko 1.5-flash rakha hai kyunki 2.5 exist nahi karta
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
-
-    window.toggleChat = function() {
+    function toggleChat() {
         const chatWindow = document.getElementById('chatWindow');
         chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    window.handleEnter = function(e) {
+    function handleEnter(e) {
         if (e.key === 'Enter') sendMessage();
     }
 
-    window.sendMessage = async function() {
+    async function sendMessage() {
         const input = document.getElementById('userInput');
         const chatBody = document.getElementById('chatBody');
         const userText = input.value.trim();
 
         if (!userText) return;
 
-        // 1. Add User Message
+        // 1. Show User Message
         appendMessage(userText, 'user-msg');
         input.value = '';
 
@@ -451,18 +438,34 @@
         const loadingId = appendMessage("Soch raha hoon...", 'bot-msg');
 
         try {
-            // 3. Call Gemini API
-            const prompt = "You are a polite and knowledgeable Islamic assistant for the website 'Quran 50M'. Answer this question briefly in Hinglish (Hindi/Urdu mixed with English). Keep the tone respectful. Question: " + userText;
-            
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = response.text();
+            // 3. Direct Fetch Request
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: "You are a polite Islamic assistant for 'Quran 50M'. Answer briefly in Hinglish/Urdu. Question: " + userText
+                        }]
+                    }]
+                })
+            });
 
-            // 4. Update Bot Message
-            document.getElementById(loadingId).innerText = text;
+            const data = await response.json();
+            
+            // Check if valid response
+            if (data.candidates && data.candidates[0].content) {
+                const botReply = data.candidates[0].content.parts[0].text;
+                document.getElementById(loadingId).innerText = botReply;
+            } else {
+                document.getElementById(loadingId).innerText = "Maafi, mujhe samajh nahi aaya. Dobara poochein.";
+            }
+
         } catch (error) {
-            document.getElementById(loadingId).innerText = "Server busy hai, thodi der baad try karna.";
             console.error("Error:", error);
+            document.getElementById(loadingId).innerText = "Connection error. Please check internet.";
         }
     }
 
@@ -476,7 +479,8 @@
         chatBody.scrollTop = chatBody.scrollHeight;
         return div.id;
     }
-        </script>
+</script>
+    
     
 </body>
 </html>
