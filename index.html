@@ -320,35 +320,34 @@
         </div>
     </footer>
 
-
 <style>
-    /* 1. Chat Button (Floating) */
+    /* Chat Button (Floating) */
     .chat-btn {
         position: fixed; bottom: 20px; right: 20px;
         width: 60px; height: 60px;
         background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 1000;
+        cursor: pointer; z-index: 9999;
         box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
         border: 2px solid rgba(255,255,255,0.2);
         transition: 0.3s;
     }
     .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
-    .chat-btn i { font-size: 28px; color: black; }
+    .chat-btn i { font-size: 26px; color: black; }
 
-    /* 2. Chat Window */
+    /* Chat Window */
     .chat-window {
         position: fixed; bottom: 90px; right: 20px;
-        width: 350px; height: 500px;
+        width: 350px; max-width: 90%; height: 500px;
         background: rgba(10, 10, 10, 0.95);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 25px;
-        display: none;
+        display: none; /* Hidden by default */
         flex-direction: column;
-        z-index: 1000;
         overflow: hidden;
+        z-index: 9999;
         box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
@@ -358,34 +357,38 @@
         background: rgba(255, 215, 0, 0.1);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         display: flex; justify-content: space-between; align-items: center;
+        color: #FFD700; font-weight: 700;
     }
-    .chat-title { font-weight: 700; color: #FFD700; display: flex; align-items: center; gap: 10px; }
-    .close-chat { cursor: pointer; color: #aaa; font-size: 1.2rem; }
 
     /* Body */
     .chat-body {
         flex: 1; padding: 15px;
         overflow-y: auto;
         display: flex; flex-direction: column; gap: 10px;
-        font-size: 0.9rem;
+        font-size: 14px;
     }
-    
-    .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; word-wrap: break-word; }
-    .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 2px; }
-    .user-msg { background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%); color: black; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 600; }
 
-    /* Input */
+    .msg { max-width: 80%; padding: 10px 14px; border-radius: 15px; line-height: 1.4; word-wrap: break-word; }
+    .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .user-msg { background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%); color: black; align-self: flex-end; font-weight: 600; border-bottom-right-radius: 4px; }
+
+    /* Input Area */
     .chat-input-area {
-        padding: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex; gap: 10px;
+        padding: 12px; display: flex; gap: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     .chat-input {
-        flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 15px; border-radius: 50px; color: white; outline: none;
+        flex: 1; background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 10px 14px; border-radius: 50px;
+        color: #fff; outline: none;
     }
+
     .send-btn {
-        background: #FFD700; border: none; width: 40px; height: 40px;
-        border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        width: 40px; height: 40px; border: none;
+        border-radius: 50%; background: #FFD700;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
 </style>
 
@@ -395,132 +398,8 @@
 
 <div class="chat-window" id="chatWindow">
     <div class="chat-header">
-        <div class="chat-title"><i class="fas fa-mosque"></i> Islamic Assistant</div>
-        <div class="close-chat" onclick="toggleChat()"><i class="fas fa-times"></i></div>
-    </div>
-    
-    <div class="chat-body" id="chatBody">
-        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon. Poochiye kya poochna hai?</div>
-    </div>
-
-    <div class="chat-input-area">
-        <input type="text" id="userInput" class="chat-input" placeholder="Sawal likhein..." onkeypress="handleEnter(event)">
-        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-    </div>
-</div>
-
-<!-- ===== CHAT WIDGET START ===== -->
-
-<style>
-.chat-btn{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    width:60px;
-    height:60px;
-    background:linear-gradient(135deg,#FFD700,#FDB931);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    z-index:9999;
-    box-shadow:0 10px 20px rgba(255,215,0,.3);
-}
-.chat-btn i{font-size:26px;color:#000}
-
-.chat-window{
-    position:fixed;
-    bottom:90px;
-    right:20px;
-    width:350px;
-    max-width:90%;
-    height:500px;
-    background:rgba(10,10,10,.95);
-    border-radius:25px;
-    display:none;
-    flex-direction:column;
-    overflow:hidden;
-    z-index:9999;
-}
-
-.chat-header{
-    padding:14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:rgba(255,215,0,.1);
-    color:#FFD700;
-    font-weight:700;
-}
-
-.chat-body{
-    flex:1;
-    padding:15px;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    font-size:14px;
-}
-
-.msg{
-    max-width:80%;
-    padding:10px 14px;
-    border-radius:15px;
-    line-height:1.4;
-}
-
-.bot-msg{
-    background:rgba(255,255,255,.1);
-    color:#ddd;
-    align-self:flex-start;
-    border-bottom-left-radius:4px;
-}
-
-.user-msg{
-    background:linear-gradient(135deg,#FFD700,#FDB931);
-    color:#000;
-    align-self:flex-end;
-    font-weight:600;
-    border-bottom-right-radius:4px;
-}
-
-.chat-input-area{
-    padding:12px;
-    display:flex;
-    gap:10px;
-    border-top:1px solid rgba(255,255,255,.1);
-}
-
-.chat-input{
-    flex:1;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.1);
-    padding:10px 14px;
-    border-radius:50px;
-    color:#fff;
-    outline:none;
-}
-
-.send-btn{
-    width:40px;
-    height:40px;
-    border:none;
-    border-radius:50%;
-    background:#FFD700;
-    cursor:pointer;
-}
-</style>
-
-<div class="chat-btn" onclick="toggleChat()">
-    <i class="fas fa-robot"></i>
-</div>
-
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        <span>🕌 Islamic Assistant</span>
-        <span style="cursor:pointer" onclick="toggleChat()">✖</span>
+        <span><i class="fas fa-mosque"></i> Islamic Assistant</span>
+        <span style="cursor:pointer" onclick="toggleChat()"><i class="fas fa-times"></i></span>
     </div>
 
     <div class="chat-body" id="chatBody">
@@ -531,71 +410,69 @@
     </div>
 
     <div class="chat-input-area">
-        <input id="userInput" class="chat-input" placeholder="Sawal likhein..."
-               onkeydown="if(event.key==='Enter')sendMessage()">
-        <button class="send-btn" onclick="sendMessage()">➤</button>
+        <input id="userInput" class="chat-input" placeholder="Sawal likhein..." onkeydown="if(event.key==='Enter')sendMessage()">
+        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script>
-const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI";
-const API_URL =
-`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+    // --- GEMINI 2.5 FLASH API ---
+    const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI";
+    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-function toggleChat(){
-    const w=document.getElementById("chatWindow");
-    w.style.display=w.style.display==="flex"?"none":"flex";
-}
-
-function appendMessage(text,type){
-    const body=document.getElementById("chatBody");
-    const div=document.createElement("div");
-    div.className="msg "+type;
-    div.innerText=text;
-    body.appendChild(div);
-    body.scrollTop=body.scrollHeight;
-    return div;
-}
-
-async function sendMessage(){
-    const input=document.getElementById("userInput");
-    const text=input.value.trim();
-    if(!text) return;
-
-    appendMessage(text,"user-msg");
-    input.value="";
-
-    const loading=appendMessage("Soch raha hoon…","bot-msg");
-
-    try{
-        const res=await fetch(API_URL,{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-                contents:[{
-                    parts:[{
-                        text:
-                        "You are a helpful Islamic assistant for Quran 50M. Reply briefly in Hinglish/Urdu. Question: "+text
-                    }]
-                }]
-            })
-        });
-
-        const data=await res.json();
-        loading.innerText=
-            data.candidates?.[0]?.content?.parts?.[0]?.text
-            || "Jawab nahi mila.";
-
-    }catch(e){
-        loading.innerText="Network error ❌";
+    function toggleChat(){
+        const w = document.getElementById("chatWindow");
+        w.style.display = w.style.display === "flex" ? "none" : "flex";
     }
-}
+
+    function appendMessage(text, type){
+        const body = document.getElementById("chatBody");
+        const div = document.createElement("div");
+        div.className = "msg " + type;
+        div.innerText = text;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+        return div;
+    }
+
+    async function sendMessage(){
+        const input = document.getElementById("userInput");
+        const text = input.value.trim();
+        if(!text) return;
+
+        appendMessage(text, "user-msg");
+        input.value = "";
+
+        const loading = appendMessage("Soch raha hoon...", "bot-msg");
+
+        try{
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: "You are a helpful Islamic assistant for Quran 50M. Reply briefly in Hinglish/Urdu. Question: " + text
+                        }]
+                    }]
+                })
+            });
+
+            const data = await res.json();
+            
+            // Error Handling agar 2.5 fail hua future mein
+            if(data.error) {
+                loading.innerText = "Error: " + data.error.message;
+            } else {
+                loading.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Jawab nahi mila.";
+            }
+
+        } catch(e){
+            loading.innerText = "Network error ❌";
+        }
+    }
 </script>
-
-<!-- ===== CHAT WIDGET END ===== -->
-
-    <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
 
 </body>
 </html>
