@@ -412,8 +412,8 @@
     // --- API KEY ---
     const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
     
-    // Model: gemini-1.5-flash (Standard & Fast)
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    // CHANGE: 'gemini-1.5-flash' ki jagah 'gemini-1.5-flash-latest' kar diya hai
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
     function toggleChat() {
         const chatWindow = document.getElementById('chatWindow');
@@ -426,19 +426,19 @@
 
     async function sendMessage() {
         const input = document.getElementById('userInput');
-        const chatBody = document.getElementById('chatBody');
         const userText = input.value.trim();
 
         if (!userText) return;
 
-        // User Msg
+        // 1. User Message
         appendMessage(userText, 'user-msg');
         input.value = '';
 
-        // Loading
+        // 2. Loading
         const loadingId = appendMessage("Soch raha hoon...", 'bot-msg');
 
         try {
+            // 3. API Request
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -455,17 +455,19 @@
 
             const data = await response.json();
             
+            // --- Debugging ---
             if (data.error) {
                 document.getElementById(loadingId).innerText = "❌ Error: " + data.error.message;
-            } else if (data.candidates && data.candidates[0].content) {
+            } 
+            else if (data.candidates && data.candidates[0].content) {
                 const botReply = data.candidates[0].content.parts[0].text;
                 document.getElementById(loadingId).innerText = botReply;
-            } else {
-                document.getElementById(loadingId).innerText = "⚠️ Jawab khali aaya.";
+            } 
+            else {
+                document.getElementById(loadingId).innerText = "⚠️ Jawab nahi aaya.";
             }
 
         } catch (error) {
-            console.error("Error:", error);
             document.getElementById(loadingId).innerText = "🔌 Connection Error: " + error.message;
         }
     }
@@ -480,8 +482,8 @@
         chatBody.scrollTop = chatBody.scrollHeight;
         return div.id;
     }
-            </script>
+</script>
     
-    
+
 </body>
 </html>
