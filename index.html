@@ -178,7 +178,7 @@
         </p>
         
         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-            <a href="playlist.html" class="btn btn-gold"><i class="fab fa-play"></i> Watch Full Playlist</a>
+            <a href="#playlist" class="btn btn-gold"><i class="fab fa-play"></i> Watch Full Playlist</a>
             <a href="#benefits" class="btn btn-outline">Read Benefits</a>
         </div>
 
@@ -199,62 +199,12 @@
         </div>
     </section>
 
-    <section id="videos" class="container">
+    <section id="playlist" class="container">
         <div class="section-title">
-            <h2>Featured <span class="text-gold">Recitations</span></h2>
-            <p style="color: var(--text-gray);">Our top selected videos</p>
+            <h2>Tilawat <span class="text-gold">Playlist</span></h2>
+            <p style="color: var(--text-gray);">Beautiful collection of Quran recitations</p>
         </div>
-        <div class="video-grid">
-             <a href="https://youtu.be/rTw1qqAngzk?si=_9ksduUZ04BGfsr1" target="_blank" class="video-card">
-                <div class="thumbnail">
-                    <img src="https://img.youtube.com/vi/rTw1qqAngzk/maxresdefault.jpg" alt="Surah Yaseen">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">Surah Yaseen</div>
-                    <div class="video-desc">Dil ka sukoon aur maghfirat ke liye.</div>
-                </div>
-            </a>
-            <a href="https://youtu.be/3g6vfftQ-z0?si=dmxHQ86huNb7U4sT" target="_blank" class="video-card">
-                <div class="thumbnail">
-                    <img src="https://img.youtube.com/vi/3g6vfftQ-z0/maxresdefault.jpg" alt="Durood">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">Durood Kushadgi e Rizq</div>
-                    <div class="video-desc">Rizq mein barkat aur kushadgi.</div>
-                </div>
-            </a>
-            <a href="https://youtu.be/ryE4r6RQD6Q?si=aWDqmTcrAgvKhJzh" target="_blank" class="video-card">
-                <div class="thumbnail">
-                    <img src="https://img.youtube.com/vi/ryE4r6RQD6Q/maxresdefault.jpg" alt="Baqarah">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">Surah Baqarah: Karobar Dua</div>
-                    <div class="video-desc">Karobar aur tijarat mein barkat.</div>
-                </div>
-            </a>
-            <a href="https://youtu.be/68yBHe0L1T4?si=VV7ptR_YpAo4wpMQ" target="_blank" class="video-card">
-                <div class="thumbnail">
-                    <img src="https://img.youtube.com/vi/68yBHe0L1T4/maxresdefault.jpg" alt="99 Names">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">Allah Ke 99 Naam</div>
-                    <div class="video-desc">Asma-ul-Husna ki fazilat.</div>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="support-box">
-            <h2 style="margin-bottom: 15px; color: var(--text-white);">Support the <span class="text-gold">Channel</span></h2>
-            <p style="color: var(--text-gray); max-width: 600px; margin: 0 auto 30px auto;">
-                Agar aapko ye tilawat pasand aaye to video ko Like karein aur Channel ko Subscribe karein. Aapka ek support humare liye bohot valuable hai 🤍
-            </p>
-            <a href="https://youtube.com/@quran50m" target="_blank" class="btn btn-red"><i class="fab fa-youtube"></i> Subscribe Channel</a>
+        <div class="video-grid" id="videoContainer">
         </div>
     </section>
 
@@ -302,5 +252,41 @@
         </div>
     </footer>
 
+    <script src="playlist.js"></script>
+    <script>
+        const container = document.getElementById('videoContainer');
+        
+        // Function to extract video ID
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        if (typeof myVideos !== 'undefined' && myVideos.length > 0) {
+            myVideos.forEach(video => {
+                const videoId = getYouTubeId(video.link);
+                if(videoId) {
+                    const card = document.createElement('a');
+                    card.href = video.link;
+                    card.target = "_blank";
+                    card.className = "video-card";
+                    card.innerHTML = `
+                        <div class="thumbnail">
+                            <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" alt="${video.title}">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-desc">${video.desc}</div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+        } else {
+            container.innerHTML = '<p style="text-align:center; color:#888;">No videos found in playlist.</p>';
+        }
+    </script>
 </body>
 </html>
