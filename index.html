@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran 50M - Divine Recitations</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- ROYAL ISLAMIC THEME --- */
+        /* --- CSS STYLES (Original Gold & Navy Design) --- */
         :root {
-            --bg-color: #0B1120; /* Deepest Navy (Not Black) */
-            --card-bg: #162032;  /* Slightly lighter navy */
-            --primary-gold: #D4AF37; /* Metallic Gold */
-            --gold-light: #F4E5BC;
-            --text-white: #F8FAFC;
-            --text-gray: #94A3B8;
-            --border-gold: rgba(212, 175, 55, 0.3);
+            --bg-color: #0f172a; /* Dark Navy Background */
+            --card-bg: #1e293b;
+            --primary-gold: #fbbf24;
+            --text-white: #f8fafc;
+            --text-gray: #94a3b8;
+            --youtube-red: #ef4444;
         }
 
         * {
@@ -27,20 +26,13 @@
             scroll-behavior: smooth;
         }
 
-        /* Pattern Overlay for Islamic Vibe */
         body {
             background-color: var(--bg-color);
             color: var(--text-white);
             line-height: 1.6;
-            background-image: radial-gradient(circle at top, rgba(21, 32, 55, 1) 0%, var(--bg-color) 70%);
         }
 
-        h1, h2, h3, .logo {
-            font-family: 'Amiri', serif; /* Elegant Font */
-            letter-spacing: 0.5px;
-        }
-
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        a { text-decoration: none; color: inherit; }
 
         /* Utility Classes */
         .container {
@@ -48,44 +40,21 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        
-        .text-gold { color: var(--primary-gold); }
         .text-center { text-align: center; }
-
-        /* Buttons */
+        .text-gold { color: var(--primary-gold); }
         .btn {
-            padding: 12px 30px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            display: inline-block;
+            transition: 0.3s;
+            border: none;
             cursor: pointer;
         }
-        
-        .btn-red {
-            background: #b91c1c;
-            color: white;
-            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3);
-        }
-        .btn-red:hover { background: #dc2626; transform: translateY(-2px); }
-
-        .btn-gold {
-            background: linear-gradient(135deg, #D4AF37, #C5A028);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
-        }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3); }
-
-        .btn-outline {
-            border: 1px solid var(--border-gold);
-            color: var(--primary-gold);
-            background: transparent;
-        }
-        .btn-outline:hover { background: rgba(212, 175, 55, 0.1); }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-red { background-color: var(--youtube-red); color: white; }
+        .btn-outline { border: 2px solid var(--text-gray); color: var(--text-white); margin-left: 10px; }
+        .btn-gold { background-color: var(--primary-gold); color: #000; }
         
         /* Header */
         header {
@@ -93,239 +62,203 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo { 
-            font-size: 1.8rem; 
-            font-weight: 700; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            color: var(--text-white);
-        }
-        .logo img { height: 55px; width: 55px; border-radius: 50%; border: 2px solid var(--primary-gold); }
+        .logo { font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 50px; width: 50px; border-radius: 50%; object-fit: cover; }
         
         /* Hero Section */
         .hero {
             text-align: center;
-            padding: 80px 20px 60px;
+            padding: 60px 20px;
         }
         .badge {
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(251, 191, 36, 0.2);
             color: var(--primary-gold);
-            padding: 6px 16px;
-            border-radius: 50px;
+            padding: 5px 15px;
+            border-radius: 20px;
             font-size: 0.9rem;
-            border: 1px solid var(--border-gold);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 25px;
-            font-family: 'Inter', sans-serif;
+            gap: 5px;
+            margin-bottom: 20px;
         }
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
             line-height: 1.2;
-            color: var(--text-white);
         }
-        .hero p { 
-            color: var(--text-gray); 
-            margin-bottom: 40px; 
-            font-size: 1.1rem; 
-            max-width: 600px; 
-            margin-left: auto; 
-            margin-right: auto; 
-        }
+        .hero p { color: var(--text-gray); margin-bottom: 30px; }
 
-        /* Stats */
+        /* Stats Section */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 20px;
-            margin: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 40px 0;
         }
         .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
+            border: 1px solid #334155;
         }
-        .stat-number { font-size: 2rem; font-weight: 700; color: var(--primary-gold); font-family: 'Amiri', serif; }
-        .stat-label { font-size: 0.9rem; color: var(--text-gray); margin-top: 5px; }
+        .stat-card i { font-size: 1.5rem; color: var(--primary-gold); margin-bottom: 10px; }
+        .stat-number { font-size: 1.2rem; font-weight: bold; }
+        .stat-label { font-size: 0.8rem; color: var(--text-gray); }
 
-        /* Titles */
-        .section-title { margin-bottom: 40px; text-align: center; position: relative; }
-        .section-title h2 { font-size: 2.5rem; margin-bottom: 10px; color: var(--text-white); }
-        /* Small Gold Underline */
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--primary-gold);
-            margin: 15px auto 0;
-            border-radius: 2px;
-        }
-
-        /* Video Grid */
+        /* Featured Videos */
+        .section-title { margin-bottom: 30px; text-align: center; }
+        .section-title h2 { font-size: 2rem; margin-bottom: 10px; }
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
         .video-card {
             background: var(--card-bg);
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
             transition: 0.3s;
         }
-        .video-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--border-gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
+        .video-card:hover { transform: translateY(-5px); }
         .thumbnail {
             position: relative;
-            height: 200px;
-            overflow: hidden;
+            height: 180px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .thumbnail img { 
-            width: 100%; height: 100%; object-fit: cover; opacity: 0.9; 
-        }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
         .play-icon {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem;
-            color: #000;
-            background: rgba(255,255,255,0.9);
-            width: 50px; height: 50px;
+            font-size: 3rem;
+            color: var(--youtube-red);
+            background: white;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.3s;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .video-card:hover .play-icon { background: var(--primary-gold); color: #000; transform: translate(-50%, -50%) scale(1.1); }
-        .video-info { padding: 20px; }
-        .video-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: var(--gold-light); }
-        .video-desc { font-size: 0.9rem; color: var(--text-gray); }
+        .video-info { padding: 15px; }
+        .video-title { font-weight: 600; margin-bottom: 5px; }
+        .video-desc { font-size: 0.85rem; color: var(--text-gray); }
 
         /* Mission Cards */
         .mission-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
         .mission-card {
             background: var(--card-bg);
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-            transition: 0.3s;
+            border-left: 4px solid var(--primary-gold);
         }
-        .mission-card:hover { border-color: var(--primary-gold); }
-        
         .mission-icon {
-            font-size: 2rem;
+            background: rgba(251, 191, 36, 0.2);
             color: var(--primary-gold);
-            margin-bottom: 20px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
-        .mission-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--text-white); }
 
         /* Network Section */
         .network-section { margin: 80px 0; }
         .network-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             margin-top: 40px;
         }
         .network-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: #111827; /* Darker card */
+            border: 1px solid #374151;
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px;
             display: flex;
             align-items: center;
             gap: 20px;
             transition: 0.3s;
             text-decoration: none;
             color: white;
-            position: relative;
-            overflow: hidden;
         }
-        /* Subtle Gold shine on hover */
-        .network-card:hover { border-color: var(--primary-gold); background: #1a2639; }
-        
+        .network-card:hover { border-color: var(--primary-gold); background: #1f2937; }
         .network-logo {
             width: 80px;
             height: 80px;
-            border-radius: 12px;
+            border-radius: 50%;
             object-fit: cover;
-            border: 1px solid var(--border-gold);
+            border: 2px solid #374151;
         }
-        .network-info h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; color: var(--gold-light); }
-        .network-info p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 10px; }
-        .visit-link { color: var(--primary-gold); font-size: 0.9rem; font-weight: 600; }
+        .network-info h3 { font-size: 1.1rem; margin-bottom: 5px; }
+        .network-info p { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 10px; }
+        .visit-link {
+            color: var(--youtube-red);
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-        /* Contact & Socials */
-        .contact-section { 
-            background: linear-gradient(to right, var(--card-bg), var(--bg-color));
-            padding: 60px;
-            border-radius: 20px;
-            margin: 80px 0;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+        /* Contact Section & Socials */
+        .contact-section { margin: 60px 0; }
         .contact-wrapper {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 50px;
+            gap: 40px;
         }
         @media(min-width: 768px) { .contact-wrapper { grid-template-columns: 1fr 1fr; } }
 
-        .social-links { display: flex; gap: 15px; margin-top: 25px; }
+        .social-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .social-links { display: flex; gap: 15px; margin-top: 15px; }
         .social-btn {
-            width: 45px; height: 45px;
-            border-radius: 50%;
+            width: 40px; height: 40px;
+            border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
             color: white;
             font-size: 1.2rem;
             transition: 0.3s;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
         }
-        .social-btn:hover { background: var(--primary-gold); color: #000; border-color: var(--primary-gold); }
+        .btn-fb { background: #1877F2; }
+        .btn-ig { background: #E4405F; }
+        .btn-yt { background: #FF0000; }
+        .social-btn:hover { opacity: 0.8; transform: scale(1.1); }
 
-        /* Form */
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-gray); }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-size: 0.9rem; }
         .form-input {
-            width: 100%; 
-            padding: 14px;
-            background: var(--bg-color); 
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px; 
-            color: white;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
+            width: 100%; padding: 12px;
+            background: #020617; border: 1px solid #334155;
+            border-radius: 8px; color: white;
         }
-        .form-input:focus { outline: none; border-color: var(--primary-gold); }
         
         /* Footer */
         footer {
-            border-top: 1px solid rgba(255,255,255,0.05);
+            background: #020617;
             padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid #334155;
             text-align: center;
-            color: var(--text-gray);
-            font-size: 0.9rem;
         }
         
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .contact-section { padding: 30px; }
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
         }
     </style>
 </head>
@@ -335,36 +268,35 @@
         <header>
             <div class="logo">
                 <img src="logo.png" alt="Logo">
-                <span>Quran 50M</span>
+                Quran 50M
             </div>
-            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="btn btn-red">
-                <i class="fab fa-youtube"></i> Subscribe
-            </a>
+            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="btn btn-red"><i class="fab fa-youtube"></i> Subscribe</a>
         </header>
     </div>
 
     <section class="hero container">
-        <div class="badge"><i class="fas fa-star-and-crescent"></i> Divine Recitations</div>
-        <h1>Experience the Beauty of <br> <span class="text-gold">The Holy Quran</span></h1>
-        <p>Join our community in exploring the divine words through beautiful recitations, spiritual guidance, and Islamic knowledge.</p>
+        <div class="badge"><i class="fas fa-heart"></i> Divine Recitations</div>
+        <h1>Experience the Beauty of <br> <span class="text-gold">Quranic Recitation</span></h1>
+        <p>Join our community in exploring the divine words of the Holy Quran through beautiful recitations, spiritual guidance, and Islamic knowledge.</p>
         
-        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="btn btn-red">
-                <i class="fab fa-youtube"></i> Subscribe Now
-            </a>
+        <div>
+            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="btn btn-red"><i class="fab fa-youtube"></i> Subscribe to Our Channel</a>
             <a href="#videos" class="btn btn-outline">Watch Videos</a>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
+                <i class="fas fa-users"></i>
                 <div class="stat-number">50M+</div>
                 <div class="stat-label">Community Members</div>
             </div>
             <div class="stat-card">
+                <i class="fab fa-youtube"></i>
                 <div class="stat-number">1000+</div>
                 <div class="stat-label">Recitation Videos</div>
             </div>
             <div class="stat-card">
+                <i class="fas fa-heart"></i>
                 <div class="stat-number">100K+</div>
                 <div class="stat-label">Daily Viewers</div>
             </div>
@@ -374,66 +306,66 @@
     <section id="videos" class="container">
         <div class="section-title">
             <h2>Featured <span class="text-gold">Recitations</span></h2>
-            <p style="color: var(--text-gray);">Immerse yourself in the divine words.</p>
+            <p style="color: var(--text-gray);">Immerse yourself in the divine words through our collection.</p>
         </div>
 
         <div class="video-grid">
             <div class="video-card">
                 <div class="thumbnail">
                     <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80" alt="Recitation">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="play-icon"><i class="fas fa-play" style="font-size: 1.5rem;"></i></div>
                 </div>
                 <div class="video-info">
-                    <div class="video-title">Surah Al-Fatiha</div>
-                    <div class="video-desc">Beautiful Recitation</div>
+                    <div class="video-title">Surah Al-Fatiha - Beautiful Recitation</div>
+                    <div class="video-desc">Experience the opening chapter of the Holy Quran</div>
                 </div>
             </div>
             <div class="video-card">
                 <div class="thumbnail">
                      <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80" alt="Recitation">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="play-icon"><i class="fas fa-play" style="font-size: 1.5rem;"></i></div>
                 </div>
                 <div class="video-info">
-                    <div class="video-title">Surah Al-Baqarah</div>
-                    <div class="video-desc">Full Recitation</div>
+                    <div class="video-title">Surah Al-Baqarah - Full Recitation</div>
+                    <div class="video-desc">Peaceful recitation for your home</div>
                 </div>
             </div>
             <div class="video-card">
                 <div class="thumbnail">
                     <img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80" alt="Recitation">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="play-icon"><i class="fas fa-play" style="font-size: 1.5rem;"></i></div>
                 </div>
                 <div class="video-info">
-                    <div class="video-title">Surah Yaseen</div>
-                    <div class="video-desc">Heart of the Quran</div>
+                    <div class="video-title">Surah Yaseen - Heart of the Quran</div>
+                    <div class="video-desc">The blessed chapter for spiritual healing</div>
                 </div>
             </div>
         </div>
         
-        <div class="text-center" style="margin-top: 40px;">
-            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="btn btn-outline" style="width:100%;">View Channel</a>
+        <div class="text-center" style="margin-top: 30px;">
+            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="btn btn-outline" style="background:transparent; width:100%;">View All Videos on YouTube</a>
         </div>
     </section>
 
-    <section class="container" style="margin-top: 100px;">
+    <section class="container" style="margin-top: 60px;">
         <div class="section-title">
-            <h2>Our <span class="text-gold">Mission</span></h2>
+            <h2>About <span class="text-gold">Our Mission</span></h2>
         </div>
         <div class="mission-grid">
             <div class="mission-card">
                 <div class="mission-icon"><i class="fas fa-book-open"></i></div>
-                <h3>Divine Knowledge</h3>
-                <p style="font-size: 0.9rem; color: var(--text-gray);">Sharing the beauty and wisdom of the Holy Quran worldwide.</p>
+                <h3>Spread Divine Knowledge</h3>
+                <p style="font-size: 0.9rem; color: var(--text-gray); margin-top: 10px;">Share the beauty and wisdom of the Holy Quran with people worldwide.</p>
             </div>
             <div class="mission-card">
                 <div class="mission-icon"><i class="fas fa-heart"></i></div>
-                <h3>Spiritual Growth</h3>
-                <p style="font-size: 0.9rem; color: var(--text-gray);">Helping believers strengthen their connection with Allah.</p>
+                <h3>Spiritual Connection</h3>
+                <p style="font-size: 0.9rem; color: var(--text-gray); margin-top: 10px;">Help believers strengthen their connection with Allah through daily guidance.</p>
             </div>
             <div class="mission-card">
                 <div class="mission-icon"><i class="fas fa-users"></i></div>
-                <h3>Global Community</h3>
-                <p style="font-size: 0.9rem; color: var(--text-gray);">Uniting Muslims globally in their love for the Quran.</p>
+                <h3>Build Community</h3>
+                <p style="font-size: 0.9rem; color: var(--text-gray); margin-top: 10px;">Unite Muslims globally in their love for the Quran.</p>
             </div>
         </div>
     </section>
@@ -441,7 +373,7 @@
     <section class="container network-section">
         <div class="section-title">
             <h2>Our <span class="text-gold">Network</span></h2>
-            <p style="color: var(--text-gray);">Recommended sister channels for spiritual growth.</p>
+            <p style="color: var(--text-gray);">Explore our recommended sister channels for more diverse Islamic content.</p>
         </div>
 
         <div class="network-grid">
@@ -450,7 +382,7 @@
                 <div class="network-info">
                     <h3>Quran India TV</h3>
                     <p>Discover beautiful Quranic recitations from India.</p>
-                    <span class="visit-link">Visit Channel <i class="fas fa-arrow-right"></i></span>
+                    <span class="visit-link"><i class="fab fa-youtube"></i> Visit Channel <i class="fas fa-external-link-alt" style="margin-left:5px; font-size: 0.8rem;"></i></span>
                 </div>
             </a>
 
@@ -458,59 +390,54 @@
                 <img src="khushbu.jpg" class="network-logo" alt="Khushbu e Quran">
                 <div class="network-info">
                     <h3>Khushbu e Quran</h3>
-                    <p>Fragrance of the Holy Quran & Spiritual enlightenment.</p>
-                    <span class="visit-link">Visit Channel <i class="fas fa-arrow-right"></i></span>
+                    <p>Fragrance of the Holy Quran - Spiritual enlightenment.</p>
+                    <span class="visit-link"><i class="fab fa-youtube"></i> Visit Channel <i class="fas fa-external-link-alt" style="margin-left:5px; font-size: 0.8rem;"></i></span>
                 </div>
             </a>
         </div>
     </section>
 
     <section class="container contact-section">
-        <div class="section-title" style="margin-bottom: 20px;">
-            <h2>Get in <span class="text-gold">Touch</span></h2>
-        </div>
+        <h2>Get in <span class="text-gold">Touch</span></h2>
         
         <div class="contact-wrapper">
-            <div>
-                <p style="color:var(--text-gray); margin-bottom: 30px; font-size: 1rem;">
-                    We'd love to hear from you. Drop us a message or follow us on social media.
+            <div style="margin-top: 20px;">
+                <p style="color:var(--text-gray); margin-bottom: 20px;">
+                    We typically respond within 24-48 hours. For urgent inquiries, please mention "URGENT" in your subject line.
                 </p>
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: white; margin-bottom: 15px;">Contact Info</h4>
-                    
-                    <div style="color:var(--text-gray); margin-bottom:10px; display:flex; align-items:center; gap:10px;">
-                        <i class="fas fa-envelope" style="color:var(--primary-gold)"></i> support@quran50m.online
-                    </div>
+                <div class="contact-item" style="color:var(--text-gray); margin-bottom:10px;">
+                    <i class="fas fa-envelope text-gold"></i> support@quran50m.online
                 </div>
-
-                <h4 style="color: white; margin-top: 40px;">Follow Us</h4>
-                <div class="social-links">
-                    <a href="https://www.facebook.com/share/17gwnK9bmn/" target="_blank" class="social-btn">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://www.instagram.com/quran_50m_youtube?igsh=b2U3cHM0czJ2emx1" target="_blank" class="social-btn">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="social-btn">
-                        <i class="fab fa-youtube"></i>
-                    </a>
+                <div class="social-box">
+                    <h4 style="color: white;">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/17gwnK9bmn/" target="_blank" class="social-btn btn-fb">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/quran_50m_youtube?igsh=b2U3cHM0czJ2emx1" target="_blank" class="social-btn btn-ig">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" class="social-btn btn-yt">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST">
+            <form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST" style="margin-top: 20px;">
                 <input type="hidden" name="_captcha" value="false">
                 
                 <div class="form-group">
-                    <label class="form-label">Name</label>
+                    <label class="form-label">Your Name</label>
                     <input type="text" name="name" class="form-input" placeholder="Enter your full name" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">Email Address</label>
                     <input type="email" name="email" class="form-input" placeholder="your.email@example.com" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Message</label>
-                    <textarea name="message" class="form-input" rows="4" placeholder="Type your message here..." required></textarea>
+                    <label class="form-label">Your Message</label>
+                    <textarea name="message" class="form-input" rows="4" placeholder="How can we help you?" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-gold" style="width: 100%;">Send Message</button>
             </form>
@@ -520,9 +447,19 @@
     <footer>
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
             <img src="logo.png" alt="Logo">
-            <span>Quran 50M</span>
+            Quran 50M
         </div>
-        <p>&copy; 2025 Quran 50M. All rights reserved.</p>
+        <p style="color: var(--text-gray); font-size: 0.8rem;">
+            Spreading the divine message of the Holy Quran through beautiful recitations.
+        </p>
+        <div style="margin-top: 20px; display:flex; justify-content:center; gap:15px;">
+            <a href="https://www.facebook.com/share/17gwnK9bmn/" target="_blank" style="color:var(--text-gray)"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/quran_50m_youtube?igsh=b2U3cHM0czJ2emx1" target="_blank" style="color:var(--text-gray)"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@quran50m?si=yet47YUhUsqMq_8_" target="_blank" style="color:var(--text-gray)"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div style="margin-top: 20px; color: var(--text-gray); font-size: 0.8rem;">
+            &copy; 2025 Quran 50M. All rights reserved.
+        </div>
     </footer>
 
 </body>
