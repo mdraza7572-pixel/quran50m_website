@@ -295,7 +295,7 @@
                 <div style="color:var(--text-gray); display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
                     <i class="fas fa-envelope" style="color:var(--primary-gold)"></i> support@quran50m.online
                 </div>
-            </div>
+        </div>
             <form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="text" name="name" class="form-input" placeholder="Your Name" required>
@@ -322,7 +322,7 @@
 
 
     <style>
-    /* 1. Floating Button */
+    /* 1. Chat Button (Floating) */
     .chat-btn {
         position: fixed; bottom: 20px; right: 20px;
         width: 60px; height: 60px;
@@ -345,7 +345,7 @@
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 25px;
-        display: none; /* Default hidden */
+        display: none;
         flex-direction: column;
         z-index: 1000;
         overflow: hidden;
@@ -410,11 +410,13 @@
 </div>
 
 <script>
-    const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
+    // --- NEW API KEY (Updated) ---
+    const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI"; 
     
-    // FIX: 'gemini-pro' use kar rahe hain. Ye model sabse stable hai aur har key par chalta hai.
-    // Agar 2.5 ya 1.5 fail ho rahe hain, to ye zaroor chalega.
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+    // --- MODEL SELECTION ---
+    // Agar future models (2.5, 3.0) kaam nahi kar rahe, to ye 'gemini-1.5-flash' best hai.
+    // Maine URL mein 'v1beta' ko 'v1' kar diya hai (Stable Version).
+    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
     function toggleChat() {
         const chatWindow = document.getElementById('chatWindow');
@@ -442,7 +444,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{ text: "You are a helpful Islamic assistant. Answer briefly in Hinglish/Urdu. Question: " + userText }]
+                        parts: [{ text: "You are a helpful Islamic assistant for 'Quran 50M'. Answer briefly in Hinglish/Urdu. Question: " + userText }]
                     }]
                 })
             });
@@ -450,6 +452,7 @@
             const data = await response.json();
             
             if (data.error) {
+                // Agar ab bhi error aaye, to bata dena
                 document.getElementById(loadingId).innerText = "❌ Error: " + data.error.message;
             } else if (data.candidates && data.candidates[0].content) {
                 const botReply = data.candidates[0].content.parts[0].text;
