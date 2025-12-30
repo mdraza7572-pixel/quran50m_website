@@ -44,6 +44,12 @@
         .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
         .btn-glass { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: white; }
         
+        /* Custom Icon Styling for Play Button */
+        .btn-icon-img {
+            width: 24px; height: 24px; object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
         header {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px;
             background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
@@ -120,6 +126,14 @@
         }
         .disclaimer { font-size: 0.75rem; color: #555; max-width: 800px; margin: 30px auto; border-top: 1px solid #222; padding-top: 20px; }
         
+        /* Social Icons in Footer */
+        .footer-socials { display: flex; justify-content: center; gap: 20px; margin: 30px 0; }
+        .social-btn {
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--primary-gold); color: black; transform: translateY(-3px); }
+
         footer { padding: 60px 20px; text-align: center; background: #000; color: #888; }
     </style>
 </head>
@@ -142,8 +156,10 @@
             Quran ki tilawat sunna aur samajhna: Dil ke bojh ko kam karta hai, Pareshani aur stress ko door karta hai, Imaan ko mazboot karta hai.
         </p>
 
-        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
-            <a href="playlist.html" class="btn btn-primary"><i class="fab fa-play"></i> Watch Full Playlist</a>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px; align-items: center;">
+            <a href="playlist.html" class="btn btn-primary">
+                <img src="play.jpg" alt="Play" class="btn-icon-img"> Watch Full Playlist
+            </a>
             <a href="#benefits" class="btn btn-glass">Read Benefits</a>
         </div>
     </section>
@@ -282,7 +298,9 @@
             <div>
                 <h2>Get in <span class="gradient-text">Touch</span></h2>
                 <p style="color:var(--text-gray); margin-bottom: 20px;">We'd love to hear from you.</p>
-                <div style="color:var(--text-gray); display:flex; align-items:center; gap:10px;"><i class="fas fa-envelope" style="color:var(--primary-gold)"></i> support@quran50m.online</div>
+                <div style="color:var(--text-gray); display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
+                    <i class="fas fa-envelope" style="color:var(--primary-gold)"></i> support@quran50m.online
+                </div>
             </div>
             <form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST">
                 <input type="hidden" name="_captcha" value="false">
@@ -296,6 +314,13 @@
 
     <footer>
         <div class="logo" style="justify-content: center; margin-bottom: 20px;"><img src="logo.png" alt="Logo"> <span>Quran 50M</span></div>
+        
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/share/17gwnK9bmn/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/quran_50m_youtube?igsh=b2U3cHM0czJ2emx1" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@quran50m" target="_blank" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+
         <p>&copy; 2025 Quran 50M. All rights reserved.</p>
         
         <div class="disclaimer">
@@ -303,6 +328,5 @@
             <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing.</p>
         </div>
     </footer>
-
 </body>
 </html>
