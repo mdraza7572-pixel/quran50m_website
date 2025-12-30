@@ -409,68 +409,193 @@
     </div>
 </div>
 
+<!-- ===== CHAT WIDGET START ===== -->
+
+<style>
+.chat-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    background:linear-gradient(135deg,#FFD700,#FDB931);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:9999;
+    box-shadow:0 10px 20px rgba(255,215,0,.3);
+}
+.chat-btn i{font-size:26px;color:#000}
+
+.chat-window{
+    position:fixed;
+    bottom:90px;
+    right:20px;
+    width:350px;
+    max-width:90%;
+    height:500px;
+    background:rgba(10,10,10,.95);
+    border-radius:25px;
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:9999;
+}
+
+.chat-header{
+    padding:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,215,0,.1);
+    color:#FFD700;
+    font-weight:700;
+}
+
+.chat-body{
+    flex:1;
+    padding:15px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    font-size:14px;
+}
+
+.msg{
+    max-width:80%;
+    padding:10px 14px;
+    border-radius:15px;
+    line-height:1.4;
+}
+
+.bot-msg{
+    background:rgba(255,255,255,.1);
+    color:#ddd;
+    align-self:flex-start;
+    border-bottom-left-radius:4px;
+}
+
+.user-msg{
+    background:linear-gradient(135deg,#FFD700,#FDB931);
+    color:#000;
+    align-self:flex-end;
+    font-weight:600;
+    border-bottom-right-radius:4px;
+}
+
+.chat-input-area{
+    padding:12px;
+    display:flex;
+    gap:10px;
+    border-top:1px solid rgba(255,255,255,.1);
+}
+
+.chat-input{
+    flex:1;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    padding:10px 14px;
+    border-radius:50px;
+    color:#fff;
+    outline:none;
+}
+
+.send-btn{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:#FFD700;
+    cursor:pointer;
+}
+</style>
+
+<div class="chat-btn" onclick="toggleChat()">
+    <i class="fas fa-robot"></i>
+</div>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span>🕌 Islamic Assistant</span>
+        <span style="cursor:pointer" onclick="toggleChat()">✖</span>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+        <div class="msg bot-msg">
+            Assalamu Alaikum 🤍<br>
+            Main Quran 50M ka AI Assistant hoon. Sawal poochiye.
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <input id="userInput" class="chat-input" placeholder="Sawal likhein..."
+               onkeydown="if(event.key==='Enter')sendMessage()">
+        <button class="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+</div>
+
 <script>
-    const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI"; 
-    
-    // Latest fast model
-    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI";
+const API_URL =
+`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-    function toggleChat() {
-        const chatWindow = document.getElementById('chatWindow');
-        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
-    }
+function toggleChat(){
+    const w=document.getElementById("chatWindow");
+    w.style.display=w.style.display==="flex"?"none":"flex";
+}
 
-    function handleEnter(e) {
-        if (e.key === 'Enter') sendMessage();
-    }
+function appendMessage(text,type){
+    const body=document.getElementById("chatBody");
+    const div=document.createElement("div");
+    div.className="msg "+type;
+    div.innerText=text;
+    body.appendChild(div);
+    body.scrollTop=body.scrollHeight;
+    return div;
+}
 
-    async function sendMessage() {
-        const input = document.getElementById('userInput');
-        const userText = input.value.trim();
-        if (!userText) return;
+async function sendMessage(){
+    const input=document.getElementById("userInput");
+    const text=input.value.trim();
+    if(!text) return;
 
-        appendMessage(userText, 'user-msg');
-        input.value = '';
+    appendMessage(text,"user-msg");
+    input.value="";
 
-        const loadingId = appendMessage("Soch raha hoon...", 'bot-msg');
+    const loading=appendMessage("Soch raha hoon…","bot-msg");
 
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: "You are a helpful Islamic assistant for 'Quran 50M'. Answer briefly in Hinglish/Urdu. Question: " + userText
-                        }]
+    try{
+        const res=await fetch(API_URL,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                contents:[{
+                    parts:[{
+                        text:
+                        "You are a helpful Islamic assistant for Quran 50M. Reply briefly in Hinglish/Urdu. Question: "+text
                     }]
-                })
-            });
+                }]
+            })
+        });
 
-            const data = await response.json();
+        const data=await res.json();
+        loading.innerText=
+            data.candidates?.[0]?.content?.parts?.[0]?.text
+            || "Jawab nahi mila.";
 
-            if (data.error) {
-                document.getElementById(loadingId).innerText = "❌ Error: " + data.error.message;
-            } else {
-                document.getElementById(loadingId).innerText =
-                    data.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ Jawab nahi mila.";
-            }
-        } catch (err) {
-            document.getElementById(loadingId).innerText = "🔌 Network Error";
-        }
+    }catch(e){
+        loading.innerText="Network error ❌";
     }
-
-    function appendMessage(text, className) {
-        const chatBody = document.getElementById('chatBody');
-        const div = document.createElement('div');
-        div.className = `msg ${className}`;
-        div.innerText = text;
-        chatBody.appendChild(div);
-        chatBody.scrollTop = chatBody.scrollHeight;
-        return div;
-    }
+}
 </script>
-    
+
+<!-- ===== CHAT WIDGET END ===== -->
+
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </body>
 </html>
