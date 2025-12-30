@@ -321,96 +321,9 @@
     </footer>
 
 
-    <style>
-    /* Chat Button (Floating) */
-    .chat-btn {
-        position: fixed; bottom: 20px; right: 20px;
-        width: 60px; height: 60px;
-        background: var(--accent-gradient);
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 1000;
-        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
-        border: 2px solid rgba(255,255,255,0.2);
-        transition: 0.3s;
-    }
-    .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
-    .chat-btn i { font-size: 28px; color: black; }
-
-    /* Chat Window */
-    .chat-window {
-        position: fixed; bottom: 90px; right: 20px;
-        width: 350px; height: 500px;
-        background: rgba(10, 10, 10, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        border-radius: 25px;
-        display: none;
-        flex-direction: column;
-        z-index: 1000;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-
-    /* Chat Header */
-    .chat-header {
-        padding: 15px;
-        background: rgba(255, 215, 0, 0.1);
-        border-bottom: 1px solid var(--glass-border);
-        display: flex; justify-content: space-between; align-items: center;
-    }
-    .chat-title { font-weight: 700; color: var(--primary-gold); display: flex; align-items: center; gap: 10px; }
-    .close-chat { cursor: pointer; color: #aaa; font-size: 1.2rem; }
-
-    /* Chat Body */
-    .chat-body {
-        flex: 1; padding: 15px;
-        overflow-y: auto;
-        display: flex; flex-direction: column; gap: 10px;
-        font-size: 0.9rem;
-    }
-    
-    .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; word-wrap: break-word; }
-    .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 2px; }
-    .user-msg { background: var(--accent-gradient); color: black; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 600; }
-
-    /* Input Area */
-    .chat-input-area {
-        padding: 15px; border-top: 1px solid var(--glass-border);
-        display: flex; gap: 10px;
-    }
-    .chat-input {
-        flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-        padding: 10px 15px; border-radius: 50px; color: white; outline: none;
-    }
-    .send-btn {
-        background: var(--primary-gold); border: none; width: 40px; height: 40px;
-        border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-</style>
-
-<div class="chat-btn" onclick="toggleChat()">
-    <i class="fas fa-robot"></i>
-</div>
-
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        <div class="chat-title"><i class="fas fa-mosque"></i> Islamic Assistant</div>
-        <div class="close-chat" onclick="toggleChat()"><i class="fas fa-times"></i></div>
-    </div>
-    
-    <div class="chat-body" id="chatBody">
-        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon. Main aapki kya madad kar sakta hoon?</div>
-    </div>
-
-    <div class="chat-input-area">
-        <input type="text" id="userInput" class="chat-input" placeholder="Ask a question..." onkeypress="handleEnter(event)">
-        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-    </div>
-</div>
-
 <script>
-    // --- API KEY (Direct) ---
+    // --- API KEY ---
+    // Note: Agar ye key kaam na kare, toh Google AI Studio se nayi key bana lena.
     const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
@@ -430,15 +343,15 @@
 
         if (!userText) return;
 
-        // 1. Show User Message
+        // 1. User Message Add Karo
         appendMessage(userText, 'user-msg');
         input.value = '';
 
-        // 2. Show Loading
+        // 2. Loading Dikhao
         const loadingId = appendMessage("Soch raha hoon...", 'bot-msg');
 
         try {
-            // 3. Direct Fetch Request
+            // 3. Google API ko Request Bhejo
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -447,7 +360,7 @@
                 body: JSON.stringify({
                     contents: [{
                         parts: [{
-                            text: "You are a polite Islamic assistant for 'Quran 50M'. Answer briefly in Hinglish/Urdu. Question: " + userText
+                            text: "You are a helpful Islamic assistant. Answer briefly in Hinglish/Urdu. Question: " + userText
                         }]
                     }]
                 })
@@ -455,17 +368,25 @@
 
             const data = await response.json();
             
-            // Check if valid response
-            if (data.candidates && data.candidates[0].content) {
+            // --- DEBUGGING LOGIC ---
+            
+            // Case 1: Agar Google ne Error bheja hai
+            if (data.error) {
+                document.getElementById(loadingId).innerText = "❌ Error: " + data.error.message;
+            } 
+            // Case 2: Agar Sahi Jawab aaya hai
+            else if (data.candidates && data.candidates[0].content) {
                 const botReply = data.candidates[0].content.parts[0].text;
                 document.getElementById(loadingId).innerText = botReply;
-            } else {
-                document.getElementById(loadingId).innerText = "Maafi, mujhe samajh nahi aaya. Dobara poochein.";
+            } 
+            // Case 3: Agar jawab khaali hai
+            else {
+                document.getElementById(loadingId).innerText = "⚠️ Jawab khali aaya. Shayad koi filter lag gaya.";
             }
 
         } catch (error) {
             console.error("Error:", error);
-            document.getElementById(loadingId).innerText = "Connection error. Please check internet.";
+            document.getElementById(loadingId).innerText = "🔌 Connection Error: " + error.message;
         }
     }
 
@@ -481,6 +402,7 @@
     }
 </script>
     
+
     
 </body>
 </html>
