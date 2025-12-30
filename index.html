@@ -4,88 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran 50M - Daily Wazifa & Dua</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- ROYAL ISLAMIC THEME (OLD UI) --- */
         :root {
-            --bg-color: #050505;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --primary-gold: #FFD700;
-            --accent-gradient: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
-            --text-white: #ffffff;
-            --text-gray: #a1a1aa;
-            --btn-radius: 50px;
-            --card-radius: 24px;
+            --bg-color: #0B1120; /* Deepest Navy */
+            --card-bg: #162032;  /* Slightly lighter navy */
+            --primary-gold: #D4AF37; /* Metallic Gold */
+            --gold-light: #F4E5BC;
+            --text-white: #F8FAFC;
+            --text-gray: #94A3B8;
+            --border-gold: rgba(212, 175, 55, 0.3);
+            --youtube-red: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
 
         body {
-            background-color: var(--bg-color); color: var(--text-white); line-height: 1.6;
-            background-image: radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 25%),
-                              radial-gradient(circle at 85% 30%, rgba(20, 20, 40, 0.5) 0%, transparent 25%);
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            line-height: 1.6;
+            background-image: radial-gradient(circle at top, rgba(21, 32, 55, 1) 0%, var(--bg-color) 70%);
         }
 
+        h1, h2, h3, .logo { font-family: 'Amiri', serif; letter-spacing: 0.5px; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* Utility */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .text-gold { color: var(--primary-gold); }
+        .text-center { text-align: center; }
 
-        /* Buttons */
-        .btn { padding: 14px 32px; border-radius: var(--btn-radius); font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer; }
-        .btn:hover { transform: translateY(-3px); }
-        .btn-primary { background: var(--accent-gradient); color: #000; font-weight: 700; }
-        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
-        .btn-glass { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: white; }
+        /* Buttons (Classic Style) */
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #D4AF37, #C5A028);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3); }
+
+        .btn-red { background: #b91c1c; color: white; box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3); }
+        .btn-red:hover { background: #dc2626; transform: translateY(-2px); }
+
+        .btn-outline { border: 1px solid var(--border-gold); color: var(--primary-gold); background: transparent; }
+        .btn-outline:hover { background: rgba(212, 175, 55, 0.1); }
         
         /* Header */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px; background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 100px; position: sticky; top: 20px; z-index: 100; }
-        .logo { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
-        .logo img { height: 45px; width: 45px; border-radius: 50%; border: 2px solid var(--primary-gold); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 1.8rem; font-weight: 700; display: flex; align-items: center; gap: 12px; color: var(--text-white); }
+        .logo img { height: 55px; width: 55px; border-radius: 50%; border: 2px solid var(--primary-gold); }
         
         /* Hero */
-        .hero { text-align: center; padding: 100px 20px 60px; }
-        .badge { background: rgba(251, 191, 36, 0.08); color: var(--primary-gold); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; border: 1px solid rgba(251, 191, 36, 0.2); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px; }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 800; }
-        .hero p { color: var(--text-gray); margin-bottom: 30px; font-size: 1.15rem; max-width: 700px; margin: 0 auto 30px auto; }
+        .hero { text-align: center; padding: 80px 20px 60px; }
+        .badge {
+            background: rgba(212, 175, 55, 0.1); color: var(--primary-gold); padding: 6px 16px;
+            border-radius: 50px; font-size: 0.9rem; border: 1px solid var(--border-gold);
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px; font-family: 'Inter', sans-serif;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; color: var(--text-white); }
+        .hero p { color: var(--text-gray); margin-bottom: 40px; font-size: 1.1rem; max-width: 700px; margin-left: auto; margin-right: auto; }
 
-        /* Grids */
-        .stats-grid, .benefits-grid { display: grid; gap: 20px; margin: 40px 0; }
-        .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-        .benefits-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-        
-        .stat-card, .benefit-card { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px 20px; border-radius: var(--card-radius); text-align: center; }
-        .benefit-card { background: linear-gradient(180deg, #0e0e0e 0%, #050505 100%); display: flex; align-items: center; gap: 15px; text-align: left; padding: 25px; }
-        .benefit-icon { color: var(--primary-gold); font-size: 1.2rem; background: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 12px; }
-        .stat-number { font-size: 2rem; font-weight: 800; color: white; }
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 40px 0; }
+        .stat-card { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 700; color: var(--primary-gold); font-family: 'Amiri', serif; }
+        .stat-label { font-size: 0.9rem; color: var(--text-gray); margin-top: 5px; }
 
-        /* Video Section */
-        .section-title { margin-bottom: 50px; text-align: center; margin-top: 80px; }
-        .section-title h2 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        
-        .video-card { background: #0a0a0a; border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--glass-border); transition: 0.4s; display: block; }
-        .video-card:hover { transform: translateY(-10px); border-color: #333; }
+        /* Titles */
+        .section-title { margin-bottom: 40px; text-align: center; position: relative; margin-top: 60px; }
+        .section-title h2 { font-size: 2.5rem; margin-bottom: 10px; color: var(--text-white); }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--primary-gold); margin: 15px auto 0; border-radius: 2px; }
+
+        /* Benefits Grid (Old Style Cards) */
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .benefit-card {
+            background: var(--card-bg); padding: 25px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+        .benefit-card:hover { border-color: var(--primary-gold); transform: translateY(-3px); }
+        .benefit-icon { color: var(--primary-gold); font-size: 1.5rem; }
+        .benefit-card h4 { color: var(--gold-light); margin-bottom: 5px; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .benefit-card p { font-size: 0.85rem; color: var(--text-gray); margin: 0; }
+
+        /* Video Grid (Old Style Cards) */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .video-card {
+            background: var(--card-bg); border-radius: 12px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; display: block;
+        }
+        .video-card:hover { transform: translateY(-5px); border-color: var(--border-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .thumbnail { position: relative; height: 200px; overflow: hidden; }
-        .thumbnail img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .video-card:hover .thumbnail img { transform: scale(1.05); }
-        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: black; background: var(--primary-gold); width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .video-info { padding: 25px; }
-        .video-title { color: white; font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
-        .video-desc { color: var(--text-gray); font-size: 0.9rem; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .play-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 1.5rem; color: #000; background: rgba(255,255,255,0.9);
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .video-card:hover .play-icon { background: var(--primary-gold); color: #000; transform: translate(-50%, -50%) scale(1.1); }
+        .video-info { padding: 20px; }
+        .video-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: var(--gold-light); }
+        .video-desc { font-size: 0.9rem; color: var(--text-gray); }
 
-        /* Network & Contact */
+        /* Support Box */
+        .support-box {
+            background: linear-gradient(to right, var(--card-bg), var(--bg-color));
+            padding: 40px; border-radius: 12px; text-align: center;
+            border: 1px solid var(--border-gold); margin: 80px 0;
+        }
+
+        /* Network & Contact (Old Style) */
+        .network-section { margin: 80px 0; }
         .network-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; }
-        .network-card { background: #0e0e0e; border: 1px solid var(--glass-border); border-radius: 30px; padding: 25px; display: flex; align-items: center; gap: 25px; color: white; text-decoration: none; }
-        .network-logo { width: 90px; height: 90px; border-radius: 25px; object-fit: cover; border: 2px solid #222; }
-
-        .support-box { background: linear-gradient(45deg, #111, #000); border: 1px solid var(--glass-border); padding: 40px; border-radius: 30px; text-align: center; margin: 80px 0; }
-        .contact-wrapper { display: grid; grid-template-columns: 1fr; gap: 50px; margin-bottom: 80px; }
-        @media(min-width: 768px) { .contact-wrapper { grid-template-columns: 1fr 1.2fr; } }
-        .form-input { width: 100%; padding: 16px 25px; background: #050505; border: 2px solid #1a1a1a; border-radius: 18px; color: white; margin-bottom: 20px; }
+        .network-card {
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
+            padding: 25px; display: flex; align-items: center; gap: 20px; transition: 0.3s; text-decoration: none; color: white;
+        }
+        .network-card:hover { border-color: var(--primary-gold); background: #1a2639; }
+        .network-logo { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-gold); }
         
-        footer { border-top: 1px solid #1a1a1a; padding: 60px 20px; text-align: center; background: #000; color: #666; font-size: 0.85rem; }
+        .contact-section { background: linear-gradient(to right, var(--card-bg), var(--bg-color)); padding: 60px; border-radius: 20px; margin: 80px 0; border: 1px solid rgba(255,255,255,0.05); }
+        .contact-wrapper { display: grid; grid-template-columns: 1fr; gap: 50px; }
+        @media(min-width: 768px) { .contact-wrapper { grid-template-columns: 1fr 1fr; } }
+        
+        .form-input { width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; margin-bottom: 15px; }
+        .form-input:focus { outline: none; border-color: var(--primary-gold); }
+
+        /* Social Icons */
+        .social-links { display: flex; gap: 15px; margin-top: 25px; }
+        .social-btn {
+            width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; transition: 0.3s; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .social-btn:hover { background: var(--primary-gold); color: #000; border-color: var(--primary-gold); }
+
+        footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 20px; text-align: center; color: var(--text-gray); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -99,36 +171,41 @@
 
     <section class="hero container">
         <div class="badge"><i class="fas fa-moon"></i> Assalamu Alaikum Warahmatullahi Wabarakatuh</div>
-        <h1>Daily Quran <br> <span class="gradient-text">Wazifa & Dua</span></h1>
-        <p>Is video mein aap Holy Quran ki beautiful aur heart-touching tilawat sun sakte hain.</p>
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <a href="playlist.html" class="btn btn-primary"><i class="fab fa-play"></i> Watch Full Playlist</a>
-            <a href="#benefits" class="btn btn-glass">Read Benefits</a>
-        </div>
+        <h1>Daily Quran <br> <span class="text-gold">Wazifa & Dua</span></h1>
+        <p>
+            Is video mein aap Holy Quran ki beautiful aur heart-touching tilawat sun sakte hain, 
+            jo dil ko sukoon, rooh ko chain aur zindagi mein barkat deti hai.
+        </p>
         
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="playlist.html" class="btn btn-gold"><i class="fab fa-play"></i> Watch Full Playlist</a>
+            <a href="#benefits" class="btn btn-outline">Read Benefits</a>
+        </div>
+
         <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-users" style="color:var(--primary-gold); font-size:1.5rem;"></i><div class="stat-number">50M+</div><div class="stat-label">Community</div></div>
-            <div class="stat-card"><i class="fas fa-star" style="color:var(--primary-gold); font-size:1.5rem;"></i><div class="stat-number">Daily</div><div class="stat-label">Dua & Wazifa</div></div>
-            <div class="stat-card"><i class="fas fa-heart" style="color:var(--primary-gold); font-size:1.5rem;"></i><div class="stat-number">Peace</div><div class="stat-label">Spiritual Healing</div></div>
+            <div class="stat-card"><div class="stat-number">50M+</div><div class="stat-label">Community Members</div></div>
+            <div class="stat-card"><div class="stat-number">Daily</div><div class="stat-label">Morning & Evening Dua</div></div>
+            <div class="stat-card"><div class="stat-number">Peace</div><div class="stat-label">Spiritual Healing</div></div>
         </div>
     </section>
 
     <section id="benefits" class="container">
-        <div class="section-title"><h2>Why Listen <span class="gradient-text">Daily?</span></h2></div>
+        <div class="section-title"><h2>Why Listen <span class="text-gold">Daily?</span></h2></div>
         <div class="benefits-grid">
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-heart"></i></div><div><h4 style="color:white;">Dil Ka Sukoon</h4><p style="font-size:0.85rem; color:#888;">Dil ke bojh ko kam karta hai.</p></div></div>
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-brain"></i></div><div><h4 style="color:white;">Stress Relief</h4><p style="font-size:0.85rem; color:#888;">Pareshani aur anxiety door.</p></div></div>
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-shield-alt"></i></div><div><h4 style="color:white;">Protection</h4><p style="font-size:0.85rem; color:#888;">Roohani shifa aur hifazat.</p></div></div>
+            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-heart"></i></div><div><h4>Dil Ka Sukoon</h4><p>Dil ke bojh ko kam karta hai.</p></div></div>
+            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-brain"></i></div><div><h4>Stress Relief</h4><p>Pareshani aur anxiety door.</p></div></div>
+            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-shield-alt"></i></div><div><h4>Protection</h4><p>Roohani shifa aur hifazat.</p></div></div>
+            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-seedling"></i></div><div><h4>Barkat</h4><p>Rehmat aur barkat laata hai.</p></div></div>
         </div>
     </section>
 
-    <section id="videos" class="container" style="margin-top: 100px;">
+    <section id="videos" class="container">
         <div class="section-title">
-            <h2>Featured <span class="gradient-text">Recitations</span></h2>
+            <h2>Featured <span class="text-gold">Recitations</span></h2>
             <p style="color: var(--text-gray);">Our top selected videos</p>
         </div>
         <div class="video-grid">
-            <a href="https://youtu.be/rTw1qqAngzk?si=_9ksduUZ04BGfsr1" target="_blank" class="video-card">
+             <a href="https://youtu.be/rTw1qqAngzk?si=_9ksduUZ04BGfsr1" target="_blank" class="video-card">
                 <div class="thumbnail">
                     <img src="https://img.youtube.com/vi/rTw1qqAngzk/maxresdefault.jpg" alt="Surah Yaseen">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
@@ -148,7 +225,7 @@
                     <div class="video-desc">Rizq mein barkat aur kushadgi.</div>
                 </div>
             </a>
-             <a href="https://youtu.be/ryE4r6RQD6Q?si=aWDqmTcrAgvKhJzh" target="_blank" class="video-card">
+            <a href="https://youtu.be/ryE4r6RQD6Q?si=aWDqmTcrAgvKhJzh" target="_blank" class="video-card">
                 <div class="thumbnail">
                     <img src="https://img.youtube.com/vi/ryE4r6RQD6Q/maxresdefault.jpg" alt="Baqarah">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
@@ -171,8 +248,18 @@
         </div>
     </section>
 
+    <section class="container">
+        <div class="support-box">
+            <h2 style="margin-bottom: 15px; color: var(--text-white);">Support the <span class="text-gold">Channel</span></h2>
+            <p style="color: var(--text-gray); max-width: 600px; margin: 0 auto 30px auto;">
+                Agar aapko ye tilawat pasand aaye to video ko Like karein aur Channel ko Subscribe karein. Aapka ek support humare liye bohot valuable hai 🤍
+            </p>
+            <a href="https://youtube.com/@quran50m" target="_blank" class="btn btn-red"><i class="fab fa-youtube"></i> Subscribe Channel</a>
+        </div>
+    </section>
+
     <section class="container network-section">
-        <div class="section-title"><h2>Our <span class="gradient-text">Network</span></h2></div>
+        <div class="section-title"><h2>Our <span class="text-gold">Network</span></h2></div>
         <div class="network-grid">
             <a href="https://youtube.com/@quranindiatv335" target="_blank" class="network-card">
                 <img src="quran-india.jpg" class="network-logo"><div class="network-info"><h3>Quran India TV</h3><p>Discover beautiful Quranic recitations.</p></div>
@@ -186,16 +273,23 @@
     <section class="container contact-section">
         <div class="contact-wrapper">
             <div>
-                <h2>Get in <span class="gradient-text">Touch</span></h2>
-                <p style="color:var(--text-gray); margin-bottom: 20px;">We'd love to hear from you.</p>
-                <div style="color:var(--text-gray); display:flex; align-items:center; gap:10px;"><i class="fas fa-envelope" style="color:var(--primary-gold)"></i> support@quran50m.online</div>
+                <h2 style="color:white; margin-bottom:20px;">Get in <span class="text-gold">Touch</span></h2>
+                <p style="color:var(--text-gray); margin-bottom: 30px;">We'd love to hear from you. Drop us a message.</p>
+                <div style="color:var(--text-gray); display:flex; align-items:center; gap:10px;"><i class="fas fa-envelope text-gold"></i> support@quran50m.online</div>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/share/17gwnK9bmn/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/quran_50m_youtube?igsh=b2U3cHM0czJ2emx1" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@quran50m" target="_blank" class="social-btn"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
+            
             <form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST">
                 <input type="hidden" name="_captcha" value="false">
-                <input type="text" name="name" class="form-input" placeholder="Your Name" required>
-                <input type="email" name="email" class="form-input" placeholder="Your Email" required>
-                <textarea name="message" class="form-input" rows="4" placeholder="Your Message..." required></textarea>
-                <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 18px;">Send Message</button>
+                <div style="margin-bottom:15px;"><label class="stat-label">Your Name</label><input type="text" name="name" class="form-input" placeholder="Enter full name" required></div>
+                <div style="margin-bottom:15px;"><label class="stat-label">Email Address</label><input type="email" name="email" class="form-input" placeholder="your.email@example.com" required></div>
+                <div style="margin-bottom:15px;"><label class="stat-label">Your Message</label><textarea name="message" class="form-input" rows="4" placeholder="How can we help you?" required></textarea></div>
+                <button type="submit" class="btn btn-gold" style="width: 100%;">Send Message</button>
             </form>
         </div>
     </section>
@@ -203,6 +297,9 @@
     <footer>
         <div class="logo" style="justify-content: center; margin-bottom: 20px;"><img src="logo.png" alt="Logo"> <span>Quran 50M</span></div>
         <p>&copy; 2025 Quran 50M. All rights reserved.</p>
+        <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 20px; font-size: 0.75rem;">
+            <p><strong>Copyright Disclaimer:</strong> Under Section 107 of the Copyright Act 1976, allowance is made for fair use.</p>
+        </div>
     </footer>
 
 </body>
