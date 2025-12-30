@@ -3,29 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran 50M - Modern Islamic</title>
+    <title>Daily Quran Wazifa & Dua</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- MODERN GLASS & ROUND THEME (GEN Z STYLE) --- */
+        /* --- GEN Z THEME (ROUND & GLASS) --- */
         :root {
-            --bg-color: #050505; /* Pitch Black */
-            --glass-bg: rgba(255, 255, 255, 0.05); /* Transparency */
+            --bg-color: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             --primary-gold: #FFD700;
             --accent-gradient: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
             --text-white: #ffffff;
             --text-gray: #a1a1aa;
-            --btn-radius: 50px; /* GOL BUTTONS */
-            --card-radius: 30px; /* GOL CARDS */
+            --btn-radius: 50px;
+            --card-radius: 30px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg-color); color: var(--text-white); line-height: 1.6;
-            /* Modern Glow Background */
             background-image: radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 25%),
                               radial-gradient(circle at 85% 30%, rgba(20, 20, 40, 0.5) 0%, transparent 25%);
         }
@@ -33,114 +32,94 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .text-center { text-align: center; }
 
-        /* --- GOL BUTTONS (Round) --- */
+        /* --- COMPONENTS --- */
         .btn {
-            padding: 14px 32px;
-            border-radius: var(--btn-radius); /* Full Round */
-            font-weight: 600;
-            display: inline-flex; align-items: center; gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none; cursor: pointer;
+            padding: 14px 32px; border-radius: var(--btn-radius); font-weight: 600;
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer;
         }
-        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(251, 191, 36, 0.15); }
-        
+        .btn:hover { transform: translateY(-3px) scale(1.02); }
         .btn-primary { background: var(--accent-gradient); color: #000; font-weight: 700; }
-        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3); }
-        .btn-glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: white; }
-        .btn-glass:hover { border-color: var(--primary-gold); background: rgba(255, 255, 255, 0.1); }
+        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+        .btn-glass { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: white; }
         
-        /* --- TRANSPARENT HEADER --- */
         header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 30px; margin-top: 20px;
-            background: rgba(10, 10, 10, 0.6); /* Semi Transparent */
-            backdrop-filter: blur(15px); /* Blur Effect */
-            border: 1px solid var(--glass-border);
-            border-radius: 100px; /* GOL HEADER */
-            position: sticky; top: 20px; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; margin-top: 20px;
+            background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
+            border-radius: 100px; position: sticky; top: 20px; z-index: 100;
         }
         .logo { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
         .logo img { height: 45px; width: 45px; border-radius: 50%; border: 2px solid var(--primary-gold); }
         
-        /* Hero */
         .hero { text-align: center; padding: 100px 20px 60px; }
         .badge {
-            background: rgba(251, 191, 36, 0.08); color: var(--primary-gold);
-            padding: 8px 20px; border-radius: 50px; font-size: 0.9rem;
-            border: 1px solid rgba(251, 191, 36, 0.2); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px;
+            background: rgba(251, 191, 36, 0.1); color: var(--primary-gold); padding: 8px 25px;
+            border-radius: 50px; font-size: 0.9rem; border: 1px solid rgba(251, 191, 36, 0.2);
+            display: inline-block; margin-bottom: 25px;
         }
-        .hero h1 { font-size: 3.8rem; margin-bottom: 20px; line-height: 1.1; font-weight: 800; }
-        .hero p { color: var(--text-gray); margin-bottom: 30px; font-size: 1.15rem; max-width: 700px; margin: 0 auto 30px auto; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; font-weight: 800; }
+        .hero p { color: var(--text-gray); margin-bottom: 20px; font-size: 1.1rem; max-width: 800px; margin-left: auto; margin-right: auto; }
 
-        /* --- GLASS CARDS (Round & Transparent) --- */
-        .stats-grid, .benefits-grid { display: grid; gap: 20px; margin: 40px 0; }
-        .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-        .benefits-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-        
-        .stat-card, .benefit-card {
-            background: var(--glass-bg); /* Transparent */
-            border: 1px solid var(--glass-border);
-            padding: 30px 20px;
-            border-radius: var(--card-radius); /* GOL CORNERS */
-            text-align: center; transition: 0.3s;
+        /* LISTS & GRIDS */
+        .glass-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 30px; border-radius: var(--card-radius); margin-bottom: 20px;
         }
-        .benefit-card { display: flex; align-items: center; gap: 15px; text-align: left; padding: 25px; }
-        .stat-card:hover, .benefit-card:hover { border-color: rgba(251, 191, 36, 0.3); transform: translateY(-5px); background: rgba(255,255,255,0.08); }
         
-        .benefit-icon { color: var(--primary-gold); font-size: 1.2rem; background: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 15px; }
-        .stat-number { font-size: 2rem; font-weight: 800; color: white; margin: 10px 0 5px; }
+        .surah-list { text-align: left; max-width: 800px; margin: 40px auto; }
+        .surah-item { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; }
+        .surah-icon { color: var(--primary-gold); font-size: 1.2rem; }
 
-        /* Titles */
-        .section-title { margin-bottom: 50px; text-align: center; margin-top: 80px; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 40px 0; }
+        .benefit-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 25px;
+            border-radius: var(--card-radius); display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+        .benefit-card:hover { border-color: var(--primary-gold); transform: translateY(-5px); }
+        
+        .section-title { margin: 80px 0 40px; text-align: center; }
         .section-title h2 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
 
-        /* --- VIDEO CARDS (Round) --- */
+        /* PLAYLIST & NETWORK */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .video-card {
             background: #0a0a0a; border-radius: var(--card-radius); overflow: hidden;
             border: 1px solid var(--glass-border); transition: 0.4s; display: block;
         }
-        .video-card:hover { transform: translateY(-10px); border-color: #333; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .video-card:hover { transform: translateY(-10px); border-color: #333; }
         .thumbnail { position: relative; height: 200px; overflow: hidden; }
-        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.5s; }
-        .video-card:hover .thumbnail img { transform: scale(1.05); opacity: 1; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .video-card:hover .thumbnail img { transform: scale(1.05); }
         .play-icon {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             font-size: 1.5rem; color: black; background: var(--primary-gold);
             width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            transition: 0.3s; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
-        .video-card:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); background: white; }
         .video-info { padding: 25px; }
-        .video-title { color: white; font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
-        .video-desc { color: var(--text-gray); font-size: 0.9rem; }
+        .video-title { color: white; font-weight: 600; font-size: 1.1rem; }
 
-        /* Network & Contact */
-        .network-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; }
+        .network-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
         .network-card {
-            background: #0e0e0e; border: 1px solid var(--glass-border); border-radius: 30px; 
-            padding: 25px; display: flex; align-items: center; gap: 25px; transition: 0.4s; text-decoration: none; color: white;
+            background: #0e0e0e; border: 1px solid var(--glass-border); border-radius: 30px;
+            padding: 25px; display: flex; align-items: center; gap: 25px; color: white; text-decoration: none;
         }
-        .network-card:hover { background: #151515; border-color: var(--primary-gold); transform: translateY(-5px); }
-        .network-logo { width: 90px; height: 90px; border-radius: 25px; object-fit: cover; border: 2px solid #222; }
+        .network-logo { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; }
 
+        /* FORM & FOOTER */
         .support-box {
             background: linear-gradient(45deg, #111, #000); border: 1px solid var(--glass-border);
-            padding: 40px; border-radius: 30px; text-align: center; margin: 80px 0;
+            padding: 50px; border-radius: 40px; text-align: center; margin: 80px 0;
         }
-
-        .contact-section { margin: 80px 0; }
-        .contact-wrapper { display: grid; grid-template-columns: 1fr; gap: 50px; margin-bottom: 80px; }
+        .contact-wrapper { display: grid; grid-template-columns: 1fr; gap: 50px; margin: 80px 0; }
         @media(min-width: 768px) { .contact-wrapper { grid-template-columns: 1fr 1.2fr; } }
-
         .form-input {
             width: 100%; padding: 16px 25px; background: #050505; border: 2px solid #1a1a1a;
-            border-radius: 18px; color: white; margin-bottom: 20px; font-family: 'Outfit', sans-serif;
+            border-radius: 18px; color: white; margin-bottom: 20px;
         }
-        .form-input:focus { outline: none; border-color: var(--primary-gold); }
+        .disclaimer { font-size: 0.75rem; color: #555; max-width: 800px; margin: 30px auto; border-top: 1px solid #222; padding-top: 20px; }
         
-        footer { border-top: 1px solid #1a1a1a; padding: 60px 20px; text-align: center; background: #000; font-size: 0.85rem; color: #666; }
+        footer { padding: 60px 20px; text-align: center; background: #000; color: #888; }
     </style>
 </head>
 <body>
@@ -153,60 +132,115 @@
     </div>
 
     <section class="hero container">
-        <div class="badge"><i class="fas fa-moon"></i> Assalamu Alaikum Warahmatullahi Wabarakatuh</div>
-        <h1>Daily Quran <br> <span class="gradient-text">Wazifa & Dua</span></h1>
-        <p>Is video mein aap Holy Quran ki beautiful aur heart-touching tilawat sun sakte hain.</p>
-        <div style="display: flex; gap: 15px; justify-content: center;">
+        <div class="badge">Assalamu Alaikum Warahmatullahi Wabarakatuh 🤍</div>
+        <h1>Daily Quran Wazifa | <br> <span class="gradient-text">Morning Dua</span></h1>
+        
+        <p>Is video mein aap Holy Quran ki beautiful aur heart-touching tilawat sun sakte hain, jo dil ko sukoon, rooh ko chain aur zindagi mein barkat deti hai.</p>
+        
+        <p style="font-size: 0.95rem; opacity: 0.8;">
+            Quran ki tilawat sunna aur samajhna: Dil ke bojh ko kam karta hai, Pareshani aur stress ko door karta hai, Imaan ko mazboot karta hai.
+        </p>
+
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
             <a href="#playlist" class="btn btn-primary"><i class="fab fa-play"></i> Watch Playlist</a>
             <a href="#benefits" class="btn btn-glass">Read Benefits</a>
         </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-users" style="color:var(--primary-gold); font-size:1.5rem;"></i><div class="stat-number">50M+</div><div class="stat-label">Community</div></div>
-            <div class="stat-card"><i class="fas fa-star" style="color:var(--primary-gold); font-size:1.5rem;"></i><div class="stat-number">Daily</div><div class="stat-label">Dua & Wazifa</div></div>
-            <div class="stat-card"><i class="fas fa-heart" style="color:var(--primary-gold); font-size:1.5rem;"></i><div class="stat-number">Peace</div><div class="stat-label">Spiritual Healing</div></div>
+    </section>
+
+    <section class="container">
+        <div class="glass-card surah-list">
+            <h3 style="text-align:center; margin-bottom: 20px; color: white;">🕋 Surahs Included in This Video</h3>
+            
+            <div class="surah-item">
+                <i class="fas fa-book-open surah-icon"></i>
+                <div>
+                    <strong style="color:white; display:block;">Surah Yaseen (Yasin)</strong>
+                    <span style="color:var(--text-gray); font-size: 0.9rem;">Dil ka sukoon aur maghfirat ke liye</span>
+                </div>
+            </div>
+            
+            <div class="surah-item">
+                <i class="fas fa-cloud-sun surah-icon"></i>
+                <div>
+                    <strong style="color:white; display:block;">Surah Ar-Rahman</strong>
+                    <span style="color:var(--text-gray); font-size: 0.9rem;">Allah ki rehmat aur ne’maton ka zikr</span>
+                </div>
+            </div>
+
+            <div class="surah-item">
+                <i class="fas fa-star surah-icon"></i>
+                <div>
+                    <strong style="color:white; display:block;">Complete Quran Tilawat</strong>
+                    <span style="color:var(--text-gray); font-size: 0.9rem;">Pur sukoon aur roohani asar ke saath</span>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="benefits" class="container">
-        <div class="section-title"><h2>Why Listen <span class="gradient-text">Daily?</span></h2></div>
+        <div class="section-title"><h2>✨ Benefits of Listening <span class="gradient-text">Daily</span></h2></div>
         <div class="benefits-grid">
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-heart"></i></div><div><h4 style="color:white; margin-bottom:5px;">Dil Ka Sukoon</h4><p style="font-size:0.85rem; color:#888;">Dil ke bojh ko kam karta hai.</p></div></div>
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-brain"></i></div><div><h4 style="color:white; margin-bottom:5px;">Stress Relief</h4><p style="font-size:0.85rem; color:#888;">Pareshani aur anxiety door.</p></div></div>
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-shield-alt"></i></div><div><h4 style="color:white; margin-bottom:5px;">Protection</h4><p style="font-size:0.85rem; color:#888;">Roohani shifa aur hifazat.</p></div></div>
-            <div class="benefit-card"><div class="benefit-icon"><i class="fas fa-seedling"></i></div><div><h4 style="color:white; margin-bottom:5px;">Barkat</h4><p style="font-size:0.85rem; color:#888;">Rehmat aur barkat laata hai.</p></div></div>
+            <div class="benefit-card"><i class="fas fa-heart surah-icon"></i> <span style="color:#ddd">Dil ko sukoon milta hai</span></div>
+            <div class="benefit-card"><i class="fas fa-brain surah-icon"></i> <span style="color:#ddd">Gham, tension aur anxiety kam hoti hai</span></div>
+            <div class="benefit-card"><i class="fas fa-hands-praying surah-icon"></i> <span style="color:#ddd">Allah ki rehmat aur barkat hoti hai</span></div>
+            <div class="benefit-card"><i class="fas fa-shield-alt surah-icon"></i> <span style="color:#ddd">Roohani shifa aur protection</span></div>
+            <div class="benefit-card"><i class="fas fa-sun surah-icon"></i> <span style="color:#ddd">Positive energy aur inner peace</span></div>
+        </div>
+    </section>
+
+    <section class="container text-center" style="margin: 60px 0;">
+        <h3 style="color: white; margin-bottom: 20px;">🤲 Recommended For</h3>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <span class="badge">Daily Quran Recitation</span>
+            <span class="badge">Morning & Evening Dua</span>
+            <span class="badge">Stress Relief</span>
+            <span class="badge">Islamic Reminder</span>
+            <span class="badge">Spiritual Healing</span>
         </div>
     </section>
 
     <section id="playlist" class="container">
         <div class="section-title">
             <h2>Tilawat <span class="gradient-text">Playlist</span></h2>
-            <p style="color: var(--text-gray);">Beautiful collection of Quran recitations</p>
         </div>
         <div class="video-grid" id="videoContainer">
             </div>
     </section>
 
-    <section class="container network-section">
+    <section class="container">
+        <div class="support-box">
+            <h2 style="margin-bottom: 15px;">🔔 Support the <span class="gradient-text">Channel</span></h2>
+            <p style="color: var(--text-gray); margin-bottom: 20px;">Agar aapko ye tilawat pasand aaye to:</p>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:30px; color:#bbb;">
+                <span>👍 Video ko Like karein</span>
+                <span>📌 Channel ko Subscribe karein</span>
+                <span>📤 Family aur friends ke saath Share karein</span>
+            </div>
+            <p style="color: white; font-weight: 600;">Aapka ek support humare liye bohot valuable hai 🤍</p>
+            <br>
+            <a href="https://youtube.com/@quran50m" target="_blank" class="btn btn-red">Subscribe Channel</a>
+        </div>
+    </section>
+
+    <section class="container">
         <div class="section-title"><h2>Our <span class="gradient-text">Network</span></h2></div>
         <div class="network-grid">
             <a href="https://youtube.com/@quranindiatv335" target="_blank" class="network-card">
-                <img src="quran-india.jpg" class="network-logo"><div class="network-info"><h3>Quran India TV</h3><p>Discover beautiful Quranic recitations.</p></div>
+                <img src="quran-india.jpg" class="network-logo"><div><h3>Quran India TV</h3><p>Discover beautiful Quranic recitations.</p></div>
             </a>
             <a href="https://youtube.com/@khushbue786quran" target="_blank" class="network-card">
-                <img src="khushbu.jpg" class="network-logo"><div class="network-info"><h3>Khushbu e Quran</h3><p>Fragrance of the Holy Quran.</p></div>
+                <img src="khushbu.jpg" class="network-logo"><div><h3>Khushbu e Quran</h3><p>Fragrance of the Holy Quran.</p></div>
             </a>
         </div>
     </section>
 
-    <section class="container contact-section">
+    <section class="container">
         <div class="contact-wrapper">
             <div>
                 <h2>Get in <span class="gradient-text">Touch</span></h2>
                 <p style="color:var(--text-gray); margin-bottom: 20px;">We'd love to hear from you.</p>
                 <div style="color:var(--text-gray); display:flex; align-items:center; gap:10px;"><i class="fas fa-envelope" style="color:var(--primary-gold)"></i> support@quran50m.online</div>
             </div>
-            
             <form action="https://formsubmit.co/mdraza7572@gmail.com" method="POST">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="text" name="name" class="form-input" placeholder="Your Name" required>
@@ -220,12 +254,16 @@
     <footer>
         <div class="logo" style="justify-content: center; margin-bottom: 20px;"><img src="logo.png" alt="Logo"> <span>Quran 50M</span></div>
         <p>&copy; 2025 Quran 50M. All rights reserved.</p>
+        
+        <div class="disclaimer">
+            <p><strong>⚠️ Copyright Disclaimer</strong></p>
+            <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing.</p>
+        </div>
     </footer>
 
     <script src="playlist.js"></script>
     <script>
         const container = document.getElementById('videoContainer');
-        
         function getYouTubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
