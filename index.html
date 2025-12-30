@@ -319,8 +319,7 @@
             <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing.</p>
         </div>
     </footer>
-
-    <style>
+<style>
     /* Chat Button (Floating) */
     .chat-btn {
         position: fixed; bottom: 20px; right: 20px;
@@ -336,7 +335,7 @@
     .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
     .chat-btn i { font-size: 28px; color: black; }
 
-    /* Chat Window (Hidden by default) */
+    /* Chat Window */
     .chat-window {
         position: fixed; bottom: 90px; right: 20px;
         width: 350px; height: 500px;
@@ -344,7 +343,7 @@
         backdrop-filter: blur(20px);
         border: 1px solid var(--glass-border);
         border-radius: 25px;
-        display: none; /* Chupa hua */
+        display: none;
         flex-direction: column;
         z-index: 1000;
         overflow: hidden;
@@ -369,7 +368,6 @@
         font-size: 0.9rem;
     }
     
-    /* Messages */
     .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; }
     .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 2px; }
     .user-msg { background: var(--accent-gradient); color: black; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 600; }
@@ -420,12 +418,14 @@
 <script type="module">
     import { GoogleGenerativeAI } from "@google/generative-ai";
 
-    // --- YAHAN APNI API KEY DAALNA ---
+    // --- TERI API KEY (FIXED) ---
     const API_KEY = "AIzaSyCW3ZVmTQ4BSqphmnz_o6znnPjREIhAVHI"; 
-    // ----------------------------------
+    // ----------------------------
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    
+    // Model ko 1.5-flash rakha hai kyunki 2.5 exist nahi karta
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
     window.toggleChat = function() {
         const chatWindow = document.getElementById('chatWindow');
@@ -448,11 +448,11 @@
         input.value = '';
 
         // 2. Show Loading
-        const loadingId = appendMessage("Typing...", 'bot-msg');
+        const loadingId = appendMessage("Soch raha hoon...", 'bot-msg');
 
         try {
             // 3. Call Gemini API
-            const prompt = "You are a helpful and respectful Islamic assistant for a website called 'Quran 50M'. Answer this question briefly and politely in Hinglish or Urdu/Hindi mix: " + userText;
+            const prompt = "You are a polite and knowledgeable Islamic assistant for the website 'Quran 50M'. Answer this question briefly in Hinglish (Hindi/Urdu mixed with English). Keep the tone respectful. Question: " + userText;
             
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -461,8 +461,8 @@
             // 4. Update Bot Message
             document.getElementById(loadingId).innerText = text;
         } catch (error) {
-            document.getElementById(loadingId).innerText = "Maafi chahta hoon, kuch gadbad ho gayi. Dobara koshish karein.";
-            console.error(error);
+            document.getElementById(loadingId).innerText = "Server busy hai, thodi der baad try karna.";
+            console.error("Error:", error);
         }
     }
 
@@ -471,16 +471,12 @@
         const div = document.createElement('div');
         div.className = `msg ${className}`;
         div.innerText = text;
-        
-        // Generate unique ID for loading msg
-        const id = 'msg-' + Date.now();
-        div.id = id;
-
+        div.id = 'msg-' + Date.now();
         chatBody.appendChild(div);
         chatBody.scrollTop = chatBody.scrollHeight;
-        return id;
+        return div.id;
     }
-            </script>
+        </script>
     
 </body>
 </html>
