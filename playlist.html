@@ -16,14 +16,14 @@
             --text-white: #ffffff;
             --text-gray: #e2e8f0;
             --btn-radius: 50px;
-            --card-radius: 20px; /* Thoda radius kam kiya taaki thumbnail sharp lage */
+            --card-radius: 24px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         body { color: var(--text-white); line-height: 1.6; overflow-x: hidden; }
 
-        /* Video Background */
+        /* --- BACKGROUND VIDEO (Special for Playlist) --- */
         #bg-video { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; object-fit: cover; }
-        .video-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: -1; } /* Thoda aur dark kiya taaki thumbnails pop karein */
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: -1; }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
@@ -39,14 +39,27 @@
         .btn-home:hover { background: var(--primary-gold); color: black; }
         @media (max-width: 600px) { header { padding: 8px 15px; } .logo span { display: none; } .btn-home, .btn-red { padding: 8px 12px; font-size: 0.8rem; } .btn-home span, .btn-red span { display: none; } .header-buttons { gap: 8px; } }
 
-        /* Search */
+        /* --- CUSTOM SEARCH BAR --- */
         .search-container { max-width: 600px; margin: 0 auto 40px; position: relative; }
-        .search-input { width: 100%; padding: 15px 20px 15px 50px; border-radius: 50px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border); color: white; font-size: 1.1rem; outline: none; backdrop-filter: blur(10px); transition: 0.3s; font-family: 'Outfit', sans-serif; }
-        .search-input::placeholder { color: #bbb; }
-        .search-input:focus { border-color: var(--primary-gold); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); }
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--primary-gold); font-size: 1.2rem; pointer-events: none; }
+        
+        .search-input { 
+            width: 100%; padding: 18px 20px 18px 60px; /* Thoda padding badhaya icon ke liye */
+            border-radius: 50px; background: rgba(255, 255, 255, 0.08); 
+            border: 1px solid var(--glass-border); color: white; 
+            font-size: 1.1rem; outline: none; backdrop-filter: blur(10px); 
+            transition: 0.3s; font-family: 'Outfit', sans-serif; 
+        }
+        .search-input::placeholder { color: #aaa; }
+        .search-input:focus { border-color: var(--primary-gold); background: rgba(0, 0, 0, 0.7); box-shadow: 0 0 25px rgba(251, 191, 36, 0.15); }
+        
+        /* Custom Image Icon Styling */
+        .search-icon-img { 
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%); 
+            width: 28px; height: 28px; opacity: 0.8; pointer-events: none;
+            filter: invert(1); /* Agar black icon hai to usko white kar dega */
+        }
 
-        /* Grid */
+        /* Grid & Cards */
         .page-title { text-align: center; margin: 60px 0 30px; }
         .page-title h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
@@ -54,20 +67,8 @@
         .video-card { background: rgba(0, 0, 0, 0.6); border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--glass-border); transition: 0.4s; display: block; backdrop-filter: blur(5px); }
         .video-card:hover { transform: translateY(-10px); border-color: var(--primary-gold); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         
-        /* --- THUMBNAIL FIX (ASPECT RATIO 16:9) --- */
-        .thumbnail { 
-            position: relative; 
-            width: 100%; 
-            aspect-ratio: 16 / 9; /* Ye magic line hai: 16:9 ratio maintain karega */
-            overflow: hidden; 
-        }
-        .thumbnail img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            opacity: 1; /* Opacity full kar di taaki saaf dikhe */
-            transition: 0.5s; 
-        }
+        .thumbnail { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: 0.5s; }
         .video-card:hover .thumbnail img { transform: scale(1.05); }
         
         .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: black; background: var(--primary-gold); width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
@@ -85,7 +86,10 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline id="bg-video"><source src="bg.mp4" type="video/mp4"></video>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="playlist-bg.mp4" type="video/mp4">
+    </video>
     <div class="video-overlay"></div>
 
     <div class="container">
@@ -105,7 +109,7 @@
         </div>
 
         <div class="search-container">
-            <i class="fas fa-search search-icon"></i>
+            <img src="search.png" alt="Search" class="search-icon-img">
             <input type="text" id="searchInput" placeholder="Search by Surah or Para name..." class="search-input">
         </div>
 
