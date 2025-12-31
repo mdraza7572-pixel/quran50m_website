@@ -259,10 +259,9 @@
         <p>&copy; 2025 Quran 50M. All rights reserved.</p>
         <div class="disclaimer">
             <p><strong>⚠️ Copyright Disclaimer</strong></p>
-            <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976.</p>
-        </div>
-    </footer>
-    
+
+                </footer>
+
     <div class="login-overlay" id="loginModal">
         <div class="login-card">
             <h2 style="margin:0 0 10px 0; color:#000;">Welcome 👋</h2>
@@ -304,32 +303,25 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-        // --- KEYS & CONFIG ---
-        // Asli Key jo tumne di thi
-        const GEMINI_API_KEY = "AIzaSyD2PE7oxfiZjYzMIvxHJCEVNbl9V0ydGu8"; 
+        // --- 🟢 NEW KEY HERE ---
+        const GEMINI_API_KEY = "AIzaSyD2PE7oxfiZjYzMlvxHJCEVNbl9V0ydGu8"; 
         
         const firebaseConfig = {
-            apiKey: "AIzaSyD2PE7oxfiZjYzMIvxHJCEVNbl9V0ydGu8", 
+            apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
             authDomain: "quran50m-login.firebaseapp.com",
             projectId: "quran50m-login",
             storageBucket: "quran50m-login.firebasestorage.app",
             messagingSenderId: "467087335036",
             appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
         };
-
-        // Corrected Model Version
         const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // --- HEADER PROFILE SETUP ---
         function setupHeaderProfile() {
-            // Humne HTML me <div id="profileWrapper"> pehle se bana diya hai
             const wrapper = document.getElementById('profileWrapper');
-            
             if(wrapper) {
                 const savedPhoto = localStorage.getItem("userPhoto");
                 const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -344,7 +336,6 @@
                     </div>
                 `;
 
-                // Events
                 document.getElementById('pBtn').onclick = (e) => {
                     e.stopPropagation();
                     if(localStorage.getItem("isLoggedIn") === "true") {
@@ -361,7 +352,6 @@
                     }
                 };
                 
-                // Close menu if clicked outside
                 window.addEventListener('click', (e) => {
                     if(!wrapper.contains(e.target)) {
                         const menu = document.getElementById('pMenu');
@@ -371,7 +361,6 @@
             }
         }
 
-        // --- LOGIN ACTION ---
         document.getElementById('googleBtn').onclick = () => {
             signInWithPopup(auth, provider).then((result) => {
                 localStorage.setItem("isLoggedIn", "true");
@@ -383,25 +372,19 @@
             });
         };
 
-        // --- GEMINI CHAT ACTION ---
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const text = input.value.trim();
             if(!text) return;
-
             const body = document.getElementById('chatBody');
-            
-            // User Msg
             const userDiv = document.createElement('div');
             userDiv.className = 'msg user-msg';
             userDiv.innerText = text;
             body.appendChild(userDiv);
             input.value = '';
-
-            // Bot Msg (Loading)
             const botDiv = document.createElement('div');
             botDiv.className = 'msg bot-msg';
-            botDiv.innerText = 'Soch raha hoon...';
+            botDiv.innerText = '...';
             body.appendChild(botDiv);
             body.scrollTop = body.scrollHeight;
 
@@ -411,11 +394,8 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ contents: [{ parts: [{ text: "Answer strictly in Hinglish/Urdu. Question: " + text }] }] })
                 });
-                
                 const data = await res.json();
-                
                 if (data.error) {
-                    console.error("Gemini Error:", data.error);
                     botDiv.innerText = "Error: Key problem (" + data.error.message + ")";
                 } else {
                     botDiv.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Jawab nahi mila.";
@@ -428,16 +408,13 @@
         document.getElementById('sendBtn').onclick = sendMessage;
         document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
 
-        // --- ON LOAD ---
         setupHeaderProfile();
         
-        // Check Login Status
         if(localStorage.getItem("isLoggedIn") === "true") {
             document.getElementById('chatLock').style.display = 'none';
             document.getElementById('bookLock').style.display = 'none';
         }
 
-        // Handle Widget Clicks
         window.checkAccess = (action) => {
             if(localStorage.getItem("isLoggedIn") === "true") {
                 if(action === 'chat') {
@@ -456,3 +433,4 @@
     </script>
 </body>
 </html>
+  
