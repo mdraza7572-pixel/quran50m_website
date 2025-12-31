@@ -454,10 +454,154 @@
 <div class="chat-window" id="chatWindow">
     <div class="chat-header">
         <span><i class="fas fa-mosque"></i> Islamic Assistant</span>
+<style>
+    /* --- 1. HEADER PROFILE ICON (Circular & Clickable) --- */
+    .profile-container { position: relative; display: inline-block; }
+    
+    .profile-btn {
+        width: 45px; height: 45px;
+        border-radius: 50%;
+        background: #222;
+        border: 2px solid #FFD700;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: 0.3s;
+        overflow: hidden;
+        margin-left: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .profile-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+    .profile-btn i { font-size: 1.2rem; color: #fff; }
+
+    /* --- 2. DROPDOWN MENU --- */
+    .profile-dropdown {
+        position: absolute; top: 60px; right: 0;
+        width: 200px; background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        display: none;
+        flex-direction: column; overflow: hidden;
+        z-index: 10002;
+        animation: dropDown 0.2s ease-out;
+    }
+    @keyframes dropDown { from {transform: translateY(-10px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+
+    .menu-item {
+        padding: 12px 20px; color: #333;
+        display: flex; align-items: center; gap: 10px;
+        text-decoration: none; font-weight: 500;
+        transition: 0.2s; border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+    }
+    .menu-item:last-child { border-bottom: none; color: #e11d48; } 
+    .menu-item:hover { background: #f9fafb; padding-left: 25px; }
+
+    /* --- 3. FLOATING BUTTONS (Stacked Right) --- */
+    .float-container {
+        position: fixed; bottom: 25px; right: 20px;
+        display: flex; flex-direction: column; gap: 15px;
+        align-items: flex-end; z-index: 9990;
+    }
+
+    .float-btn {
+        width: 60px; height: 60px;
+        background: rgba(10, 10, 10, 0.7); 
+        border: 2px solid #FFD700;
+        border-radius: 50%; 
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; 
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); 
+        transition: 0.3s;
+        backdrop-filter: blur(10px);
+        position: relative;
+    }
+    
+    #bookBtn { width: 50px; height: 50px; border-color: white; }
+    #bookBtn i { font-size: 20px; color: white; }
+    
+    #chatBtn:hover { transform: scale(1.1); background: rgba(255, 215, 0, 0.2); }
+    #chatBtn i { font-size: 28px; color: #FFD700; }
+    
+    .lock-badge {
+        position: absolute; top: 0; right: 0;
+        background: #ef4444; color: white; font-size: 10px;
+        width: 20px; height: 20px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        border: 2px solid #111;
+    }
+
+    /* --- 4. CHAT WINDOW --- */
+    .chat-window {
+        position: fixed; bottom: 100px; right: 20px;
+        width: 350px; max-width: 90%; height: 500px;
+        background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px;
+        display: none; flex-direction: column; overflow: hidden; z-index: 9999;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .chat-header { padding: 15px; background: rgba(255, 215, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; color: #FFD700; font-weight: 700; }
+    .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+    .msg { max-width: 80%; padding: 10px 14px; border-radius: 15px; line-height: 1.4; word-wrap: break-word; }
+    .bot-msg { background: rgba(255, 255, 255, 0.1); color: #ddd; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .user-msg { background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%); color: black; align-self: flex-end; font-weight: 600; border-bottom-right-radius: 4px; }
+    .chat-input-area { padding: 12px; display: flex; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+    .chat-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 50px; color: #fff; outline: none; }
+    .send-btn { width: 40px; height: 40px; border: none; border-radius: 50%; background: #FFD700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* --- LOGIN MODAL (Google Style) --- */
+    .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 10001; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+    .login-card { background: white; width: 90%; max-width: 380px; border-radius: 24px; padding: 30px; text-align: center; color: #333; animation: zoomIn 0.3s ease-out; }
+    @keyframes zoomIn { from {transform: scale(0.9); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+    
+    .btn-google {
+        width: 100%; padding: 12px; background: white; color: #444;
+        border: 1px solid #ddd; border-radius: 50px; 
+        font-size: 1rem; font-weight: 600; cursor: pointer; 
+        margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;
+        transition: 0.3s;
+    }
+    .btn-google:hover { background: #f1f5f9; border-color: #aaa; }
+    
+    .btn-close {
+        width: 100%; padding: 12px; background: #f1f5f9; color: #555;
+        border: none; border-radius: 50px; margin-top: 10px; 
+        cursor: pointer; font-weight: 600;
+    }
+</style>
+
+<div class="login-overlay" id="loginModal">
+    <div class="login-card">
+        <h2 style="margin-bottom: 10px;">Welcome 👋</h2>
+        <p style="color:#666; font-size:0.9rem;">Sign in to access Premium Features.</p>
+        
+        <button class="btn-google" onclick="googleLogin()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" width="20">
+            <span>Continue with Google</span>
+        </button>
+        
+        <button class="btn-close" onclick="closeLogin()">Cancel</button>
+        <div style="font-size: 0.7rem; color: #aaa; margin-top: 20px;">Secured by Google Firebase</div>
+    </div>
+</div>
+
+<div class="float-container">
+    <div class="float-btn" id="bookBtn" onclick="checkAccess('book')">
+        <i class="fas fa-book-open"></i>
+        <div class="lock-badge" id="bookLock"><i class="fas fa-lock"></i></div>
+    </div>
+    
+    <div class="float-btn" id="chatBtn" onclick="checkAccess('chat')">
+        <i class="fas fa-robot"></i>
+        <div class="lock-badge" id="chatLock"><i class="fas fa-lock"></i></div>
+    </div>
+</div>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span><i class="fas fa-mosque"></i> Islamic Assistant</span>
         <span style="cursor:pointer" onclick="toggleChat()"><i class="fas fa-times"></i></span>
     </div>
     <div class="chat-body" id="chatBody">
-        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon. Sawal poochiye.</div>
+        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M ka AI Assistant hoon.</div>
     </div>
     <div class="chat-input-area">
         <input id="userInput" class="chat-input" placeholder="Sawal likhein..." onkeydown="if(event.key==='Enter')sendMessage()">
@@ -465,101 +609,164 @@
     </div>
 </div>
 
-<script>
-    // --- SETUP: ADD PROFILE ICON TO HEADER AUTOMATICALLY ---
-    document.addEventListener("DOMContentLoaded", function() {
-        // Dhundo ki header kahan hai aur usme icon daal do
-        const header = document.querySelector('header');
-        if(header) {
-            // Check agar pehle se button hai to delete karo (duplication avoid karne ke liye)
-            const oldBtn = document.getElementById('headerProfileBtn');
-            if(oldBtn) oldBtn.remove();
+<script type="module">
+    // --- IMPORT FIREBASE ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-            const profileBtn = document.createElement('div');
-            profileBtn.id = 'headerProfileBtn';
-            profileBtn.className = 'profile-btn';
-            profileBtn.innerHTML = '<i class="fas fa-user"></i>';
-            profileBtn.onclick = function() { checkAccess('profile'); };
-            
-            // Header ke andar last element ke roop mein add karo
-            header.appendChild(profileBtn);
+    // --- YOUR REAL CONFIG (DO NOT CHANGE) ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE",
+        authDomain: "quran50m-login.firebaseapp.com",
+        projectId: "quran50m-login",
+        storageBucket: "quran50m-login.firebasestorage.app",
+        messagingSenderId: "467087335036",
+        appId: "1:467087335036:web:bd38b32f71b4ec751a73f9",
+        measurementId: "G-4CLK4VJW6M"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // --- GOOGLE LOGIN FUNCTION ---
+    window.googleLogin = function() {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                // Save Login
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("userName", user.displayName);
+                localStorage.setItem("userPhoto", user.photoURL);
+
+                // Update UI
+                closeLogin();
+                unlockAll();
+                setupHeaderProfile();
+                
+                alert("Welcome " + user.displayName + "! Login Successful ✅");
+                
+                // Auto Open Feature
+                if(window.pendingAction === 'chat') setTimeout(() => toggleChat(), 500);
+                else if(window.pendingAction === 'book') window.location.href = "books.html";
+
+            }).catch((error) => {
+                console.error("Login Error:", error);
+                if(error.code === 'auth/unauthorized-domain') {
+                    alert("Error: 'quran50m.online' domain Firebase me add nahi hai.");
+                } else {
+                    alert("Login Failed: " + error.message);
+                }
+            });
+    }
+
+    // --- LOGOUT FUNCTION ---
+    window.handleLogout = function() {
+        if(confirm("Logout karna chahte hain?")) {
+            signOut(auth).then(() => {
+                localStorage.clear();
+                location.reload();
+            });
         }
+    }
 
-        // Login Check
+    // --- HEADER UI & SETUP ---
+    document.addEventListener("DOMContentLoaded", function() {
         if(localStorage.getItem("isLoggedIn") === "true") {
             unlockAll();
         }
+        setupHeaderProfile();
     });
 
-    let pendingAction = null; 
+    window.setupHeaderProfile = function() {
+        const header = document.querySelector('header');
+        if(header) {
+            // Remove old if exists
+            const old = document.getElementById('profileWrapper');
+            if(old) old.remove();
 
-    function checkAccess(action) {
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
-        
-        if (isLoggedIn === "true") {
-            // LOGGED IN ACTIONS
+            const wrapper = document.createElement('div');
+            wrapper.id = 'profileWrapper';
+            wrapper.className = 'profile-container';
+            
+            // Photo or Default Icon
+            let iconHTML = '<i class="fas fa-user"></i>';
+            const savedPhoto = localStorage.getItem("userPhoto");
+            if(savedPhoto && localStorage.getItem("isLoggedIn") === "true") {
+                iconHTML = `<img src="${savedPhoto}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+            }
+
+            wrapper.innerHTML = `
+                <div class="profile-btn" onclick="toggleMenu()">
+                    ${iconHTML}
+                </div>
+                <div class="profile-dropdown" id="profileMenu">
+                    <div class="menu-item" onclick="alert('Profile Coming Soon!')"><i class="fas fa-user-circle"></i> Profile</div>
+                    <div class="menu-item" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+                </div>
+            `;
+            header.appendChild(wrapper);
+            
+            // Update styling if logged in
+            if(localStorage.getItem("isLoggedIn") === "true") {
+                const btn = wrapper.querySelector('.profile-btn');
+                btn.style.borderColor = "#FFD700";
+            }
+        }
+    }
+
+    // --- MENU TOGGLE ---
+    window.toggleMenu = function() {
+        const menu = document.getElementById('profileMenu');
+        if(localStorage.getItem("isLoggedIn") !== "true") {
+            document.getElementById("loginModal").style.display = "flex";
+        } else {
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+    }
+
+    // Close menu on outside click
+    document.addEventListener('click', function(e) {
+        const wrapper = document.getElementById('profileWrapper');
+        const menu = document.getElementById('profileMenu');
+        if (wrapper && !wrapper.contains(e.target) && menu) {
+            menu.style.display = 'none';
+        }
+    });
+
+    // --- ACCESS CONTROL ---
+    window.pendingAction = null;
+    window.checkAccess = function(action) {
+        if (localStorage.getItem("isLoggedIn") === "true") {
             if(action === 'chat') toggleChat();
             if(action === 'book') window.location.href = "books.html";
-            if(action === 'profile') {
-                const logout = confirm("Aap already logged in hain. Logout karna chahte hain?");
-                if(logout) {
-                    localStorage.removeItem("isLoggedIn");
-                    location.reload(); // Refresh page to lock again
-                }
-            }
         } else {
-            // LOGGED OUT ACTIONS (Show Modal)
-            pendingAction = action;
+            window.pendingAction = action;
             document.getElementById("loginModal").style.display = "flex";
         }
     }
 
-    function handleLogin() {
-        const contact = document.getElementById("userContact").value;
-        if (contact.trim() === "") {
-            alert("Please enter details!");
-            return;
-        }
-        
-        // Save Fake Login
-        localStorage.setItem("isLoggedIn", "true");
-        
-        closeLogin();
-        unlockAll();
-        
-        // Action Resume
-        if(pendingAction === 'chat') setTimeout(() => toggleChat(), 500);
-        else if(pendingAction === 'book') window.location.href = "books.html";
-        else if(pendingAction === 'profile') alert("Login Successful! Welcome.");
-    }
-
-    function closeLogin() {
+    window.closeLogin = function() {
         document.getElementById("loginModal").style.display = "none";
-        pendingAction = null;
+        window.pendingAction = null;
     }
 
-    function unlockAll() {
-        document.getElementById("chatLock").style.display = "none";
-        document.getElementById("bookLock").style.display = "none";
-        
-        // Profile Icon ka color change karo taaki pata chale login hai
-        const pBtn = document.getElementById('headerProfileBtn');
-        if(pBtn) {
-            pBtn.style.background = "#FFD700";
-            pBtn.style.color = "black";
-        }
+    window.unlockAll = function() {
+        if(document.getElementById("chatLock")) document.getElementById("chatLock").style.display = "none";
+        if(document.getElementById("bookLock")) document.getElementById("bookLock").style.display = "none";
     }
 
-    // --- GEMINI API LOGIC (Same as before) ---
-    const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI";
+    // --- GEMINI 2.5 FLASH LOGIC ---
+    const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI"; // Chatbot Key
     const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-    function toggleChat(){
+    window.toggleChat = function(){
         const w = document.getElementById("chatWindow");
         w.style.display = w.style.display === "flex" ? "none" : "flex";
     }
 
-    function appendMessage(text, type){
+    window.appendMessage = function(text, type){
         const body = document.getElementById("chatBody");
         const div = document.createElement("div");
         div.className = "msg " + type;
@@ -569,7 +776,7 @@
         return div;
     }
 
-    async function sendMessage(){
+    window.sendMessage = async function(){
         const input = document.getElementById("userInput");
         const text = input.value.trim();
         if(!text) return;
@@ -588,7 +795,6 @@
     }
 </script>
 
-    
 
 </body>
 </html>
