@@ -337,75 +337,6 @@ function setupHeaderProfile() {
     }
 }
 
-    /* --- 2. LOGIN MODAL (Style) --- */
-    .login-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6); z-index: 10001; /* Sabse upar */
-        display: none; align-items: center; justify-content: center;
-        backdrop-filter: blur(8px);
-    }
-    .login-card {
-        background: white; width: 90%; max-width: 380px;
-        border-radius: 24px; padding: 30px 25px;
-        text-align: center; color: #333;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        font-family: 'Outfit', sans-serif;
-        animation: zoomIn 0.3s ease-out; position: relative;
-    }
-    @keyframes zoomIn { from {transform: scale(0.9); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-    
-    .login-logo img { width: 70px; height: 70px; border-radius: 18px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .login-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; color: #000; }
-    .login-subtitle { font-size: 0.9rem; color: #666; margin-bottom: 25px; }
-    
-    .login-input {
-        width: 100%; padding: 15px; border: 1px solid #ddd;
-        border-radius: 12px; font-size: 1rem; margin-bottom: 15px;
-        background: #f8f9fa; outline: none; transition: 0.3s;
-    }
-    .login-input:focus { border-color: #2563eb; background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-    
-    .btn-main {
-        width: 100%; padding: 15px; background: #2563eb; color: white;
-        border: none; border-radius: 50px; font-size: 1rem; font-weight: 600;
-        cursor: pointer; margin-bottom: 10px; transition: 0.3s;
-    }
-    .btn-main:hover { background: #1d4ed8; transform: translateY(-2px); }
-    
-    .btn-close {
-        width: 100%; padding: 15px; background: #f1f5f9; color: #475569;
-        border: none; border-radius: 50px; font-size: 1rem; font-weight: 600;
-        cursor: pointer; transition: 0.3s;
-    }
-    .btn-close:hover { background: #e2e8f0; }
-
-    /* --- 3. FLOATING ICONS (Chat & Book) --- */
-    .float-btn {
-        position: fixed; bottom: 25px;
-        width: 60px; height: 60px;
-        background: rgba(10, 10, 10, 0.6); 
-        border: 2px solid #FFD700;
-        border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 9990;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); 
-        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        backdrop-filter: blur(10px);
-    }
-    .float-btn:hover { transform: scale(1.1); background: rgba(255, 215, 0, 0.15); }
-    .float-btn i { font-size: 24px; color: #FFD700; }
-    
-    /* Lock Badge (Red Dot) */
-    .lock-badge {
-        position: absolute; top: -2px; right: -2px;
-        background: #ef4444; color: white; font-size: 10px;
-        width: 22px; height: 22px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        border: 2px solid #111; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-
-    /* Positioning */
-    #chatBtn { right: 20px; }  
-    #bookBtn { left: 20px; }   
 
     /* --- CHAT WINDOW CSS (Same) --- */
     .chat-window {
@@ -424,6 +355,7 @@ function setupHeaderProfile() {
     .chat-input-area { padding: 12px; display: flex; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
     .chat-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 50px; color: #fff; outline: none; }
     .send-btn { width: 40px; height: 40px; border: none; border-radius: 50%; background: #FFD700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    
 </style>
 
 <div class="login-overlay" id="loginModal">
