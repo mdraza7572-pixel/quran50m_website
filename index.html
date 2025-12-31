@@ -260,9 +260,10 @@
         <div class="disclaimer">
             <p><strong>⚠️ Copyright Disclaimer</strong></p>
 
-                      </footer>
+         </footer>
 
-    <div class="login-overlay" id="loginModal">
+
+        <div class="login-overlay" id="loginModal">
         <div class="login-card">
             <h2 style="margin:0 0 10px 0; color:#000;">Welcome 👋</h2>
             <p style="color:#666; margin:0;">Sign in to unlock AI & Books</p>
@@ -287,7 +288,7 @@
 
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
-            <span><i class="fas fa-mosque"></i> Islamic AI</span>
+            <span><i class="fas fa-mosque"></i> Islamic AI (Llama 3)</span>
             <span onclick="document.getElementById('chatWindow').style.display='none'" style="cursor:pointer;">✖</span>
         </div>
         <div class="chat-body" id="chatBody">
@@ -303,10 +304,11 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-        // --- 🟢 NEW UPDATED GEMINI KEY 🟢 ---
-        const GEMINI_API_KEY = "AIzaSyBhiEpbH_8jfnMtH2bi6sn6-nBg7Cwkvf0"; 
-        
-        // --- FIREBASE CONFIG (OLD ONE FOR LOGIN) ---
+        // --- 🟢 GROQ API SETUP (Confirmed) 🟢 ---
+        const GROQ_API_KEY = "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"; 
+        const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+
+        // --- FIREBASE CONFIG (Login) ---
         const firebaseConfig = {
             apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
             authDomain: "quran50m-login.firebaseapp.com",
@@ -315,9 +317,6 @@
             messagingSenderId: "467087335036",
             appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
         };
-        
-        // --- USING v1beta FOR BETTER STABILITY ---
-        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -375,16 +374,19 @@
             });
         };
 
+        // --- GROQ (LLAMA 3) CHATBOT LOGIC ---
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const text = input.value.trim();
             if(!text) return;
+            
             const body = document.getElementById('chatBody');
             const userDiv = document.createElement('div');
             userDiv.className = 'msg user-msg';
             userDiv.innerText = text;
             body.appendChild(userDiv);
             input.value = '';
+            
             const botDiv = document.createElement('div');
             botDiv.className = 'msg bot-msg';
             botDiv.innerText = '...';
@@ -392,18 +394,34 @@
             body.scrollTop = body.scrollHeight;
 
             try {
-                const res = await fetch(GEMINI_URL, {
+                // Call Groq API
+                const res = await fetch(GROQ_URL, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "Answer strictly in Hinglish/Urdu. Question: " + text }] }] })
+                    headers: {
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.1-8b-instant",
+                        messages: [
+                            { role: "system", content: "You are a helpful Islamic assistant. Answer strictly in Hinglish or Urdu. Keep answers brief and polite." },
+                            { role: "user", content: text }
+                        ],
+                        temperature: 0.7
+                    })
                 });
+                
                 const data = await res.json();
-                if (data.error) {
-                    botDiv.innerText = "Error: Key problem (" + data.error.message + ")";
+                
+                if (data.choices && data.choices[0]) {
+                    botDiv.innerText = data.choices[0].message.content;
+                } else if(data.error) {
+                    botDiv.innerText = "Error: " + data.error.message;
                 } else {
-                    botDiv.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Jawab nahi mila.";
+                    botDiv.innerText = "Jawab nahi mila.";
                 }
             } catch(e) {
+                console.error(e);
                 botDiv.innerText = "Network Error.";
             }
         }
