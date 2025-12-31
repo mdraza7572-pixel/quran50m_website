@@ -809,148 +809,144 @@
                 alert("Welcome " + user.displayName + "! Login Successful ✅");
                 
                 // Auto Open Feature
-                if(window.pendingAction === 'chat') setTimeout(() => toggleChat(), 500);
-                else if(window.pendingAction === 'book') window.location.href = "books.html";
+<style>
+    /* Profile & Icons Styling */
+    .profile-container { position: relative; display: inline-block; margin-left: 10px; }
+    .profile-btn { width: 45px; height: 45px; border-radius: 50%; background: #222; border: 2px solid #FFD700; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; }
+    .profile-dropdown { position: absolute; top: 60px; right: 0; width: 180px; background: white; border-radius: 12px; display: none; flex-direction: column; z-index: 10002; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .menu-item { padding: 10px 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-size: 14px; }
+    
+    /* Floating Stack */
+    .float-container { position: fixed; bottom: 25px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 9990; }
+    .float-btn { width: 60px; height: 60px; background: rgba(10,10,10,0.8); border: 2px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; backdrop-filter: blur(5px); }
+    .lock-badge { position: absolute; top: 0; right: 0; background: #ef4444; color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 1px solid #000; }
+    
+    /* Chat Window */
+    .chat-window { position: fixed; bottom: 100px; right: 20px; width: 320px; height: 450px; background: #000; border: 1px solid #333; border-radius: 20px; display: none; flex-direction: column; z-index: 9999; overflow: hidden; }
+    .chat-header { padding: 12px; background: #111; color: #FFD700; display: flex; justify-content: space-between; border-bottom: 1px solid #222; }
+    .chat-body { flex: 1; padding: 15px; overflow-y: auto; color: #fff; font-size: 14px; }
+    .chat-input-area { padding: 10px; display: flex; gap: 5px; background: #111; }
+    .chat-input { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 8px; border-radius: 20px; outline: none; }
+    
+    /* Login Modal */
+    .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; display: none; align-items: center; justify-content: center; }
+    .login-card { background: #fff; padding: 25px; border-radius: 20px; text-align: center; width: 300px; }
+    .btn-google { width: 100%; padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; margin-top: 15px; }
+</style>
 
-            }).catch((error) => {
-                console.error("Login Error:", error);
-                if(error.code === 'auth/unauthorized-domain') {
-                    alert("Error: 'quran50m.online' domain Firebase me add nahi hai.");
-                } else {
-                    alert("Login Failed: " + error.message);
-                }
-            });
-    }
+<div class="login-overlay" id="loginModal">
+    <div class="login-card">
+        <h3 style="color:#000">Welcome 👋</h3>
+        <p style="color:#666; font-size: 14px">Login to unlock Books & AI</p>
+        <button class="btn-google" id="gBtn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+            Continue with Google
+        </button>
+        <button onclick="document.getElementById('loginModal').style.display='none'" style="margin-top:10px; border:none; background:none; color:#999; cursor:pointer">Cancel</button>
+    </div>
+</div>
 
-    // --- LOGOUT FUNCTION ---
-    window.handleLogout = function() {
-        if(confirm("Logout karna chahte hain?")) {
-            signOut(auth).then(() => {
-                localStorage.clear();
-                location.reload();
-            });
-        }
-    }
+<div class="float-container">
+    <div class="float-btn" id="bookBtn">
+        <i class="fas fa-book-open" style="color:#fff"></i>
+        <div class="lock-badge" id="bookLock"><i class="fas fa-lock"></i></div>
+    </div>
+    <div class="float-btn" id="chatBtn">
+        <i class="fas fa-robot" style="color:#FFD700"></i>
+        <div class="lock-badge" id="chatLock"><i class="fas fa-lock"></i></div>
+    </div>
+</div>
 
-    // --- HEADER UI & SETUP ---
-    document.addEventListener("DOMContentLoaded", function() {
-        if(localStorage.getItem("isLoggedIn") === "true") {
-            unlockAll();
-        }
-        setupHeaderProfile();
-    });
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header"><span>🤖 Islamic AI</span><span onclick="document.getElementById('chatWindow').style.display='none'" style="cursor:pointer">✖</span></div>
+    <div class="chat-body" id="chatBody">Main Quran 50M AI hoon. Poochiye...</div>
+    <div class="chat-input-area">
+        <input type="text" id="userInput" class="chat-input" placeholder="Type here...">
+        <button id="sendBtn" style="background:#FFD700; border:none; padding:8px 12px; border-radius:50%; cursor:pointer">➤</button>
+    </div>
+</div>
 
-    window.setupHeaderProfile = function() {
-        const header = document.querySelector('header');
-        if(header) {
-            const old = document.getElementById('profileWrapper');
-            if(old) old.remove();
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-            const wrapper = document.createElement('div');
-            wrapper.id = 'profileWrapper';
-            wrapper.className = 'profile-container';
-            
-            let iconHTML = '<i class="fas fa-user"></i>';
-            const savedPhoto = localStorage.getItem("userPhoto");
-            if(savedPhoto && localStorage.getItem("isLoggedIn") === "true") {
-                iconHTML = `<img src="${savedPhoto}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-            }
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE",
+        authDomain: "quran50m-login.firebaseapp.com",
+        projectId: "quran50m-login",
+        storageBucket: "quran50m-login.firebasestorage.app",
+        messagingSenderId: "467087335036",
+        appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
+    };
 
-            wrapper.innerHTML = `
-                <div class="profile-btn" onclick="toggleMenu()">
-                    ${iconHTML}
-                </div>
-                <div class="profile-dropdown" id="profileMenu">
-                    <div class="menu-item" style="cursor:default; font-size:12px; color:#888;">
-                        ${localStorage.getItem("userName") || "Guest"}
-                    </div>
-                    <div class="menu-item" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
-                </div>
-            `;
-            header.appendChild(wrapper);
-            
-            if(localStorage.getItem("isLoggedIn") === "true") {
-                const btn = wrapper.querySelector('.profile-btn');
-                btn.style.borderColor = "#FFD700";
-            }
-        }
-    }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
-    // --- MENU TOGGLE ---
-    window.toggleMenu = function() {
-        const menu = document.getElementById('profileMenu');
-        if(localStorage.getItem("isLoggedIn") !== "true") {
-            document.getElementById("loginModal").style.display = "flex";
-        } else {
-            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
-        }
-    }
-
-    document.addEventListener('click', function(e) {
-        const wrapper = document.getElementById('profileWrapper');
-        const menu = document.getElementById('profileMenu');
-        if (wrapper && !wrapper.contains(e.target) && menu) {
-            menu.style.display = 'none';
-        }
-    });
-
-    // --- ACCESS CONTROL ---
+    // Global Functions to fix "Not Defined" error
     window.pendingAction = null;
-    window.checkAccess = function(action) {
+
+    window.toggleChat = () => {
+        const w = document.getElementById('chatWindow');
+        w.style.display = w.style.display === 'flex' ? 'none' : 'flex';
+    };
+
+    window.checkAccess = (action) => {
         if (localStorage.getItem("isLoggedIn") === "true") {
-            if(action === 'chat') toggleChat();
-            if(action === 'book') window.location.href = "books.html";
+            if (action === 'chat') window.toggleChat();
+            if (action === 'book') window.location.href = "books.html";
         } else {
             window.pendingAction = action;
-            document.getElementById("loginModal").style.display = "flex";
+            document.getElementById('loginModal').style.display = 'flex';
         }
+    };
+
+    // Google Login
+    document.getElementById('gBtn').onclick = () => {
+        signInWithPopup(auth, provider).then((result) => {
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userPhoto", result.user.photoURL);
+            location.reload();
+        }).catch(err => alert("Login Failed!"));
+    };
+
+    // Click listeners
+    document.getElementById('chatBtn').onclick = () => window.checkAccess('chat');
+    document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
+
+    // Header Profile Auto-Setup
+    const header = document.querySelector('header');
+    if(header) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'profile-container';
+        const photo = localStorage.getItem("userPhoto") || "";
+        wrapper.innerHTML = `
+            <div class="profile-btn" id="pBtn">
+                ${photo ? `<img src="${photo}" style="width:100%">` : '<i class="fas fa-user" style="color:#fff"></i>'}
+            </div>
+            <div class="profile-dropdown" id="pMenu">
+                <div class="menu-item" id="logoutBtn">Logout</div>
+            </div>
+        `;
+        header.appendChild(wrapper);
+        
+        document.getElementById('pBtn').onclick = () => {
+            if(localStorage.getItem("isLoggedIn") === "true") {
+                const m = document.getElementById('pMenu');
+                m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+            } else {
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+        };
+        
+        document.getElementById('logoutBtn').onclick = () => {
+            signOut(auth).then(() => { localStorage.clear(); location.reload(); });
+        };
     }
 
-    window.closeLogin = function() {
-        document.getElementById("loginModal").style.display = "none";
-        window.pendingAction = null;
-    }
-
-    window.unlockAll = function() {
-        if(document.getElementById("chatLock")) document.getElementById("chatLock").style.display = "none";
-        if(document.getElementById("bookLock")) document.getElementById("bookLock").style.display = "none";
-    }
-
-    // --- GEMINI 2.5 FLASH LOGIC ---
-    const API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI"; 
-    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
-
-    window.toggleChat = function(){
-        const w = document.getElementById("chatWindow");
-        w.style.display = w.style.display === "flex" ? "none" : "flex";
-    }
-
-    window.appendMessage = function(text, type){
-        const body = document.getElementById("chatBody");
-        const div = document.createElement("div");
-        div.className = "msg " + type;
-        div.innerText = text;
-        body.appendChild(div);
-        body.scrollTop = body.scrollHeight;
-        return div;
-    }
-
-    window.sendMessage = async function(){
-        const input = document.getElementById("userInput");
-        const text = input.value.trim();
-        if(!text) return;
-        appendMessage(text, "user-msg");
-        input.value = "";
-        const loading = appendMessage("Typing...", "bot-msg");
-        try{
-            const res = await fetch(API_URL, {
-                method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ contents: [{ parts: [{ text: "You are an Islamic assistant. Reply briefly. Question: " + text }] }] })
-            });
-            const data = await res.json();
-            if(data.error) loading.innerText = "Error: " + data.error.message;
-            else loading.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No reply.";
-        } catch(e){ loading.innerText = "Net error ❌"; }
+    if(localStorage.getItem("isLoggedIn") === "true") {
+        document.getElementById('chatLock').style.display = 'none';
+        document.getElementById('bookLock').style.display = 'none';
     }
 </script>
 
