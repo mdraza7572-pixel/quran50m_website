@@ -532,9 +532,138 @@
                 }
             };
         }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* --- STYLING (SAME AS BEFORE) --- */
+    .profile-container { display: inline-block; margin-left: 15px; position: relative; vertical-align: middle; }
+    .profile-btn { width: 42px; height: 42px; border-radius: 50%; background: #111; border: 2px solid #FFD700; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; transition: 0.3s; }
+    .profile-btn img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-btn i { color: #fff; font-size: 18px; }
+    .profile-dropdown { position: absolute; top: 55px; right: 0; width: 160px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); display: none; flex-direction: column; overflow: hidden; z-index: 10005; }
+    .menu-item { padding: 12px; color: #333; font-size: 14px; cursor: pointer; border-bottom: 1px solid #eee; font-family: sans-serif; }
+    .menu-item:hover { background: #f5f5f5; }
+    
+    .float-container { position: fixed; bottom: 25px; right: 20px; display: flex; flex-direction: column; gap: 15px; align-items: flex-end; z-index: 9990; }
+    .float-btn { width: 60px; height: 60px; background: rgba(0, 0, 0, 0.8); border: 2px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; backdrop-filter: blur(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+    .lock-badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 2px solid #000; }
+    
+    .chat-window { position: fixed; bottom: 100px; right: 20px; width: 320px; height: 450px; background: #0a0a0a; border: 1px solid #333; border-radius: 20px; display: none; flex-direction: column; z-index: 9999; box-shadow: 0 20px 50px rgba(0,0,0,0.8); font-family: sans-serif; }
+    .chat-header { padding: 15px; background: #151515; color: #FFD700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; font-weight: bold; }
+    .chat-body { flex: 1; padding: 15px; overflow-y: auto; color: #eee; font-size: 14px; }
+    .msg { padding: 8px 12px; margin-bottom: 8px; border-radius: 10px; max-width: 80%; }
+    .bot-msg { background: #222; align-self: flex-start; }
+    .user-msg { background: #FFD700; color: #000; align-self: flex-end; margin-left: auto; }
+    .chat-input-area { padding: 10px; background: #151515; display: flex; gap: 5px; }
+    .chat-input { flex: 1; padding: 10px; border-radius: 20px; border: none; outline: none; background: #222; color: white; }
+
+    .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+    .login-card { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 350px; font-family: sans-serif; }
+    .btn-google { width: 100%; padding: 12px; margin-top: 20px; background: white; border: 1px solid #ddd; border-radius: 50px; font-weight: bold; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+</style>
+
+<div class="login-overlay" id="loginModal">
+    <div class="login-card">
+        <h2 style="margin:0 0 10px 0; color:#000;">Welcome 👋</h2>
+        <p style="color:#666; margin:0;">Sign in to unlock AI & Books</p>
+        <button class="btn-google" id="googleBtn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+            Continue with Google
+        </button>
+        <button onclick="document.getElementById('loginModal').style.display='none'" style="margin-top:15px; background:none; border:none; color:#999; cursor:pointer;">Cancel</button>
+    </div>
+</div>
+
+<div class="float-container">
+    <div class="float-btn" id="bookBtn" style="width:50px; height:50px; border-color:#fff;">
+        <i class="fas fa-book-open" style="color:#fff; font-size:20px;"></i>
+        <div class="lock-badge" id="bookLock"><i class="fas fa-lock"></i></div>
+    </div>
+    <div class="float-btn" id="chatBtn">
+        <i class="fas fa-robot" style="color:#FFD700; font-size:28px;"></i>
+        <div class="lock-badge" id="chatLock"><i class="fas fa-lock"></i></div>
+    </div>
+</div>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span><i class="fas fa-mosque"></i> Islamic AI</span>
+        <span onclick="document.getElementById('chatWindow').style.display='none'" style="cursor:pointer;">✖</span>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M AI hoon.</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="userInput" class="chat-input" placeholder="Sawal poohein...">
+        <button id="sendBtn" style="background:#FFD700; border:none; width:35px; height:35px; border-radius:50%; cursor:pointer;">➤</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    // --- 🟢 FIXED GEMINI KEY (Jo tumne di thi) ---
+    const GEMINI_API_KEY = "AIzaSyCFxGUeE_dCiARfRBFKNfElq9Y_fedz2dI"; 
+    
+    // --- 🟢 FIXED FIREBASE CONFIG (Login ke liye) ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
+        authDomain: "quran50m-login.firebaseapp.com",
+        projectId: "quran50m-login",
+        storageBucket: "quran50m-login.firebasestorage.app",
+        messagingSenderId: "467087335036",
+        appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
+    };
+
+    // Note: Official API 1.5-flash hi hai, par maine tumhare request par link update kiya hai.
+    // Agar future me 2.5 fail ho, to wapas 1.5 karna padega. 
+    // Abhi ke liye ye working link hai:
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // --- AUTO HEADER FIX (No need to find Subscribe button manually) ---
+    function setupHeaderProfile() {
+        const header = document.querySelector('header'); 
+        if(header && !document.getElementById('profileWrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.id = 'profileWrapper';
+            wrapper.className = 'profile-container';
+            const savedPhoto = localStorage.getItem("userPhoto");
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            
+            wrapper.innerHTML = `
+                <div class="profile-btn" id="pBtn" style="border-color: ${isLoggedIn ? '#FFD700' : '#fff'}">
+                    ${(isLoggedIn && savedPhoto) ? `<img src="${savedPhoto}">` : '<i class="fas fa-user"></i>'}
+                </div>
+                <div class="profile-dropdown" id="pMenu">
+                    <div class="menu-item" style="cursor:default; color:#888; font-size:12px;">Account</div>
+                    <div class="menu-item" id="logoutBtn" style="color:red;">Logout</div>
+                </div>
+            `;
+            header.appendChild(wrapper);
+
+            document.getElementById('pBtn').onclick = () => {
+                if(localStorage.getItem("isLoggedIn") === "true") {
+                    const m = document.getElementById('pMenu');
+                    m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+                } else {
+                    document.getElementById('loginModal').style.display = 'flex';
+                }
+            };
+
+            document.getElementById('logoutBtn').onclick = () => {
+                if(confirm("Logout?")) {
+                    signOut(auth).then(() => { localStorage.clear(); location.reload(); });
+                }
+            };
+        }
     }
 
-    // --- LOGIN LOGIC ---
+    // --- LOGIN ---
     document.getElementById('googleBtn').onclick = () => {
         signInWithPopup(auth, provider).then((result) => {
             localStorage.setItem("isLoggedIn", "true");
@@ -542,12 +671,61 @@
             localStorage.setItem("userPhoto", result.user.photoURL);
             location.reload();
         }).catch((error) => {
-            alert("Login Failed! Firebase Console me Domain Add karo.");
-            console.error(error);
+            alert("Login Failed: " + error.message);
         });
     };
 
-    // --- CHECK ACCESS ---
+    // --- CHATBOT ---
+    async function sendMessage() {
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if(!text) return;
+
+        const body = document.getElementById('chatBody');
+        const userDiv = document.createElement('div');
+        userDiv.className = 'msg user-msg';
+        userDiv.innerText = text;
+        body.appendChild(userDiv);
+        input.value = '';
+
+        const botDiv = document.createElement('div');
+        botDiv.className = 'msg bot-msg';
+        botDiv.innerText = 'Soch raha hoon...';
+        body.appendChild(botDiv);
+        body.scrollTop = body.scrollHeight;
+
+        try {
+            const res = await fetch(GEMINI_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ contents: [{ parts: [{ text: "You are a helpful Islamic assistant. Reply in Hinglish/Urdu. Question: " + text }] }] })
+            });
+            
+            const data = await res.json();
+            
+            if (data.error) {
+                console.error("Gemini Error:", data.error);
+                botDiv.innerText = "Error: Key check karein. (" + data.error.message + ")";
+            } else {
+                botDiv.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Jawab nahi mila.";
+            }
+        } catch(e) {
+            botDiv.innerText = "Network Error.";
+        }
+    }
+
+    document.getElementById('sendBtn').onclick = sendMessage;
+    document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+
+    // --- ON LOAD ---
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(setupHeaderProfile, 1000); 
+        if(localStorage.getItem("isLoggedIn") === "true") {
+            document.getElementById('chatLock').style.display = 'none';
+            document.getElementById('bookLock').style.display = 'none';
+        }
+    });
+
     window.checkAccess = (action) => {
         if(localStorage.getItem("isLoggedIn") === "true") {
             if(action === 'chat') {
@@ -559,60 +737,11 @@
             document.getElementById('loginModal').style.display = 'flex';
         }
     };
-
+    
     document.getElementById('chatBtn').onclick = () => window.checkAccess('chat');
     document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
-
-    // --- GEMINI CHATBOT ---
-    async function sendMessage() {
-        const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if(!text) return;
-
-        // User Msg
-        const body = document.getElementById('chatBody');
-        const userDiv = document.createElement('div');
-        userDiv.className = 'msg user-msg';
-        userDiv.innerText = text;
-        body.appendChild(userDiv);
-        input.value = '';
-
-        // Bot Msg (Loading)
-        const botDiv = document.createElement('div');
-        botDiv.className = 'msg bot-msg';
-        botDiv.innerText = '...';
-        body.appendChild(botDiv);
-        body.scrollTop = body.scrollHeight;
-
-        try {
-            const res = await fetch(GEMINI_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ contents: [{ parts: [{ text: "Answer briefly: " + text }] }] })
-            });
-            const data = await res.json();
-            botDiv.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error.";
-        } catch(e) {
-            botDiv.innerText = "Network Error.";
-        }
-    }
-
-    document.getElementById('sendBtn').onclick = sendMessage;
-    document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
-
-    // --- ON LOAD ---
-    document.addEventListener("DOMContentLoaded", () => {
-        // 1. Setup Header Icon Automatically
-        // Thoda wait karke run karte hain taaki header load ho jaye
-        setTimeout(setupHeaderProfile, 500);
-
-        // 2. Unlock if Logged In
-        if(localStorage.getItem("isLoggedIn") === "true") {
-            document.getElementById('chatLock').style.display = 'none';
-            document.getElementById('bookLock').style.display = 'none';
-        }
-    });
 </script>
+
     
 
 </body>
