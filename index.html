@@ -320,22 +320,24 @@
         </div>
     </footer>
 
-<style>
-    /* --- 1. HEADER PROFILE ICON (New) --- */
-    /* Is code ko header ke andar set karna padega via JS or manual placement */
-    .profile-btn {
-        width: 40px; height: 40px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; transition: 0.3s;
-        margin-left: 10px;
+function setupHeaderProfile() {
+    const wrapper = document.getElementById('profileWrapper');
+    if(wrapper) {
+        const photo = localStorage.getItem("userPhoto");
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        
+        wrapper.innerHTML = `
+            <div class="profile-btn" onclick="toggleMenu()" style="border-color: ${isLoggedIn ? '#FFD700' : '#fff'}">
+                ${(isLoggedIn && photo) ? `<img src="${photo}" style="width:100%; height:100%; border-radius:50%;">` : '<i class="fas fa-user" style="color:#fff"></i>'}
+            </div>
+            <div class="profile-dropdown" id="profileMenu">
+                <div class="menu-item" onclick="handleLogout()">Logout</div>
+            </div>
+        `;
     }
-    .profile-btn:hover { background: #FFD700; color: black; border-color: #FFD700; }
-    .profile-btn i { font-size: 1.2rem; }
+}
 
-    /* --- 2. LOGIN MODAL (Manish Verma Style) --- */
+    /* --- 2. LOGIN MODAL (Style) --- */
     .login-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0, 0, 0, 0.6); z-index: 10001; /* Sabse upar */
