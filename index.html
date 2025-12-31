@@ -235,7 +235,7 @@
         </div>
     </section>
 
-    <section class="container">
+    section class="container">
         <div class="support-box">
             <h2 style="margin-bottom: 15px;">🔔 Support the <span class="gradient-text">Channel</span></h2>
             <p style="color: var(--text-gray); margin-bottom: 20px;">Agar aapko ye tilawat pasand aaye to:</p>
@@ -260,7 +260,7 @@
         <div class="disclaimer">
             <p><strong>⚠️ Copyright Disclaimer</strong></p>
 
-                </footer>
+                      </footer>
 
     <div class="login-overlay" id="loginModal">
         <div class="login-card">
@@ -303,9 +303,10 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-        // --- 🟢 NEW KEY HERE ---
-        const GEMINI_API_KEY = "AIzaSyD2PE7oxfiZjYzMlvxHJCEVNbl9V0ydGu8"; 
+        // --- 🟢 NEW UPDATED GEMINI KEY 🟢 ---
+        const GEMINI_API_KEY = "AIzaSyBhiEpbH_8jfnMtH2bi6sn6-nBg7Cwkvf0"; 
         
+        // --- FIREBASE CONFIG (OLD ONE FOR LOGIN) ---
         const firebaseConfig = {
             apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
             authDomain: "quran50m-login.firebaseapp.com",
@@ -314,7 +315,9 @@
             messagingSenderId: "467087335036",
             appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
         };
-        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        
+        // --- USING v1beta FOR BETTER STABILITY ---
+        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -433,4 +436,3 @@
     </script>
 </body>
 </html>
-  
