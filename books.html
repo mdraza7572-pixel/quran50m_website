@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Library - Quran 50M</title>
+    <title>Islamic Digital Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
-        // --- 🔒 SECURITY CHECK (Sabse Pehle) ---
-        // Agar user logged in nahi hai, to wapas Home bhej do
+        // 🔒 Security Check
         if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.href = "index.html";
         }
@@ -17,176 +16,204 @@
 
     <style>
         :root {
-            --primary-gold: #FFD700;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --card-radius: 20px;
+            --gold: #FFD700;
+            --dark: #0a0a0a;
+            --panel: #111;
+            --border: rgba(255,255,255,0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        
-        body {
-            background-color: #050505;
-            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #000 70%);
-            color: white; min-height: 100vh;
-        }
+        body { background: #000; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* HEADER */
+        /* --- HEADER --- */
         header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 30px; background: rgba(0,0,0,0.8);
-            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(10px);
+            padding: 15px 20px; background: rgba(20,20,20,0.9);
+            border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
         }
-        .logo { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--primary-gold); }
-        .back-btn { text-decoration: none; color: #ccc; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
-        .back-btn:hover { color: var(--primary-gold); }
+        .logo { font-size: 1.2rem; font-weight: 700; color: var(--gold); display: flex; align-items: center; gap: 10px; }
+        .home-btn { color: #ccc; text-decoration: none; font-size: 0.9rem; }
 
-        /* SEARCH BAR */
-        .search-container {
-            max-width: 600px; margin: 40px auto 20px; padding: 0 20px; position: relative;
-        }
-        .search-input {
-            width: 100%; padding: 15px 20px 15px 50px;
-            background: #111; border: 1px solid #333; border-radius: 50px;
-            color: white; outline: none; font-size: 1rem; transition: 0.3s;
-        }
-        .search-input:focus { border-color: var(--primary-gold); box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
-        .search-icon { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); color: #666; }
+        /* --- LAYOUT --- */
+        .layout { display: flex; flex: 1; overflow: hidden; }
 
-        /* BOOK GRID */
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        /* SIDEBAR (Book List) */
+        .sidebar {
+            width: 280px; background: var(--panel); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+        }
+        .sidebar-header { padding: 20px; font-weight: 600; color: #888; border-bottom: 1px solid var(--border); }
+        .book-list { list-style: none; overflow-y: auto; flex: 1; }
+        .book-item {
+            padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #222;
+            transition: 0.2s; display: flex; align-items: center; gap: 10px;
+        }
+        .book-item:hover { background: #1a1a1a; }
+        .book-item.active { background: rgba(255, 215, 0, 0.1); border-left: 4px solid var(--gold); color: var(--gold); }
+        .book-icon { color: #555; }
+        .book-item.active .book-icon { color: var(--gold); }
+
+        /* MAIN CONTENT (Volumes Grid) */
+        .main-content { flex: 1; padding: 20px; overflow-y: auto; position: relative; }
+        
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px; margin-top: 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px; padding-bottom: 50px;
         }
 
-        /* BOOK CARD */
-        .book-card {
-            background: #0e0e0e; border: 1px solid var(--glass-border);
-            border-radius: var(--card-radius); overflow: hidden;
-            transition: 0.3s; position: relative; display: flex; flex-direction: column;
+        /* VOLUME CARD */
+        .card {
+            background: #161616; border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; transition: 0.3s;
+            display: flex; flex-direction: column;
         }
-        .book-card:hover { transform: translateY(-5px); border-color: var(--primary-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
         
-        .book-cover {
-            width: 100%; height: 280px; object-fit: cover;
-            background: #222; /* Placeholder color if image missing */
-            border-bottom: 1px solid #222;
+        .card-img {
+            height: 140px; background: #222; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; border-bottom: 1px solid var(--border);
         }
+        .card-img i { font-size: 3rem; color: #333; margin-bottom: 10px; }
+        .card-body { padding: 15px; text-align: center; }
+        .vol-name { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 10px; display: block; }
         
-        .book-info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-        .book-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; color: #fff; }
-        .book-author { font-size: 0.85rem; color: #888; margin-bottom: 15px; }
-        
-        .actions { margin-top: auto; display: flex; gap: 10px; }
+        .btn-row { display: flex; gap: 5px; }
         .btn {
-            flex: 1; padding: 10px; border-radius: 8px; font-size: 0.9rem;
-            text-align: center; text-decoration: none; cursor: pointer; font-weight: 600;
-            transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px;
+            flex: 1; padding: 8px; border-radius: 6px; font-size: 0.8rem; text-decoration: none;
+            text-align: center; font-weight: 600; transition: 0.2s;
         }
-        .btn-read { background: var(--primary-gold); color: black; }
-        .btn-read:hover { background: #e6c200; }
-        .btn-download { background: #222; color: white; border: 1px solid #333; }
-        .btn-download:hover { background: #333; }
+        .btn-read { background: var(--gold); color: black; }
+        .btn-dl { background: #333; color: white; }
+        .btn:hover { opacity: 0.8; }
 
-        /* User Profile in Header */
-        .user-badge {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255,255,255,0.1); padding: 5px 15px 5px 5px;
-            border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar { width: 100%; height: 160px; flex: none; }
+            .book-list { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px; border-bottom: 1px solid var(--border); }
+            .book-item { border: 1px solid var(--border); border-radius: 50px; margin-right: 10px; padding: 8px 20px; flex-shrink: 0; }
+            .book-item.active { border-left: 1px solid var(--gold); border-color: var(--gold); }
+            .sidebar-header { display: none; }
         }
-        .user-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
-        .user-name { font-size: 0.85rem; color: #ddd; }
-
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Home</a>
-        <div class="logo"><i class="fas fa-book-open"></i> Islamic Library</div>
-        <div class="user-badge" id="userBadge" style="display:none;">
-            <img src="" id="userImg" class="user-img">
-            <span id="userName" class="user-name">User</span>
-        </div>
+        <div class="logo"><i class="fas fa-mosque"></i> Quran 50M Library</div>
+        <a href="index.html" class="home-btn"><i class="fas fa-home"></i> Home</a>
     </header>
 
-    <div class="search-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search for books, duas..." onkeyup="filterBooks()">
-    </div>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="sidebar-header">📚 Select a Book</div>
+            <ul class="book-list" id="bookList">
+                </ul>
+        </div>
 
-    <div class="container">
-        <div class="grid" id="bookGrid">
-            
-            <div class="book-card">
-                <img src="https://via.placeholder.com/300x400/000000/FFD700?text=Quran+Majeed" class="book-cover" alt="Cover">
-                <div class="book-info">
-                    <div class="book-title">Quran Majeed (Color Coded)</div>
-                    <div class="book-author">Tajweed Rules</div>
-                    <div class="actions">
-                        <a href="books/quran-color.pdf" target="_blank" class="btn btn-read"><i class="fas fa-eye"></i> Read</a>
-                        <a href="books/quran-color.pdf" download class="btn btn-download"><i class="fas fa-download"></i></a>
-                    </div>
+        <div class="main-content">
+            <h2 id="currentBookTitle" style="margin-bottom: 20px; color: var(--gold);">Select a Book</h2>
+            <div class="grid" id="volumeGrid">
                 </div>
-            </div>
-
-            <div class="book-card">
-                <img src="https://via.placeholder.com/300x400/111111/FFD700?text=Panj+Surah" class="book-cover" alt="Cover">
-                <div class="book-info">
-                    <div class="book-title">Panj Surah & Duas</div>
-                    <div class="book-author">Daily Wazifa</div>
-                    <div class="actions">
-                        <a href="books/panj-surah.pdf" target="_blank" class="btn btn-read"><i class="fas fa-eye"></i> Read</a>
-                        <a href="books/panj-surah.pdf" download class="btn btn-download"><i class="fas fa-download"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="book-card">
-                <img src="https://via.placeholder.com/300x400/222222/FFD700?text=Hisn+ul+Muslim" class="book-cover" alt="Cover">
-                <div class="book-info">
-                    <div class="book-title">Hisn-ul-Muslim</div>
-                    <div class="book-author">Authentic Duas</div>
-                    <div class="actions">
-                        <a href="books/hisnul-muslim.pdf" target="_blank" class="btn btn-read"><i class="fas fa-eye"></i> Read</a>
-                        <a href="books/hisnul-muslim.pdf" download class="btn btn-download"><i class="fas fa-download"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            </div>
+        </div>
     </div>
 
     <script>
-        // --- Display User Info ---
-        const uName = localStorage.getItem("userName");
-        const uPhoto = localStorage.getItem("userPhoto");
+        // ==========================================
+        // 🛠️ CONFIGURATION AREA (Yahan Nayi Books Add Karein)
+        // ==========================================
         
-        if(uName && uPhoto) {
-            document.getElementById('userBadge').style.display = "flex";
-            document.getElementById('userName').innerText = uName.split(" ")[0]; // First name only
-            document.getElementById('userImg').src = uPhoto;
-        }
+        const libraryData = [
+            {
+                id: "fatawa",
+                title: "Fatawa Razawiya",
+                folder: "books", // Folder where PDFs are stored
+                totalVolumes: 30, // Number of volumes
+                customFiles: [ // If naming is irregular (like 1.1, 1.2)
+                    { name: "Jild 1 (Part 1)", file: "Fatawa-Razawiya-Jild-1.1.pdf" },
+                    { name: "Jild 1 (Part 2)", file: "Fatawa-Razawiya-Jild-1.2.pdf" }
+                ],
+                // For regular volumes (3 to 30), code will auto-generate
+                startRegular: 3, 
+                endRegular: 30,
+                baseFileName: "Fatawa-Razawiya-Jild-" // e.g., ...Jild-3.pdf
+            },
+            
+            // --- EXAMPLE: AGAR DUSRI KITAB DALNI HO TO AISE CODE LIKHEN ---
+            // {
+            //     id: "bahar",
+            //     title: "Bahar-e-Shariat",
+            //     folder: "books",
+            //     totalVolumes: 20,
+            //     startRegular: 1,
+            //     endRegular: 20,
+            //     baseFileName: "Bahar-e-Shariat-Vol-"
+            // }
+        ];
 
-        // --- Search Functionality ---
-        function filterBooks() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toUpperCase();
-            const grid = document.getElementById('bookGrid');
-            const cards = grid.getElementsByClassName('book-card');
+        // ==========================================
+        // ⚙️ LOGIC (DO NOT TOUCH BELOW)
+        // ==========================================
 
-            for (let i = 0; i < cards.length; i++) {
-                const title = cards[i].getElementsByClassName('book-title')[0];
-                const txtValue = title.textContent || title.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
+        const bookListEl = document.getElementById('bookList');
+        const volumeGridEl = document.getElementById('volumeGrid');
+        const titleEl = document.getElementById('currentBookTitle');
+
+        // 1. Render Sidebar (Book Titles)
+        libraryData.forEach((book, index) => {
+            const li = document.createElement('li');
+            li.className = `book-item ${index === 0 ? 'active' : ''}`; // Select first by default
+            li.innerHTML = `<i class="fas fa-book book-icon"></i> ${book.title}`;
+            li.onclick = () => loadBook(index);
+            bookListEl.appendChild(li);
+        });
+
+        // 2. Load Volumes for a Book
+        function loadBook(index) {
+            // Highlight Sidebar Item
+            document.querySelectorAll('.book-item').forEach(el => el.classList.remove('active'));
+            bookListEl.children[index].classList.add('active');
+
+            const book = libraryData[index];
+            titleEl.innerText = book.title;
+            volumeGridEl.innerHTML = ""; // Clear previous
+
+            // Helper to create card
+            const createCard = (name, fileName) => {
+                return `
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-file-pdf"></i>
+                        <span style="font-size:0.8rem; color:#666;">PDF</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="vol-name">${name}</span>
+                        <div class="btn-row">
+                            <a href="${book.folder}/${fileName}" target="_blank" class="btn btn-read">Read</a>
+                            <a href="${book.folder}/${fileName}" download class="btn btn-dl"><i class="fas fa-download"></i></a>
+                        </div>
+                    </div>
+                </div>`;
+            };
+
+            // A. Add Custom Files (like 1.1, 1.2)
+            if (book.customFiles) {
+                book.customFiles.forEach(f => {
+                    volumeGridEl.innerHTML += createCard(f.name, f.file);
+                });
+            }
+
+            // B. Add Regular Files (Loop)
+            if (book.startRegular && book.endRegular) {
+                for (let i = book.startRegular; i <= book.endRegular; i++) {
+                    const fileName = `${book.baseFileName}${i}.pdf`;
+                    volumeGridEl.innerHTML += createCard(`Jild ${i}`, fileName);
                 }
             }
         }
+
+        // Load first book on start
+        loadBook(0);
+
     </script>
 
 </body>
