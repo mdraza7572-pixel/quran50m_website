@@ -7,6 +7,7 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 async function sendMessage() {
     const input = document.getElementById('userInput');
     if(!input) return; // Safety check
+    
     const text = input.value.trim();
     if(!text) return;
     
@@ -31,19 +32,17 @@ async function sendMessage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "meta-llama/llama-4-maverick-17b-128e-instruct", // Smart Model
+                // 🔥 NEW LLAMA 4 MODEL (Super Smart & Fast)
+                model: "meta-llama/llama-4-maverick-17b-128e-instruct", 
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur funny knowledgeable Islamic AI assistant ho. Tumhara naam 'Ahmad' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, Tum ek calm, soft-spoken Islamic assistant ho. Tum jawab Quran & adab ke saath dete ho. Agar sawal Islamic na ho, tab bhi polite raho." 
+                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
                     },
-                    { 
-  role: "user",
-  content: `User ka sawal hai:\n"${text}"`
-                    }
+                    { role: "user", content: text }
                 ],
                 temperature: 0.7,
-                max_tokens: 200
+                max_tokens: 300
             })
         });
         
@@ -66,16 +65,14 @@ async function sendMessage() {
 window.speakAnswer = function(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
+    
+    // Emojis aur special chars hatana
     const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
     const speech = new SpeechSynthesisUtterance(cleanText);
-    let voiceEnabled = true;
-if (voiceEnabled) speakAnswer(ans);
-    // Find Hindi Voice
-    speechSynthesis.onvoiceschanged = () => {};
-    const hindiVoice = const hindiVoice =
-  voices.find(v => v.lang === 'hi-IN') ||
-  voices.find(v => v.name.includes('Hindi')) ||
-  voices.find(v => v.lang.startsWith('hi'));
+    
+    // Hindi Voice Dhoondna
+    const voices = window.speechSynthesis.getVoices();
+    const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IND'));
     if (hindiVoice) speech.voice = hindiVoice;
     
     speech.lang = 'hi-IN';
@@ -97,15 +94,12 @@ window.startListening = function() {
     recognition.onresult = function (event) {
         const text = event.results[0][0].transcript;
         document.getElementById("userInput").value = text;
-        recognition.onerror = () => {
-  micBtn.innerText = "🎙️";
-};
+        micBtn.innerText = "🎙️";
         sendMessage();
     };
 };
 
-// --- SAFE EVENT LISTENERS ---
-// Wait for DOM to load before attaching events
+// --- EVENT LISTENERS ---
 document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const userInput = document.getElementById('userInput');
