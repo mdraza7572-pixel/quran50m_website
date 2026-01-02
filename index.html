@@ -390,7 +390,9 @@
 
                 document.getElementById('logoutBtn').onclick = () => {
                     if(confirm("Logout?")) {
-                        signOut(auth).then(() => { localStorage.clear(); location.reload(); });
+                        signOut(auth).then(() => { localStorage.removeItem("isLoggedIn");
+localStorage.removeItem("userName");
+localStorage.removeItem("userPhoto"); location.reload(); });
                     }
                 };
                 
@@ -492,18 +494,18 @@
         document.getElementById('chatBtn').onclick = () => window.checkAccess('chat');
         document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
 
-        <script>
+<script>
 
             Model: "llama-3.1-8b-instant",
-                        messages: [
-                            { role: "system", content: "You are a helpful and very kind Islamic assistant. Answer strictly in Hinglish or Urdu. Keep answers brief and polite." },
-                            { role: "user", content: text }
-                        ],
-                        temperature: 0.7
-                    })
-                });
+            messages: [
+                { role: "system", content: "You are a kind Islamic assistant..." },
+                { role: "user", content: text }
+            ],
+            temperature: 0.7
+
+    
                 
-                const data = await res.json();
+              const data = await res.json();
                 
                 if (data.choices && data.choices[0]) {
                     botDiv.innerText = data.choices[0].message.content;
@@ -545,11 +547,17 @@
 
     </script>
 
-    // --- VOICE SETUP START ---
+    <script>
+    function startListening() {
+       ...
+    }
 
 // 1. Meri baat suno (Speech to Text)
 function startListening() {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+  alert("Speech recognition supported nahi hai");
+  return;
+        }
     recognition.lang = 'hi-IN'; // Hindi samajhne ke liye
     
     document.getElementById("micBtn").innerText = "👂 Sun raha hu..."; // Button change hoga
@@ -561,7 +569,7 @@ function startListening() {
         
         // Yahan 'userInput' wo ID hai jo tere typing box ki hai. 
         // Agar ID alag hai to change kar lena.
-        document.querySelector("input[type='text']").value = text; 
+        document.getElementById("userInput").value = text;
         
         document.getElementById("micBtn").innerText = "🎙️"; // Wapas mic ban gaya
     };
