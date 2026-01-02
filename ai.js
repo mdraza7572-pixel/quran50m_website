@@ -70,8 +70,11 @@ window.speakAnswer = function(text) {
     const speech = new SpeechSynthesisUtterance(cleanText);
     
     // Find Hindi Voice
-    const voices = window.speechSynthesis.getVoices();
-    const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IND'));
+    speechSynthesis.onvoiceschanged = () => {};
+    const hindiVoice = const hindiVoice =
+  voices.find(v => v.lang === 'hi-IN') ||
+  voices.find(v => v.name.includes('Hindi')) ||
+  voices.find(v => v.lang.startsWith('hi'));
     if (hindiVoice) speech.voice = hindiVoice;
     
     speech.lang = 'hi-IN';
