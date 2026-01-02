@@ -31,11 +31,11 @@ async function sendMessage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile", // Smart Model
+                model: "meta-llama/llama-4-maverick-17b-128e-instruct", // Smart Model
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
+                        content: "Tum ek friendly aur funny knowledgeable Islamic AI assistant ho. Tumhara naam 'Ahmad' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
                     },
                     { role: "user", content: text }
                 ],
