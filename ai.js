@@ -35,7 +35,7 @@ async function sendMessage() {
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur funny knowledgeable Islamic AI assistant ho. Tumhara naam 'Ahmad' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
+                        content: "Tum ek friendly aur funny knowledgeable Islamic AI assistant ho. Tumhara naam 'Ahmad' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, Tum ek calm, soft-spoken Islamic assistant ho. Tum jawab Quran & adab ke saath dete ho. Agar sawal Islamic na ho, tab bhi polite raho." 
                     },
                     { role: "user", content: text }
                 ],
