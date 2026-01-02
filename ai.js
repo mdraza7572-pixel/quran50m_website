@@ -68,7 +68,8 @@ window.speakAnswer = function(text) {
     window.speechSynthesis.cancel();
     const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
     const speech = new SpeechSynthesisUtterance(cleanText);
-    
+    let voiceEnabled = true;
+if (voiceEnabled) speakAnswer(ans);
     // Find Hindi Voice
     speechSynthesis.onvoiceschanged = () => {};
     const hindiVoice = const hindiVoice =
@@ -96,7 +97,9 @@ window.startListening = function() {
     recognition.onresult = function (event) {
         const text = event.results[0][0].transcript;
         document.getElementById("userInput").value = text;
-        micBtn.innerText = "🎙️";
+        recognition.onerror = () => {
+  micBtn.innerText = "🎙️";
+};
         sendMessage();
     };
 };
