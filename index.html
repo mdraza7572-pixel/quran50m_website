@@ -551,42 +551,58 @@ localStorage.removeItem("userPhoto"); location.reload(); });
     function startListening() {
        ...
     }
+        
+<script>
+/* --- VOICE SETUP START --- */
 
-// 1. Meri baat suno (Speech to Text)
+// 1. Speech to Text
 function startListening() {
-    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-  alert("Speech recognition supported nahi hai");
-  return;
-        }
-    recognition.lang = 'hi-IN'; // Hindi samajhne ke liye
-    
-    document.getElementById("micBtn").innerText = "👂 Sun raha hu..."; // Button change hoga
+
+    const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("❌ Speech recognition is browser me supported nahi hai");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'hi-IN';
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    const micBtn = document.getElementById("micBtn");
+    micBtn.innerText = "👂 Sun raha hoon...";
 
     recognition.start();
 
-    recognition.onresult = function(event) {
+    recognition.onresult = function (event) {
         const text = event.results[0][0].transcript;
-        
-        // Yahan 'userInput' wo ID hai jo tere typing box ki hai. 
-        // Agar ID alag hai to change kar lena.
         document.getElementById("userInput").value = text;
-        
-        document.getElementById("micBtn").innerText = "🎙️"; // Wapas mic ban gaya
+        micBtn.innerText = "🎙️";
+    };
+
+    recognition.onerror = function () {
+        micBtn.innerText = "🎙️";
     };
 }
 
-// 2. AI bolega (Text to Speech)
+// 2. Text to Speech
 function speakAnswer(text) {
-    // Agar AI code bhej raha hai to usko mat bolo, sirf text bolo
-    // Ye safai kar raha hu taki code na padhne lage
-    const cleanText = text.replace(/```[\s\S]*?```/g, "Code screen par dekho."); 
-    
+    if (!window.speechSynthesis) return;
+
+    const cleanText = text.replace(/```[\s\S]*?```/g, "Code screen par dekho.");
+
     const speech = new SpeechSynthesisUtterance(cleanText);
-    speech.lang = 'hi-IN'; // Hindi accent
-    speech.rate = 1; // Speed normal
+    speech.lang = 'hi-IN';
+    speech.rate = 1;
+
+    window.speechSynthesis.cancel(); // purani awaaz stop
     window.speechSynthesis.speak(speech);
 }
-// --- VOICE SETUP END ---
+
+/* --- VOICE SETUP END --- */
+</script>
 
 </body>
 </html>
