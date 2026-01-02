@@ -493,6 +493,92 @@
         document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
 
         <script>
+
+            Model: "llama-3.1-8b-instant",
+                        messages: [
+                            { role: "system", content: "You are a helpful and very kind Islamic assistant. Answer strictly in Hinglish or Urdu. Keep answers brief and polite." },
+                            { role: "user", content: text }
+                        ],
+                        temperature: 0.7
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.choices && data.choices[0]) {
+                    botDiv.innerText = data.choices[0].message.content;
+                } else if(data.error) {
+                    botDiv.innerText = "Error: " + data.error.message;
+                } else {
+                    botDiv.innerText = "Jawab nahi mila.";
+                }
+            } catch(e) {
+                console.error(e);
+                botDiv.innerText = "Network Error.";
+            }
+        }
+
+        document.getElementById('sendBtn').onclick = sendMessage;
+        document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+
+        setupHeaderProfile();
+        
+        if(localStorage.getItem("isLoggedIn") === "true") {
+            document.getElementById('chatLock').style.display = 'none';
+            document.getElementById('bookLock').style.display = 'none';
+        }
+
+        window.checkAccess = (action) => {
+            if(localStorage.getItem("isLoggedIn") === "true") {
+                if(action === 'chat') {
+                    const w = document.getElementById('chatWindow');
+                    w.style.display = w.style.display === 'flex' ? 'none' : 'flex';
+                }
+                if(action === 'book') window.location.href = "books.html";
+            } else {
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+        };
+        
+        document.getElementById('chatBtn').onclick = () => window.checkAccess('chat');
+        document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
+
+    </script>
+
+    // --- VOICE SETUP START ---
+
+// 1. Meri baat suno (Speech to Text)
+function startListening() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'hi-IN'; // Hindi samajhne ke liye
     
+    document.getElementById("micBtn").innerText = "👂 Sun raha hu..."; // Button change hoga
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        const text = event.results[0][0].transcript;
+        
+        // Yahan 'userInput' wo ID hai jo tere typing box ki hai. 
+        // Agar ID alag hai to change kar lena.
+        document.querySelector("input[type='text']").value = text; 
+        
+        document.getElementById("micBtn").innerText = "🎙️"; // Wapas mic ban gaya
+    };
+}
+
+// 2. AI bolega (Text to Speech)
+function speakAnswer(text) {
+    // Agar AI code bhej raha hai to usko mat bolo, sirf text bolo
+    // Ye safai kar raha hu taki code na padhne lage
+    const cleanText = text.replace(/```[\s\S]*?```/g, "Code screen par dekho."); 
+    
+    const speech = new SpeechSynthesisUtterance(cleanText);
+    speech.lang = 'hi-IN'; // Hindi accent
+    speech.rate = 1; // Speed normal
+    window.speechSynthesis.speak(speech);
+}
+// --- VOICE SETUP END ---
+
 </body>
 </html>
