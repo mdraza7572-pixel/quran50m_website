@@ -1,4 +1,4 @@
-// --- ai.js (AI & Voice Logic) ---
+// --- (AI & Voice Logic) ---
 
 const GROQ_API_KEY = "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"; 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
@@ -32,7 +32,7 @@ async function sendMessage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile", // Smart Model
+                meta-llama/llama-4-maverick-17b-128e-instruct
                 messages: [
                     { 
                         role: "system", 
