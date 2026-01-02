@@ -1,4 +1,4 @@
-// --- (AI & Voice Logic) ---
+// --- ai.js (AI & Voice Logic) ---
 
 const GROQ_API_KEY = "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"; 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
@@ -6,7 +6,7 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // --- CHATBOT FUNCTION ---
 async function sendMessage() {
     const input = document.getElementById('userInput');
-    if(!input) return; // Safety: Agar input box nahi mila to ruk jao
+    if(!input) return; // Safety check
     
     const text = input.value.trim();
     if(!text) return;
@@ -32,16 +32,17 @@ async function sendMessage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                meta-llama/llama-4-maverick-17b-128e-instruct
+                // 🔥 NEW LLAMA 4 MODEL (Super Smart & Fast)
+                model: "meta-llama/llama-4-maverick-17b-128e-instruct", 
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur funny knowledgeable Islamic AI assistant ho. Tumhara naam 'llama' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
+                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Ahmad' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
                     },
                     { role: "user", content: text }
                 ],
                 temperature: 0.7,
-                max_tokens: 200
+                max_tokens: 300
             })
         });
         
@@ -65,7 +66,7 @@ window.speakAnswer = function(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     
-    // Emojis aur special chars hatana taaki safai se bole
+    // Emojis aur special chars hatana
     const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
     const speech = new SpeechSynthesisUtterance(cleanText);
     
@@ -87,7 +88,7 @@ window.startListening = function() {
     recognition.lang = 'hi-IN';
     
     const micBtn = document.getElementById("micBtn");
-    micBtn.innerText = " 👀";
+    micBtn.innerText = "👀";
     recognition.start();
 
     recognition.onresult = function (event) {
@@ -98,7 +99,7 @@ window.startListening = function() {
     };
 };
 
-// --- EVENT LISTENERS (Safety ke saath) ---
+// --- EVENT LISTENERS ---
 document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const userInput = document.getElementById('userInput');
