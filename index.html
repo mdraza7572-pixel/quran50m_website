@@ -468,9 +468,7 @@
         document.getElementById('sendBtn').onclick = sendMessage;
         document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
 
-        <button id="micBtn" onclick="startListening()" style="margin: 0 5px; cursor: pointer;">🎙️</button>
         
-
         setupHeaderProfile();
         
         if(localStorage.getItem("isLoggedIn") === "true") {
