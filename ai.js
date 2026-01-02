@@ -1,4 +1,4 @@
-// --- (AI & Voice Logic) ---
+// --- ai.js (AI & Voice Logic) ---
 
 const GROQ_API_KEY = "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"; 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
@@ -6,6 +6,8 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // --- CHATBOT FUNCTION ---
 async function sendMessage() {
     const input = document.getElementById('userInput');
+    if(!input) return; // Safety: Agar input box nahi mila to ruk jao
+    
     const text = input.value.trim();
     if(!text) return;
     
@@ -34,7 +36,7 @@ async function sendMessage() {
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
+                        content: "Tum ek friendly aur funny knowledgeable Islamic AI assistant ho. Tumhara naam 'llama' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
                     },
                     { role: "user", content: text }
                 ],
@@ -62,10 +64,12 @@ async function sendMessage() {
 window.speakAnswer = function(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
+    
+    // Emojis aur special chars hatana taaki safai se bole
     const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
     const speech = new SpeechSynthesisUtterance(cleanText);
     
-    // Find Hindi Voice
+    // Hindi Voice Dhoondna
     const voices = window.speechSynthesis.getVoices();
     const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IND'));
     if (hindiVoice) speech.voice = hindiVoice;
@@ -83,7 +87,7 @@ window.startListening = function() {
     recognition.lang = 'hi-IN';
     
     const micBtn = document.getElementById("micBtn");
-    micBtn.innerText = "👀";
+    micBtn.innerText = " 👀";
     recognition.start();
 
     recognition.onresult = function (event) {
@@ -94,11 +98,18 @@ window.startListening = function() {
     };
 };
 
-// --- EVENT LISTENERS ---
-document.getElementById('sendBtn').addEventListener('click', sendMessage);
-document.getElementById('userInput').addEventListener('keypress', (e) => { 
-    if(e.key === 'Enter') sendMessage(); 
+// --- EVENT LISTENERS (Safety ke saath) ---
+document.addEventListener('DOMContentLoaded', () => {
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+
+    if(sendBtn) sendBtn.addEventListener('click', sendMessage);
+    if(userInput) {
+        userInput.addEventListener('keypress', (e) => { 
+            if(e.key === 'Enter') sendMessage(); 
+        });
+    }
 });
 
 // Force load voices
-window.speechSynthesis.getVoices();
+if(window.speechSynthesis) window.speechSynthesis.getVoices();
