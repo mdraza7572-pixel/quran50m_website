@@ -294,7 +294,7 @@
             <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research.</p>
         </div>
 
-    </footer>
+            </footer>
 
     <div class="login-overlay" id="loginModal">
         <div class="login-card">
@@ -341,11 +341,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-        // --- 🟢 GROQ API SETUP 🟢 ---
-        const GROQ_API_KEY = "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"; 
-        const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-
-        // --- FIREBASE CONFIG ---
+        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
             authDomain: "quran50m-login.firebaseapp.com",
@@ -359,85 +355,7 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        function setupHeaderProfile() {
-            const wrapper = document.getElementById('profileWrapper');
-            if(wrapper) {
-                const savedPhoto = localStorage.getItem("userPhoto");
-                const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-                
-                wrapper.innerHTML = `
-                    <div class="profile-btn" id="pBtn" style="border-color: ${isLoggedIn ? '#FFD700' : '#444'}">
-                        ${(isLoggedIn && savedPhoto) ? `<img src="${savedPhoto}">` : '<i class="fas fa-user"></i>'}
-                    </div>
-                    <div class="profile-dropdown" id="pMenu">
-                        <div class="menu-item" style="cursor:default; color:#888; font-size:12px;">Account</div>
-                        <div class="menu-item" id="logoutBtn" style="color:red;">Logout</div>
-                    </div>
-                `;
-
-                document.getElementById('pBtn').onclick = (e) => {
-                    e.stopPropagation();
-                    if(localStorage.getItem("isLoggedIn") === "true") {
-                        const m = document.getElementById('pMenu');
-                        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-                    } else {
-                        document.getElementById('loginModal').style.display = 'flex';
-                    }
-                };
-
-                document.getElementById('logoutBtn').onclick = () => {
-                    if(confirm("Logout?")) {
-                        signOut(auth).then(() => { 
-                            localStorage.removeItem("isLoggedIn");
-                            localStorage.removeItem("userName");
-                            localStorage.removeItem("userPhoto"); 
-                            location.reload(); 
-                        });
-                    }
-                };
-                
-                window.addEventListener('click', (e) => {
-                    if(!wrapper.contains(e.target)) {
-                        const menu = document.getElementById('pMenu');
-                        if(menu) menu.style.display = 'none';
-                    }
-                });
-            }
-        }
-
-        document.getElementById('googleBtn').onclick = () => {
-            signInWithPopup(auth, provider).then((result) => {
-                localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("userName", result.user.displayName);
-                localStorage.setItem("userPhoto", result.user.photoURL);
-                location.reload();
-            }).catch((error) => {
-                alert("Login Error: " + error.message);
-            });
-        };
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-        // --- GROQ API SETUP ---
-        const GROQ_API_KEY = "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"; 
-        const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-
-        // --- FIREBASE CONFIG ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
-            authDomain: "quran50m-login.firebaseapp.com",
-            projectId: "quran50m-login",
-            storageBucket: "quran50m-login.firebasestorage.app",
-            messagingSenderId: "467087335036",
-            appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        // --- PROFILE & LOGOUT ---
+        // PROFILE & LOGIN LOGIC
         function setupHeaderProfile() {
             const wrapper = document.getElementById('profileWrapper');
             if(wrapper) {
@@ -493,127 +411,9 @@
             });
         };
 
-        // --- SMART CHATBOT LOGIC (Llama 3.3 70B) ---
-        async function sendMessage() {
-            const input = document.getElementById('userInput');
-            const text = input.value.trim();
-            if(!text) return;
-            
-            const body = document.getElementById('chatBody');
-            const userDiv = document.createElement('div');
-            userDiv.className = 'msg user-msg';
-            userDiv.innerText = text;
-            body.appendChild(userDiv);
-            input.value = '';
-            
-            const botDiv = document.createElement('div');
-            botDiv.className = 'msg bot-msg';
-            botDiv.innerText = 'Soch raha hoon...';
-            body.appendChild(botDiv);
-            body.scrollTop = body.scrollHeight;
-
-            try {
-                const res = await fetch(GROQ_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${GROQ_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        // ✅ MODEL CHANGED TO 70B (Smarter & No Repetition)
-                        model: "llama-3.3-70b-versatile",
-                        messages: [
-                            { 
-                                role: "system", 
-                                // ✅ NEW VIBE: Friendly, Hindi/Urdu, Delhi Style
-                                content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho, jaise ek acha dost samjhata hai. Tumhare jawab short, seedhe aur helpful hone chahiye. Agar koi Deen ki baat puche to adab se jawab do. Repetitive mat bano." 
-                            },
-                            { role: "user", content: text }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 150 // Keep answers short for better voice
-                    })
-                });
-                
-                const data = await res.json();
-                
-                if (data.choices && data.choices[0]) {
-                    const ans = data.choices[0].message.content;
-                    botDiv.innerText = ans;
-                    speakAnswer(ans); // 🔊 Speak the answer
-                } else if(data.error) {
-                    botDiv.innerText = "Error: " + data.error.message;
-                } else {
-                    botDiv.innerText = "Jawab nahi mila.";
-                }
-            } catch(e) {
-                console.error(e);
-                botDiv.innerText = "Network Error.";
-            }
-        }
-
-        document.getElementById('sendBtn').onclick = sendMessage;
-        document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
-
-        // --- 🔊 BETTER VOICE FUNCTION (Natural Hindi Finder) ---
-        window.speakAnswer = function(text) {
-            if (!window.speechSynthesis) return;
-
-            // Stop previous speech
-            window.speechSynthesis.cancel();
-
-            // Clean text (remove emojis/stars for reading)
-            const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
-            
-            const speech = new SpeechSynthesisUtterance(cleanText);
-            
-            // 🟢 TRICK: Find the best Hindi voice available on device
-            const voices = window.speechSynthesis.getVoices();
-            const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IND'));
-            
-            if (hindiVoice) {
-                speech.voice = hindiVoice; // Set best voice
-                speech.lang = 'hi-IN';
-                speech.rate = 1.0; // Normal speed
-                speech.pitch = 1.0; // Natural pitch
-            } else {
-                // Fallback
-                speech.lang = 'hi-IN'; 
-            }
-
-            window.speechSynthesis.speak(speech);
-        };
-
-        // --- 🎙️ MIC FUNCTION ---
-        window.startListening = function() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) { alert("Mic not supported in this browser"); return; }
-
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'hi-IN'; // Listen for Hindi/Urdu
-            
-            const micBtn = document.getElementById("micBtn");
-            micBtn.innerText = "👂";
-
-            recognition.start();
-
-            recognition.onresult = function (event) {
-                const text = event.results[0][0].transcript;
-                document.getElementById("userInput").value = text;
-                micBtn.innerText = "🎙️";
-                sendMessage(); // Auto send after speaking
-            };
-            recognition.onerror = function () { 
-                micBtn.innerText = "🎙️"; 
-            };
-        };
-
         // INITIALIZE
         setupHeaderProfile();
         
-        // Force load voices (Chrome bug fix)
-        window.speechSynthesis.getVoices();
-
         if(localStorage.getItem("isLoggedIn") === "true") {
             document.getElementById('chatLock').style.display = 'none';
             document.getElementById('bookLock').style.display = 'none';
@@ -635,6 +435,7 @@
         document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
     </script>
 
+    <script src="ai.js"></script>
+
 </body>
 </html>
-        
