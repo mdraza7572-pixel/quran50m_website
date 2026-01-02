@@ -7,7 +7,6 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 async function sendMessage() {
     const input = document.getElementById('userInput');
     if(!input) return; // Safety check
-    
     const text = input.value.trim();
     if(!text) return;
     
@@ -32,17 +31,16 @@ async function sendMessage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                // 🔥 NEW LLAMA 4 MODEL (Super Smart & Fast)
-                model: "meta-llama/llama-4-maverick-17b-128e-instruct", 
+                model: "llama-3.3-70b-versatile", // Smart Model
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Ahmad' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
+                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
                     },
                     { role: "user", content: text }
                 ],
                 temperature: 0.7,
-                max_tokens: 300
+                max_tokens: 200
             })
         });
         
@@ -65,12 +63,10 @@ async function sendMessage() {
 window.speakAnswer = function(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    
-    // Emojis aur special chars hatana
     const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
     const speech = new SpeechSynthesisUtterance(cleanText);
     
-    // Hindi Voice Dhoondna
+    // Find Hindi Voice
     const voices = window.speechSynthesis.getVoices();
     const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IND'));
     if (hindiVoice) speech.voice = hindiVoice;
@@ -88,7 +84,7 @@ window.startListening = function() {
     recognition.lang = 'hi-IN';
     
     const micBtn = document.getElementById("micBtn");
-    micBtn.innerText = "👀";
+    micBtn.innerText = "👂";
     recognition.start();
 
     recognition.onresult = function (event) {
@@ -99,7 +95,8 @@ window.startListening = function() {
     };
 };
 
-// --- EVENT LISTENERS ---
+// --- SAFE EVENT LISTENERS ---
+// Wait for DOM to load before attaching events
 document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const userInput = document.getElementById('userInput');
