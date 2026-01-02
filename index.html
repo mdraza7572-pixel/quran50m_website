@@ -293,10 +293,10 @@
             <p><strong>⚠️ Copyright Disclaimer</strong></p>
             <p>Copyright Disclaimer under Section 107 of the Copyright Act 1976, allowance is made for fair use for purposes such as criticism, comment, news reporting, teaching, scholarship, and research.</p>
         </div>
-        
+
     </footer>
-        
-        <div class="login-overlay" id="loginModal">
+
+    <div class="login-overlay" id="loginModal">
         <div class="login-card">
             <h2 style="margin:0 0 10px 0; color:#000;">Welcome 👋</h2>
             <p style="color:#666; margin:0;">Sign in to unlock AI & Books</p>
@@ -308,17 +308,14 @@
         </div>
     </div>
 
-
     <div class="float-container">
         <div class="float-btn" id="bookBtn" style="width:50px; height:50px; border-color:#fff;">
             <i class="fas fa-book-open" style="color:#fff; font-size:20px;"></i>
             <div class="lock-badge" id="bookLock"><i class="fas fa-lock"></i></div>
         </div>
-
-        <div class="float-btn" id="gameBtn" onclick="window.location.href='game.html'" style="border-color:#fff;">
-    <i class="fas fa-gamepad" style="color:#FFD700; font-size:24px;"></i>
+        <div class="float-btn" id="gameBtn" onclick="window.location.href='game.html'" style="width:50px; height:50px; border-color:#fff;">
+            <i class="fas fa-gamepad" style="color:#FFD700; font-size:24px;"></i>
         </div>
-        
         <div class="float-btn" id="chatBtn">
             <i class="fas fa-robot" style="color:#FFD700; font-size:28px;"></i>
             <div class="lock-badge" id="chatLock"><i class="fas fa-lock"></i></div>
@@ -327,16 +324,16 @@
 
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
-            <span><i class="fas fa-mosque"></i> Islamic Assistant (Llama 3)</span>
+            <span><i class="fas fa-mosque"></i> Islamic AI</span>
             <span onclick="document.getElementById('chatWindow').style.display='none'" style="cursor:pointer;">✖</span>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Llama hoon.</div>
+            <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M AI hoon.</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="userInput" class="chat-input" placeholder="Sawal poohein...">
             <button id="sendBtn" style="background:#FFD700; border:none; width:35px; height:35px; border-radius:50%; cursor:pointer;">➤</button>
-            <button id="micBtn" onclick="startListening()" style="margin: 0 5px; cursor: pointer;">🎙️</button>
+            <button id="micBtn" onclick="startListening()" style="background:none; border:none; font-size:20px; cursor: pointer;">🎙️</button>
         </div>
     </div>
 
@@ -344,11 +341,11 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-        // --- 🟢 GROQ API SETUP (Confirmed) 🟢 ---
+        // --- 🟢 GROQ API SETUP 🟢 ---
         const GROQ_API_KEY = "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"; 
         const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-        // --- FIREBASE CONFIG (Login) ---
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
             authDomain: "quran50m-login.firebaseapp.com",
@@ -390,9 +387,12 @@
 
                 document.getElementById('logoutBtn').onclick = () => {
                     if(confirm("Logout?")) {
-                        signOut(auth).then(() => { localStorage.removeItem("isLoggedIn");
-localStorage.removeItem("userName");
-localStorage.removeItem("userPhoto"); location.reload(); });
+                        signOut(auth).then(() => { 
+                            localStorage.removeItem("isLoggedIn");
+                            localStorage.removeItem("userName");
+                            localStorage.removeItem("userPhoto"); 
+                            location.reload(); 
+                        });
                     }
                 };
                 
@@ -446,169 +446,7 @@ localStorage.removeItem("userPhoto"); location.reload(); });
                     body: JSON.stringify({
                         model: "llama-3.1-8b-instant",
                         messages: [
-                            { role: "system", content: "You are a helpful and very kind Islamic assistant. Answer strictly in Hinglish or Urdu. Keep answers brief and polite." },
-                            { role: "user", content: text }
-                        ],
-                        temperature: 0.7
-                    })
-                });
-                
-                const data = await res.json();
-                
-                if (data.choices && data.choices[0]) {
-                    botDiv.innerText = data.choices[0].message.content;
-                } else if(data.error) {
-    </footer>
-
-    <div class="login-overlay" id="loginModal">
-        <div class="login-card">
-            <h2 style="margin:0 0 10px 0; color:#000;">Welcome 👋</h2>
-            <p style="color:#666; margin:0;">Sign in to unlock AI & Books</p>
-            <button class="btn-google" id="googleBtn">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-                Continue with Google
-            </button>
-            <button onclick="document.getElementById('loginModal').style.display='none'" style="margin-top:15px; background:none; border:none; color:#999; cursor:pointer;">Cancel</button>
-        </div>
-    </div>
-
-    <div class="float-container">
-        <div class="float-btn" id="bookBtn" style="width:50px; height:50px; border-color:#fff;">
-            <i class="fas fa-book-open" style="color:#fff; font-size:20px;"></i>
-            <div class="lock-badge" id="bookLock"><i class="fas fa-lock"></i></div>
-        </div>
-        <div class="float-btn" id="gameBtn" onclick="window.location.href='game.html'" style="width:50px; height:50px; border-color:#fff;">
-            <i class="fas fa-gamepad" style="color:#FFD700; font-size:24px;"></i>
-        </div>
-        <div class="float-btn" id="chatBtn">
-            <i class="fas fa-robot" style="color:#FFD700; font-size:28px;"></i>
-            <div class="lock-badge" id="chatLock"><i class="fas fa-lock"></i></div>
-        </div>
-    </div>
-
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-header">
-            <span><i class="fas fa-mosque"></i> Islamic AI</span>
-            <span onclick="document.getElementById('chatWindow').style.display='none'" style="cursor:pointer;">✖</span>
-        </div>
-        <div class="chat-body" id="chatBody">
-            <div class="msg bot-msg">Assalamu Alaikum! 🤍 Main Quran 50M AI hoon.</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="userInput" class="chat-input" placeholder="Sawal poohein...">
-            <button id="sendBtn" style="background:#FFD700; border:none; width:35px; height:35px; border-radius:50%; cursor:pointer;">➤</button>
-            <button id="micBtn" onclick="startListening()" style="background:none; border:none; font-size:20px; cursor: pointer;">🎙️</button>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-        // GROQ CONFIG
-        const GROQ_API_KEY = "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"; 
-        const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-
-        // FIREBASE CONFIG
-        const firebaseConfig = {
-            apiKey: "AIzaSyAO7QUk3UnPAXGjtUQQCFDc_JtYQ5Qh6cE", 
-            authDomain: "quran50m-login.firebaseapp.com",
-            projectId: "quran50m-login",
-            storageBucket: "quran50m-login.firebasestorage.app",
-            messagingSenderId: "467087335036",
-            appId: "1:467087335036:web:bd38b32f71b4ec751a73f9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        // HEADER PROFILE & LOGOUT FIX
-        function setupHeaderProfile() {
-            const wrapper = document.getElementById('profileWrapper');
-            if(wrapper) {
-                const savedPhoto = localStorage.getItem("userPhoto");
-                const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-                
-                wrapper.innerHTML = `
-                    <div class="profile-btn" id="pBtn" style="border-color: ${isLoggedIn ? '#FFD700' : '#444'}">
-                        ${(isLoggedIn && savedPhoto) ? `<img src="${savedPhoto}">` : '<i class="fas fa-user"></i>'}
-                    </div>
-                    <div class="profile-dropdown" id="pMenu">
-                        <div class="menu-item" style="cursor:default; color:#888; font-size:12px;">Account</div>
-                        <div class="menu-item" id="logoutBtn" style="color:red;">Logout</div>
-                    </div>
-                `;
-
-                document.getElementById('pBtn').onclick = (e) => {
-                    e.stopPropagation();
-                    if(localStorage.getItem("isLoggedIn") === "true") {
-                        const m = document.getElementById('pMenu');
-                        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-                    } else {
-                        document.getElementById('loginModal').style.display = 'flex';
-                    }
-                };
-
-                document.getElementById('logoutBtn').onclick = () => {
-                    if(confirm("Logout?")) {
-                        signOut(auth).then(() => { 
-                            localStorage.clear(); 
-                            location.reload(); 
-                        });
-                    }
-                };
-                
-                window.addEventListener('click', (e) => {
-                    if(!wrapper.contains(e.target)) {
-                        const menu = document.getElementById('pMenu');
-                        if(menu) menu.style.display = 'none';
-                    }
-                });
-            }
-        }
-
-        document.getElementById('googleBtn').onclick = () => {
-            signInWithPopup(auth, provider).then((result) => {
-                localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("userName", result.user.displayName);
-                localStorage.setItem("userPhoto", result.user.photoURL);
-                location.reload();
-            }).catch((error) => {
-                alert("Login Error: " + error.message);
-            });
-        };
-
-        // GROQ CHATBOT
-        async function sendMessage() {
-            const input = document.getElementById('userInput');
-            const text = input.value.trim();
-            if(!text) return;
-            
-            const body = document.getElementById('chatBody');
-            const userDiv = document.createElement('div');
-            userDiv.className = 'msg user-msg';
-            userDiv.innerText = text;
-            body.appendChild(userDiv);
-            input.value = '';
-            
-            const botDiv = document.createElement('div');
-            botDiv.className = 'msg bot-msg';
-            botDiv.innerText = '...';
-            body.appendChild(botDiv);
-            body.scrollTop = body.scrollHeight;
-
-            try {
-                const res = await fetch(GROQ_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${GROQ_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: "llama-3.1-8b-instant",
-                        messages: [
-                            { role: "system", content: "You are a helpful Islamic assistant. Answer strictly in Hinglish or Urdu. Keep answers brief." },
+                            { role: "system", content: "You are a helpful Islamic assistant. Answer strictly in Hinglish or Urdu. Keep answers brief and polite." },
                             { role: "user", content: text }
                         ],
                         temperature: 0.7
@@ -620,7 +458,7 @@ localStorage.removeItem("userPhoto"); location.reload(); });
                 if (data.choices && data.choices[0]) {
                     const ans = data.choices[0].message.content;
                     botDiv.innerText = ans;
-                    speakAnswer(ans); // Speak response
+                    speakAnswer(ans); // Auto-speak
                 } else if(data.error) {
                     botDiv.innerText = "Error: " + data.error.message;
                 } else {
@@ -635,7 +473,6 @@ localStorage.removeItem("userPhoto"); location.reload(); });
         document.getElementById('sendBtn').onclick = sendMessage;
         document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
 
-        // INITIALIZE
         setupHeaderProfile();
         
         if(localStorage.getItem("isLoggedIn") === "true") {
@@ -657,6 +494,7 @@ localStorage.removeItem("userPhoto"); location.reload(); });
         
         document.getElementById('chatBtn').onclick = () => window.checkAccess('chat');
         document.getElementById('bookBtn').onclick = () => window.checkAccess('book');
+
     </script>
 
     <script>
@@ -691,3 +529,4 @@ localStorage.removeItem("userPhoto"); location.reload(); });
     </script>
 </body>
 </html>
+        
