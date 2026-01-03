@@ -1,50 +1,83 @@
-async function sendMessage() {
-    const input = document.getElementById("userInput");
-    const body = document.getElementById("chatBody");
-    if (!input || !body) return;
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Only POST allowed" });
+  }
 
-    const text = input.value.trim();
-    if (!text) return;
+  const userMessage = req.body?.message;
+  if (!userMessage) {
+    return res.status(400).json({ error: "Message required" });
+  }
 
-    const userDiv = document.createElement("div");
-    userDiv.className = "msg user-msg";
-    userDiv.innerText = text;
-    body.appendChild(userDiv);
-    input.value = "";
+  // 🧠 Decide which AI to use
+  const useGemini =
+    userMessage.length > 180 ||
+    userMessage.toLowerCase().includes("detail") ||
+    userMessage.toLowerCase().includes("explain");
 
-    const botDiv = document.createElement("div");
-    botDiv.className = "msg bot-msg";
-    botDiv.innerText = "🤔 Soch raha hoon...";
-    body.appendChild(botDiv);
-    body.scrollTop = body.scrollHeight;
-
-    try {
-        const res = await fetch(
-            "https://quran50m-backend.vercel.app/api/chat",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    message: text
-                })
-            }
-        );
-
-        const data = await res.json();
-
-        if (data.choices && data.choices[0]) {
-            const ans = data.choices[0].message.content;
-            botDiv.innerText = ans;
-            speakAnswer(ans); // voice bolegi
-        } else {
-            botDiv.innerText = "Maaf karna, jawab nahi mila.";
+  try {
+    if (useGemini) {
+      // 🔵 GEMINI
+      const geminiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text:
+                      "Tum ek polite Islamic AI ho. Hinglish me short aur respectful jawab do.\n\nUser: " +
+                      userMessage
+                  }
+                ]
+              }
+            ]
+          })
         }
+      );
 
-    } catch (err) {
-        console.error(err);
-        botDiv.innerText = "Server error.";
+      const geminiData = await geminiRes.json();
+      const text =
+        geminiData.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "Gemini jawab nahi de paaya.";
+
+      return res.status(200).json({
+        choices: [{ message: { content: text } }],
+        model: "gemini"
+      });
     }
-}if(window.speechSynthesis) window.speechSynthesis.getVoices();
 
+    // 🟢 LLAMA (GROQ)
+    const llamaRes = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "llama-3.1-8b-instant",
+          messages: [
+            {
+              role: "system",
+              content:
+                "Tum ek polite Islamic AI ho. Hinglish me short aur respectful jawab do."
+            },
+            { role: "user", content: userMessage }
+          ],
+          temperature: 0.7,
+          max_tokens: 200
+        })
+      }
+    );
+
+    const llamaData = await llamaRes.json();
+    return res.status(200).json(llamaData);
+
+  } catch (err) {
+    return res.status(500).json({ error: "AI Server Error" });
+  }
+}
