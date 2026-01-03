@@ -1,5 +1,3 @@
-alert("AI.JS LOADED");
-
 document.addEventListener("DOMContentLoaded", () => {
   alert("DOM READY");
 
