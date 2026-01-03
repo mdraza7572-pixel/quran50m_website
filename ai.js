@@ -14,7 +14,7 @@ async function sendMessage() {
 
     const botDiv = document.createElement("div");
     botDiv.className = "msg bot-msg";
-    botDiv.innerText = "Soch raha hoon...";
+    botDiv.innerText = "🤔 Soch raha hoon...";
     body.appendChild(botDiv);
     body.scrollTop = body.scrollHeight;
 
