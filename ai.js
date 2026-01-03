@@ -1,60 +1,49 @@
-console.log("AI JS STARTED");
-
-const API_URL = "https://quran50m-backend.vercel.app/api/chat";
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const sendBtn = document.getElementById("sendBtn");
-  const input = document.getElementById("userInput");
-  const body = document.getElementById("chatBody");
-
-  if (!sendBtn || !input || !body) {
-    console.error("Required elements missing");
-    return;
-  }
-
-  sendBtn.onclick = sendMessage;
-  input.onkeypress = e => {
-    if (e.key === "Enter") sendMessage();
-  };
-});
-
 async function sendMessage() {
-  const input = document.getElementById("userInput");
-  const body = document.getElementById("chatBody");
+    const input = document.getElementById("userInput");
+    const body = document.getElementById("chatBody");
+    if (!input || !body) return;
 
-  const text = input.value.trim();
-  if (!text) return;
+    const text = input.value.trim();
+    if (!text) return;
 
-  input.value = "";
+    const userDiv = document.createElement("div");
+    userDiv.className = "msg user-msg";
+    userDiv.innerText = text;
+    body.appendChild(userDiv);
+    input.value = "";
 
-  const userDiv = document.createElement("div");
-  userDiv.className = "msg user-msg";
-  userDiv.innerText = text;
-  body.appendChild(userDiv);
+    const botDiv = document.createElement("div");
+    botDiv.className = "msg bot-msg";
+    botDiv.innerText = "Soch raha hoon...";
+    body.appendChild(botDiv);
+    body.scrollTop = body.scrollHeight;
 
-  const botDiv = document.createElement("div");
-  botDiv.className = "msg bot-msg";
-  botDiv.innerText = "Soch raha hoon...";
-  body.appendChild(botDiv);
+    try {
+        const res = await fetch(
+            "https://quran50m-backend.vercel.app/api/chat",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: text
+                })
+            }
+        );
 
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
-    });
+        const data = await res.json();
 
-    const data = await res.json();
+        if (data.choices && data.choices[0]) {
+            const ans = data.choices[0].message.content;
+            botDiv.innerText = ans;
+            speakAnswer(ans); // voice bolegi
+        } else {
+            botDiv.innerText = "Maaf karna, jawab nahi mila.";
+        }
 
-    const ans =
-      data?.choices?.[0]?.message?.content ||
-      "Abhi jawab nahi mil paaya.";
-
-    botDiv.innerText = ans;
-
-  } catch (err) {
-    console.error(err);
-    botDiv.innerText = "Server error.";
-  }
+    } catch (err) {
+        console.error(err);
+        botDiv.innerText = "Server error.";
+    }
 }
