@@ -227,3 +227,31 @@ h1, h2 {
   0% { opacity: 0; }
   100% { opacity: 1; }
 }
+
+/* ===== CHAT & AI CLICK FIX ===== */
+
+#sendBtn,
+#micBtn,
+.chat-input,
+.chat-window,
+.ai-chat,
+#chatWindow {
+  pointer-events: auto !important;
+  z-index: 9999;
+  position: relative;
+}
+
+/* Background & game layers ko touch ignore karne do */
+body,
+.paper,
+#board,
+#gameboard,
+.tile {
+  pointer-events: none;
+}
+
+/* Chat ke andar wapas enable */
+.chat-window *,
+.ai-chat * {
+  pointer-events: auto;
+}
