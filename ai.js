@@ -6,6 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("sendBtn");
   const micBtn = document.getElementById("micBtn");
 
-  if (sendBtn) sendBtn.onclick = () => alert("Send button working");
-  if (micBtn) micBtn.onclick = () => alert("Mic button working");
+  if (sendBtn) sendBtn.onclick = () => alert("Send working");
+  if (micBtn) micBtn.onclick = () => alert("Mic working");
 });
