@@ -1,57 +1,44 @@
-// ===== BASIC AI CHAT (STABLE) =====
-
-const API_URL = "https://quran50m-backend.vercel.app/api/chat";
-
-document.addEventListener("DOMContentLoaded", () => {
-  const sendBtn = document.getElementById("sendBtn");
-  const input = document.getElementById("userInput");
-
-  if (sendBtn) sendBtn.addEventListener("click", sendMessage);
-  if (input) {
-    input.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
+module.exports = async (req, res) => {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Only POST method allowed" });
   }
-});
-
-async function sendMessage() {
-  const input = document.getElementById("userInput");
-  const body = document.getElementById("chatBody");
-
-  if (!input || !body) return;
-
-  const text = input.value.trim();
-  if (!text) return;
-
-  input.value = "";
-
-  const userDiv = document.createElement("div");
-  userDiv.className = "msg user-msg";
-  userDiv.innerText = text;
-  body.appendChild(userDiv);
-
-  const botDiv = document.createElement("div");
-  botDiv.className = "msg bot-msg";
-  botDiv.innerText = "Soch raha hoon...";
-  body.appendChild(botDiv);
 
   try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
-    });
+    const { message } = req.body;
 
-    const data = await res.json();
-    const ans =
-      data?.choices?.[0]?.message?.content ||
-      "Abhi jawab nahi mil paaya.";
+    if (!message) {
+      return res.status(400).json({ error: "Message is required" });
+    }
 
-    botDiv.innerText = ans;
-    body.scrollTop = body.scrollHeight;
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "llama-3.1-8b-instant",
+          messages: [
+            {
+              role: "system",
+              content:
+                "Tum ek soft, polite aur respectful Islamic AI ho. Hinglish me short aur clear jawab do."
+            },
+            { role: "user", content: message }
+          ],
+          temperature: 0.7,
+          max_tokens: 200
+        })
+      }
+    );
+
+    const data = await response.json();
+    return res.status(200).json(data);
 
   } catch (err) {
-    console.error(err);
-    botDiv.innerText = "Server error. Thodi der baad koshish karein.";
+    console.error("API ERROR:", err);
+    return res.status(500).json({ error: "Server error" });
   }
-}
+};
