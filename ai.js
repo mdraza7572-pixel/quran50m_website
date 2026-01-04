@@ -1,16 +1,15 @@
-module.exports = async (req, res) => {
+module.exports = async function (req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Only POST method allowed" });
   }
 
   try {
     const { message } = req.body;
-
     if (!message) {
-      return res.status(400).json({ error: "Message is required" });
+      return res.status(400).json({ error: "Message required" });
     }
 
-    const response = await fetch(
+    const groqRes = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
@@ -24,21 +23,21 @@ module.exports = async (req, res) => {
             {
               role: "system",
               content:
-                "Tum ek soft, polite aur respectful Islamic AI ho. Hinglish me short aur clear jawab do."
+                "Tum ek soft, polite aur respectful Islamic AI ho. Hinglish me short jawab do."
             },
             { role: "user", content: message }
           ],
-          temperature: 0.7,
-          max_tokens: 200
+          max_tokens: 200,
+          temperature: 0.7
         })
       }
     );
 
-    const data = await response.json();
+    const data = await groqRes.json();
     return res.status(200).json(data);
 
-  } catch (err) {
-    console.error("API ERROR:", err);
-    return res.status(500).json({ error: "Server error" });
+  } catch (e) {
+    console.error("ERROR:", e);
+    return res.status(500).json({ error: "Backend crash" });
   }
 };
