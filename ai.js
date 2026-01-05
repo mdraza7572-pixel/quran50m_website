@@ -1,6 +1,7 @@
-// --- ai.js (AI & Voice Logic) ---
+// --- ai.js (Frontend Logic) ---
 
-const GROQ_API_KEY = "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"; 
+// ✅ Nayi API Key Update kar di hai
+const GROQ_API_KEY = "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"; 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 // --- CHATBOT FUNCTION ---
@@ -32,12 +33,13 @@ async function sendMessage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                // 🔥 NEW LLAMA 4 MODEL (Super Smart & Fast)
-                model: "meta-llama/llama-4-maverick-17b-128e-instruct", 
+                // ✅ Best Available Model (Llama 3.3 70B) - Smart & Fast
+                model: "llama-3.3-70b-versatile", 
                 messages: [
                     { 
                         role: "system", 
-                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho. Jawab short, respectful aur helpful hone chahiye." 
+                        // Friendly, Delhi Style Vibe + Islamic Knowledge
+                        content: "Tum ek friendly aur knowledgeable Islamic AI assistant ho. Tumhara naam 'Quran 50M AI' hai. Tum Hinglish (Hindi+English mix) mein baat karte ho, jaise ek acha dost samjhata hai. Jawab short, respectful aur helpful hone chahiye." 
                     },
                     { role: "user", content: text }
                 ],
@@ -61,7 +63,7 @@ async function sendMessage() {
     }
 }
 
-// --- VOICE (SPEAK) ---
+// --- VOICE (SPEAK) - Best Hindi Voice Finder ---
 window.speakAnswer = function(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
@@ -70,7 +72,7 @@ window.speakAnswer = function(text) {
     const cleanText = text.replace(/[*#]/g, "").replace(/[\u{1F600}-\u{1F64F}]/gu, ""); 
     const speech = new SpeechSynthesisUtterance(cleanText);
     
-    // Hindi Voice Dhoondna
+    // Hindi Voice Dhoondna (Agar device mein hai)
     const voices = window.speechSynthesis.getVoices();
     const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IND'));
     if (hindiVoice) speech.voice = hindiVoice;
